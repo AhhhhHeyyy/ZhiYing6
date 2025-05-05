@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekender Girl - 梁芷穎作品集</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="weekendergirl.css">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="project-container">
+        <header class="project-header">
+            <h1>Weekender Girl</h1>
+            <p class="project-year">2024-9</p>
+        </header>
+
+        <main class="project-content">
+            <div class="project-gallery">
+                <div class="main-image">
+                    <img src="../../assets/Animation/card-1.png" alt="Weekender Girl主图" onclick="openModal(this.src)">
+                </div>
+            </div>
+
+            <div class="project-description">
+                <div class="media-flex">
+                    <div class="media-box">
+                        <div class="media-left">
+                            <h2>使用媒材Tools</h2>
+                            <ul>
+                                <li>After Effects</li>
+                                <li>Procreate</li>
+                                <li>Clip Studio</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="media-divider"></div>
+                    <div class="media-box">
+                      <div class="media-right">
+                        <h2>負責項目responsible</h2>
+                        <ul>
+                          <li>概念設計</li>
+                          <li>人物繪製分層</li>
+                          <li>AE動畫</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+ 
+                </div>
+
+                <h2>作品影片Video</h2>
+                <div class="project-video">
+                    <div class="custom-video-wrapper">
+                        <iframe width="100%" height="500" src="https://www.youtube.com/embed/tSPxEMfj-6o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <h2>簡介Introduction</h2>
+                <p>這是我大一上學期的期中作業。<br>由於我自己是初音未來的資深粉絲，本身又非常喜歡Weekender Girl這首歌。<br>所以就想為這首可愛活潑的歌量身打造一隻動畫MV，初音未來是剛下課走在街上的少女。</p>
+                <p>那個時候我剛學AE不到半年，對於AE的掌握度還不是很高。<br>從繪製人物到分層，還用各種插件做輔助，這隻動畫我花了整整一個月才完成。</p>
+
+
+                <h2>製作過程記錄Progress</h2>
+                <!-- 视频部分 -->
+                <div class="project-video">
+                    <div class="custom-video-wrapper">
+                        <video class="custom-video" controls>
+                            <source src="V1.mp4" type="video/mp4">
+                            您的浏览器不支持视频标签。
+                        </video>
+                        <div class="custom-play-btn"></div>
+                    </div>
+                </div>
+
+                <div class="project-video">
+                    <div class="custom-video-wrapper">
+                        <video class="custom-video" controls>
+                            <source src="V2.mp4" type="video/mp4">
+                            您的浏览器不支持视频标签。
+                        </video>
+                        <div class="custom-play-btn"></div>
+                    </div>
+                </div>
+
+                <!-- 图片部分 -->
+                <div class="peek-gallery">
+                    <div class="peek-image">
+                        <img src="peek1.jfif" alt="制作过程 1" onclick="openModal(this.src)">
+                    </div>
+                    <div class="peek-image">
+                        <img src="peek2.jfif" alt="制作过程 2" onclick="openModal(this.src)">
+                    </div>
+                    <div class="peek-image">
+                        <img src="peek4.jfif" alt="制作过程 4" onclick="openModal(this.src)">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="project-footer">
+        <div class="social-icons-phone">
+            <a href="https://www.behance.net/7affe83c" target="_blank">
+                <img src="../../assets/icon _behance_.png" alt="Behance">
+            </a>
+            <a href="https://www.instagram.com/z_t.0415/" target="_blank">
+                <img src="../../assets/icon _instagram_.png" alt="Instagram">
+            </a>
+            <a href="https://medium.com/@qazwsx04152" target="_blank">
+                <img src="../../assets/icon _medium_.png" alt="Medium">
+            </a>
+        </div>
+    </footer>
+
+    <a href="../../index.html" class="home-button-fixed">HOME</a>
+    <div class="project-nav-fixed">
+      <a href="../outofhole/outofhole.html" class="prev-btn-fixed">&#x2039;</a>
+      <a href="../Win/mahjong.html" class="next-btn-fixed">&#x203A;</a>
+    </div>
+
+    <!-- 图片放大 Modal -->
+    <div id="img-modal" class="img-modal">
+        <span class="img-modal-close">&times;</span>
+        <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖">
+    </div>
+
+    <script>
+    // 页面加载动画
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.project-container');
+        const navButtons = document.querySelector('.project-nav-fixed');
+        const homeButton = document.querySelector('.home-button-fixed');
+        
+        // 页面加载动画
+        setTimeout(() => {
+            container.classList.add('visible');
+        }, 100);
+        
+        // 导航按钮动画
+        setTimeout(() => {
+            navButtons.classList.add('visible');
+        }, 300);
+        
+        // HOME按钮动画
+        setTimeout(() => {
+            homeButton.classList.add('visible');
+        }, 500);
+    });
+
+    // 图片 Modal 相关代码
+    function openModal(src) {
+        document.getElementById('img-modal-img').src = src;
+        document.getElementById('img-modal').classList.add('show');
+    }
+
+    document.querySelectorAll('.peek-image img').forEach(img => {
+        img.addEventListener('click', function() {
+            document.getElementById('img-modal-img').src = this.src;
+            document.getElementById('img-modal').classList.add('show');
+        });
+    });
+    
+    document.querySelector('.img-modal-close').onclick = function() {
+        document.getElementById('img-modal').classList.remove('show');
+    };
+    
+    document.getElementById('img-modal').onclick = function(e) {
+        if(e.target === this) this.classList.remove('show');
+    };
+
+    // 视频播放按钮相关代码
+    window.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.custom-video-wrapper').forEach(wrapper => {
+            const video = wrapper.querySelector('.custom-video');
+            const playBtn = wrapper.querySelector('.custom-play-btn');
+            
+            if (video && playBtn) {
+                playBtn.addEventListener('click', function() {
+                    video.play();
+                    this.classList.add('hide');
+                });
+
+                video.addEventListener('pause', function() {
+                    playBtn.classList.remove('hide');
+                });
+
+                video.addEventListener('play', function() {
+                    playBtn.classList.add('hide');
+                });
+            }
+        });
+    });
+    </script>
+
+</body>
+</html> 

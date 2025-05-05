@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛拼才會營 - 梁芷穎作品集</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../weekendergirl/weekendergirl.css">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+    .project-description a {
+        color: #FAFF60;
+        text-decoration: underline;
+    }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <header class="project-header">
+            <h1>愛拼才會營</h1>
+            <p class="project-year">2025-1</p>
+        </header>
+        <main class="project-content">
+            <div class="project-gallery">
+                <div class="main-image">
+                    <img src="../../assets/Animation/card-2.png" alt="愛拼才會營主圖" onclick="openModal(this.src)">
+                </div>
+            </div>
+
+            <div class="project-description">
+                <div class="media-flex">
+                    <div class="media-box">
+                        <div class="media-left">
+                            <h2>使用媒材Tools</h2>
+                            <ul>
+                                <li>After Effects</li>
+                                <li>blender</li>
+                            
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="media-divider"></div>
+                    <div class="media-box">
+                      <div class="media-right">
+                        <h2>負責項目responsible</h2>
+                        <ul>
+                          <li>概念設計</li>
+                          <li>動畫分鏡</li>
+                          <li>AE動畫</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <h2>作品影片Video</h2>
+                <div class="project-video">
+                    <div class="custom-video-wrapper">
+                        <iframe width="100%" height="500" src="https://www.youtube.com/embed/zvsmKLeyLW0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <h2>簡介Introduction</h2>
+                <p>第十一屆北科互動營的前導影片 <a href="https://www.instagram.com/p/DEcFLcVTLRk/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" style="color:#FAFF60; text-decoration:underline;">點我看 Instagram 營隊貼文</a><br>✨️視覺設計理念✨️<br>我最喜歡的『嗶嗶啵啵』竟然要被拆掉了！
+                    怎麼辦我都還沒破關呢🆘️
+                    聽說機台的零件都會被拆解維修...
+                    那是不是只要找到所有零件就能拼回來了呢🤔
+                    可是只靠我一個人怎麼夠阿
+                    有沒有好心的Gameboy or girl可以幫幫我🥹</p>
+                <p>這是一個教高中生體驗寫程式與作專題的營隊，前導片就涵蓋了教學內容與營隊主題「拯救一台即將被破壞的遊戲機」。因此就有了爆炸的機台跟旋轉的筆電，預示著之後營隊的內容。</p>
+                <p>近未來X80年代X遊戲機台<br>系學會希望這個不到50秒的PV看起來狂酷跩炫炮， 我看著三張素材圖、一個遊戲機3D模型，決定在影片中盡量大量運用螢光、glitch與文字變形盡量去達到效果。</p>
+
+                <h2>製作過程Progress</h2>
+                <div class="peek-gallery">
+                    <div class="peek-image">
+                        <img src="peek (1).png" alt="製作過程1" onclick="openModal(this.src)">
+                    </div>
+                    <div class="peek-image">
+                        <img src="peek (2).png" alt="製作過程2" onclick="openModal(this.src)">
+                    </div>
+                    <div class="peek-image">
+                        <img src="peek (3).png" alt="製作過程3" onclick="openModal(this.src)">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="project-footer">
+        <div class="social-icons-phone">
+            <a href="https://www.behance.net/7affe83c" target="_blank">
+                <img src="../../assets/icon _behance_.png" alt="Behance">
+            </a>
+            <a href="https://www.instagram.com/z_t.0415/" target="_blank">
+                <img src="../../assets/icon _instagram_.png" alt="Instagram">
+            </a>
+            <a href="https://medium.com/@qazwsx04152" target="_blank">
+                <img src="../../assets/icon _medium_.png" alt="Medium">
+            </a>
+        </div>
+    </footer>
+    <a href="../../index.html" class="home-button-fixed">HOME</a>
+    <div class="project-nav-fixed">
+      <a href="../weekendergirl/weekendergirl.html" class="prev-btn-fixed">&#x2039;</a>
+      <a href="../Post/post.html" class="next-btn-fixed">&#x203A;</a>
+    </div>
+
+    <!-- 图片放大 Modal -->
+    <div id="img-modal" class="img-modal">
+      <span class="img-modal-close">&times;</span>
+      <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖">
+    </div>
+
+    <script>
+    // 页面加载动画
+    document.addEventListener('DOMContentLoaded', function() {
+        const projectContainer = document.querySelector('.project-container');
+        const navButtons = document.querySelector('.project-nav-fixed');
+        const homeButton = document.querySelector('.home-button-fixed');
+        
+        // 初始状态
+        projectContainer.style.opacity = '0';
+        navButtons.style.opacity = '0';
+        homeButton.style.opacity = '0';
+        
+        // 页面加载动画
+        setTimeout(() => {
+            projectContainer.style.opacity = '1';
+            navButtons.style.opacity = '1';
+            homeButton.style.opacity = '1';
+            navButtons.classList.add('visible');
+            homeButton.classList.add('visible');
+        }, 100);
+    });
+
+    // 图片模态框
+    document.querySelectorAll('.project-gallery img, .peek-image img').forEach(img => {
+        img.addEventListener('click', function() {
+            document.getElementById('img-modal-img').src = this.src;
+            document.getElementById('img-modal').classList.add('show');
+        });
+    });
+    document.querySelector('.img-modal-close').onclick = function() {
+        document.getElementById('img-modal').classList.remove('show');
+    };
+    document.getElementById('img-modal').onclick = function(e) {
+        if(e.target === this) this.classList.remove('show');
+    };
+
+    // 视频播放按钮
+    document.querySelectorAll('.custom-video-wrapper').forEach(wrapper => {
+        const video = wrapper.querySelector('.custom-video');
+        const playBtn = wrapper.querySelector('.custom-play-btn');
+        playBtn.onclick = function() {
+            video.play();
+            playBtn.classList.add('hide');
+        };
+        video.onpause = function() {
+            playBtn.classList.remove('hide');
+        };
+        video.onplay = function() {
+            playBtn.classList.add('hide');
+        };
+    });
+
+    function openModal(src) {
+        document.getElementById('img-modal-img').src = src;
+        document.getElementById('img-modal').classList.add('show');
+    }
+    </script>
+</body>
+</html> 

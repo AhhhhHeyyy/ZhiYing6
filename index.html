@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品集 - 梁芷穎</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+   
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <!-- Lenis for smooth scrolling -->
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+  
+  <!-- 在所有CDN庫加載後引入你的腳本 -->
+  <script src="script.js" defer></script>
+</head>
+
+<body class="index">
+  <div class="social-icons">
+    <a href="https://www.behance.net/7affe83c" target="_blank">
+      <img src="assets/icon _behance_.png" alt="Behance">
+    </a>
+    <a href="https://www.instagram.com/z_t.0415/" target="_blank">
+      <img src="assets/icon _instagram_.png" alt="Instagram">
+    </a>
+    <a href="https://medium.com/@qazwsx04152" target="_blank">
+      <img src="assets/icon _medium_.png" alt="Medium">
+    </a>
+  </div>
+
+  <header class="main-header">
+    <nav class="nav-menu">
+      <div class="logo">
+        <h3>梁芷穎&nbsp;&nbsp;LIANG ZHI YING</h3>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#intro">HOME</a></li>
+        <li><a href="#skills">SKILLS</a></li>
+        <li><a href="#gallery">WORKS</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 自我介紹區域 -->
+  <section class="intro" id="intro">
+    <div class="intro-images">
+      <div class="small-image">
+        <img src="assets/intro (3).png" alt="Small Image">
+      </div>
+      <div class="overlay-image">
+        <img src="assets/intro (1).jpg" alt="Overlay Image">
+      </div>
+    </div>
+
+    <div class="intro-text">
+      <h1>梁芷穎</h1>
+      <h1>&nbsp;&nbsp;Profolio</h1>
+    </div>
+  </section>
+
+  <!-- 技能區域 -->
+  <section class="skills" id="skills">
+    <div class="pattern-container">
+      <svg width="600" height="600" viewBox="0 0 600 600">
+        <defs>
+          <radialGradient id="dotSize" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" style="stop-color:white; stop-opacity:1" />
+            <stop offset="100%" style="stop-color:white; stop-opacity:0.1" />
+          </radialGradient>
+          <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="2.5" fill="white" fill-opacity="0.8"/>
+          </pattern>
+          <mask id="gradientMask">
+            <circle cx="300" cy="300" r="250" fill="url(#dotSize)"/>
+          </mask>
+        </defs>
+        <rect x="0" y="0" width="600" height="600" fill="url(#dotPattern)" mask="url(#gradientMask)"/>
+      </svg>
+    </div>
+    
+    <div class="skill-H2">
+      <div class="skill-H2-bg"></div>
+      <h2>在這個充滿理工的世界尋找藝術的痕跡</h2>
+    </div>
+    <div class="skills-container">
+      <div class="skills-images">
+        <div class="skills-image-wrapper">
+          <img src="assets/Skills Image.jpg" alt="Skills Image" class="skills-image-top">
+          <img src="assets/Skills Image2.png" alt="Skills Image 2" class="skills-image-bottom">
+        </div>
+      </div>
+    </div>
+    
+    <div class="skills-titles">
+      <h1>#互動裝置</h1>
+      <h1>#動畫</h1>
+      <h1>#前端</h1>
+      <h1>#?????</h1>
+    </div>
+
+    <div class="work-title">
+      <div class="title-group">
+        <h1 class="shadow">Here are my</h1>
+        <h1>Here are my</h1>
+      </div>
+      <div class="title-group">
+        <h1 class="shadow">WORKKKKKK</h1>
+        <h1>WORKKKKKK</h1>
+      </div>
+    </div>
+
+    <!-- skill box 结构移到这里 -->
+    <div class="skill-boxes-floating">
+      <div class="skill-box-all">
+        <ul>
+          <li>TouchDesigner</li>
+          <li>After Effect</li>
+          <li>Ai Tools</li>
+        </ul>
+      </div>
+      <div class="skill-box-all2">
+        <ul>
+          <li>Html/CSS</li>
+          <li>Unity</li>
+          <li>MediaPipe</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="arrow-section">
+    <div class="skills-arrows">
+      <img src="assets/Vectorc.png" alt="arrow">
+      <img src="assets/Vectorc.png" alt="arrow">
+      <img src="assets/Vectorc.png" alt="arrow">
+    </div>
+  </section>
+
+  <!-- 畫廊區域 -->
+  <div class="container">
+    <section class="gallery-section" id="gallery">
+      <!-- 上方導航：桌面版 -->
+      <div class="gallery-nav">
+        <div class="nav-item active" data-category="installation">
+          <h2>Installation Art</h2>
+        </div>
+        <div class="nav-item" data-category="animation">
+          <h2>Animation & Digital Art</h2>
+        </div>
+        <div class="nav-item" data-category="painting">
+          <h2>Painting</h2>
+        </div>
+      </div>
+      <!-- 上方導航：手機版下拉 -->
+      <div class="mobile-dropdown" id="mobileDropdown">
+        <div class="dropdown-btn" id="dropdownBtn">
+          <span class="selected-text">Installation Art</span>
+          <span class="arrow">▼</span>
+        </div>
+        <ul class="dropdown-list" id="dropdownList">
+          <li class="dropdown-item" data-category="installation">Installation Art</li>
+          <li class="dropdown-item" data-category="animation">Animation & Digital Art</li>
+          <li class="dropdown-item" data-category="painting">Painting</li>
+        </ul>
+      </div>
+
+      <!-- 作品展示區 -->
+      <div class="gallery-content">
+        <div class="gallery-category" id="installation">
+          <div class="gallery-grid">
+            <div class="gallery-item" data-toggle="modal" data-target="#artModal">
+              <a href="projects/outofhole/Outofhole.html">
+                <img src="assets/Installation Art/OutofHole/out1.png" alt="Out Of The Hole">
+                <div class="item-overlay">
+                  <h3>孔外狂徒</h3>
+                  <p>2025-1</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-category" id="animation">
+          <div class="gallery-grid">
+            <div class="gallery-item">
+              <a href="projects/weekendergirl/weekendergirl.html">
+                <img src="assets/Animation/card-1.png" alt="Animation 1">
+                <div class="item-overlay">
+                  <h3>Weekender Girl</h3>
+                  <p>2024-9</p>
+                </div>
+              </a>
+            </div>
+            <div class="gallery-item">
+              <a href="projects/Win/mahjong.html">
+                <img src="assets/Animation/card-2.png" alt="Animation 2">
+                <div class="item-overlay">
+                  <h3>愛拼才會營</h3>
+                  <p>2025-1</p>
+                </div>
+              </a>
+            </div>
+            <div class="gallery-item">
+              <a href="projects/Post/post.html">
+                <img src="assets/Animation/card-3.png" alt="Animation 3">
+                <div class="item-overlay">
+                  <h3>有料沒料?</h3>
+                  <p>2025-3</p>
+                </div>
+              </a>
+            </div>
+            <div class="gallery-item">
+              <a href="projects/Walker/walker.html">
+                <img src="assets/Animation/card-4.png" alt="Animation 4">
+                <div class="item-overlay">
+                  <h3>Walker</h3>
+                  <p>2024-11</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="gallery-item">
+              <a href="projects/Rose/Rose.html">
+                <img src="assets/Animation/card-5.png" alt="Animation 5">
+                <div class="item-overlay">
+                  <h3>The Rose</h3>
+                  <p>2024-11</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-category" id="painting">
+          <div class="gallery-grid">
+            <div class="gallery-item">
+              <a href="projects/Summer Week/summerweek.html">
+                <img src="projects/Summer Week/peek1.jfif" alt="Summer Week">
+                <div class="item-overlay">
+                  <h3>Summer Week</h3>
+                  <p>2023-8</p>
+                </div>
+              </a>
+            </div>
+            <div class="gallery-item">
+              <a href="projects/Kiss/kiss.html">
+                <img src="projects/Kiss/peek1.jfif" alt="Kiss">
+                <div class="item-overlay">
+                  <h3>Kiss</h3>
+                  <p>2023-8</p>
+                </div>
+              </a>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="social-icons-phone">
+      <a href="https://www.behance.net/7affe83c" target="_blank">
+        <img src="assets/icon _behance_.png" alt="Behance">
+      </a>
+      <a href="https://www.instagram.com/z_t.0415/" target="_blank">
+        <img src="assets/icon _instagram_.png" alt="Instagram">
+      </a>
+      <a href="https://medium.com/@qazwsx04152" target="_blank">
+        <img src="assets/icon _medium_.png" alt="Medium">
+      </a>
+    </div>
+  </footer>
+
+  <!-- YouTube视频模态窗口 -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+      <div class="video-modal-iframe-wrapper">
+        <iframe id="videoFrame" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

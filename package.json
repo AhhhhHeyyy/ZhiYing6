@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "gsap": "^3.12.7"
+  },
+  "devDependencies": {
+    "parcel": "^2.14.4"
+  }
+}

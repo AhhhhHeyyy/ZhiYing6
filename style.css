@@ -1,0 +1,2312 @@
+/* 基本重设 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 文字與顏色設定 */
+body {
+    background-color: #000000;
+    scroll-behavior: smooth;
+}
+
+/* 頂部導航欄 */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-bottom: 2px solid #FAFF60;
+    z-index: 99999;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo h3 {
+    color: #FAFF60;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    margin-left: 0;
+}
+
+.logo {
+    padding-left: 24px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-right: 40px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    transform-origin: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: #FAFF60;
+    transform: scale(1.1);
+}
+
+/* 調整其他區域的上邊距 */
+.intro {
+    padding-top: 80px;
+}
+
+/* 自我介紹區域 */
+.intro {
+    height: 600px;
+    position: relative;
+    background-color: #333;
+    color: yellow;
+    padding: 40px 40px 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+
+.intro-text {
+    position: relative;
+    z-index: 1;
+    width: 60%;
+    margin-top: 40px;
+    top: 20%;
+    margin-left: 32px;
+}
+
+.intro-text h1 {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 9rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.intro-text p {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.intro-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: -50px;
+    z-index: 0;
+}
+
+.intro-image img {
+    width: 150px;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+
+.intro-images {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.overlay-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.overlay-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: grayscale(100%);
+    pointer-events: none;
+}
+
+.small-image {
+    position: absolute;
+    top: 40%;
+    left: 80%;
+    transform: translate(-50%, -50%) rotate(-5deg);
+    width: 400px;
+    height: 250px;
+    z-index: 3;
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+}
+
+.small-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+    overflow: visible;
+}
+
+/* 技能區域 */
+.skills {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+    background-color: #000000;
+    padding: 0 0 30px 0;
+    height: 800px;
+    position: relative;
+    overflow: visible !important;
+    min-height: 120vh;
+}
+
+.skills-container {
+    width: 100%;
+    position: relative;
+    margin-top: 50px;
+    z-index: 2;
+}
+
+.skills-images {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+    top: -60px;
+    left: -3%;
+}
+
+.skills-image-wrapper {
+    position: relative;
+    width: 430px;
+    height: 430px;
+}
+
+.skills-image-top,
+.skills-image-bottom {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-10deg);
+    border: 5px solid #fff;
+    box-shadow: 15px 15px 0 #FAFF60;
+    object-fit: cover;
+}
+
+.skills-image-top {
+    z-index: 1;
+}
+
+.skills-image-bottom {
+    z-index: 2;
+    animation: blink 2s infinite steps(1);
+}
+
+@keyframes blink {
+    0% { opacity: 0; }
+    25% { opacity: 0; }    /* 停顿0.5秒 */
+    26% { opacity: 1; }    /* 第一次闪烁开始 */
+    32% { opacity: 0; }    /* 延长闪烁时间 */
+    38% { opacity: 1; }    /* 第二次闪烁开始 */
+    44% { opacity: 0; }    /* 延长闪烁时间 */
+    50% { opacity: 1; }    /* 保持显示 */
+    75% { opacity: 1; }    /* 持续显示到1.5秒 */
+    100% { opacity: 0; }   /* 最后0.5秒淡出 */
+}
+
+.skill-H2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    z-index: 2;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-H2-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FAFF60;
+    transform: scaleX(0);
+    transform-origin: center;
+    z-index: -1;
+}
+
+.skill-H2 h2 {
+    display: inline-block;
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: #000000;
+    margin: 10px 0;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* PC端技能图片样式 */
+.skills img {
+    width: 70%;
+    height: auto;
+    max-width: 430px;
+    min-width: 180px;
+    position: absolute;
+    top: 90px;
+    left: 10%;
+    transform: rotate(-10deg);
+    border: 5px solid rgb(255, 255, 255);
+    box-shadow: 15px 15px 0px #FAFF60;
+    object-fit: cover;
+    z-index: 10;
+}
+
+/* 移动端样式 */
+@media screen and (max-width: 540px) {
+    .skill-box-all, .skill-box-all2 {
+        width: 95% !important;
+        height: 140px !important;
+        background-size: contain !important;
+    }
+    .skill-box-all { top: -130px !important; }
+    .skill-box-all2 { top:50px !important; }
+    .skills img {
+        width: 50%;
+        height: auto;
+        min-width: 100px;
+        max-width: 180px;
+        position: absolute;
+        top: 120px;
+        left: 25%;
+        transform: translateX(-50%) rotate(-5deg);
+        border: 2px solid rgb(255, 255, 255);
+        box-shadow: 8px 8px 0px #FAFF60;
+    }
+    .skills {
+        height: 1600px !important;
+        min-height: 1600px !important;
+        padding-bottom: 30px;
+    }
+    .skills-titles {
+        top: 100px !important;
+        left: 65%;
+        gap: 15px;
+    }
+    .skills-titles h1 {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        transform: scale(0.6) translateY(300%);
+    }
+    .intro-text {
+        padding-top:200px !important;
+    }
+    .intro-text h1 {
+        font-size: 3.3rem !important;
+    }
+    .intro-text p {
+        font-size: 1.05rem !important;
+    }
+    .small-image {
+        width: 220px !important;
+        height: auto !important;
+        left: 55% !important;
+    }
+    .mobile-dropdown {
+        max-width: 85vw !important;
+        width: 85vw !important;
+    }
+    .dropdown-btn,
+    .dropdown-list {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+    .main-header .logo {
+        display: none !important;
+    }
+    .nav-menu {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .nav-links {
+        margin: 0 !important;
+        gap: 20px !important;
+        justify-content: center !important;
+        width: 100vw !important;
+    }
+    .gallery-grid {
+        justify-items: center !important;
+        align-items: center !important;
+        grid-template-columns: 1fr !important;
+        padding: 0 0 20px 0 !important;
+    }
+    .gallery-item {
+        margin: 0 auto !important;
+        float: none !important;
+    }
+    .gallery-item .play-button {
+        left: 45%;
+    }
+    .gallery-item .play-button svg {
+        width: 100px;
+        height: 50px;
+    }
+    body > .social-icons {
+        display: none !important;
+    }
+    footer .social-icons {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 30px !important;
+        width: 100vw !important;
+        padding: 24px 0 16px 0 !important;
+        background: transparent !important;
+        margin: 0 auto !important;
+        position: static !important;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+    }
+    footer {
+        padding: 20px 0;
+        display: block !important;
+        position: relative;
+        z-index: 100;
+        width: 100vw;
+        background-color: #FAFF60 !important;
+    }
+}
+
+@media screen and (min-width: 600px) {
+  .mobile-dropdown {
+    display: none !important;
+  }
+}
+
+.skill-content-wrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.skills-titles {
+    position: absolute;
+    left: 65%;
+    top: 170px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.skills-titles h1 {
+    color: white;
+    font-size: 2.5vw !important;
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 900;
+    text-align: left;
+    margin: 0;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 4px;
+    line-height: 1.2;
+    transform: scale(0.9);
+}
+
+.skill-boxes-container {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    z-index: 2;
+}
+
+.skill-box-left {
+  /* 已无背景色，仅保留排版 */
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.skill-box-right {
+  /* 已无背景色，仅保留排版 */
+  padding: 20px;
+  align-self: flex-end;
+}
+
+.skill-box, .skill-box2 {
+  text-align: center;
+}
+
+.skill-box {
+  color: #FAFF60;
+  padding-left: 21%;
+  width: 450px;
+}
+
+.skill-box2 {
+  color: #1b1b1b;
+  padding-left: 21%;
+  width: 450px;
+}
+
+/* 电脑端核心样式 */
+.skill-boxes-floating {
+    position: relative;
+    width: 100%;
+    z-index: 3;
+}
+
+.skill-box-all, .skill-box-all2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 320px;
+    height: 160px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.skill-box-all {
+    background-image: url('./assets/Group 1.png');
+}
+
+.skill-box-all2 {
+    background-image: url('./assets/Group 2.png');
+}
+
+.skill-box, .skill-box2 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 30px;
+ 
+}
+.skill-box h2, .skill-box2 h2 {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    margin: 12px 8px;
+    padding-right: 25%;
+    letter-spacing: 1px;
+    color: #FAFF60;
+}
+.skill-box2 h2 { color: #1b1b1b; }
+
+/* 移动端适配 */
+@media screen and (max-width: 540px) {
+    .skill-box, .skill-box2 {
+        width: 98%;
+        height: 135px;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-top: 15px;
+    }
+    .skill-box h2, .skill-box2 h2 {
+        font-size: 0.9rem;
+        margin: 4px auto 4px 15%;
+        transform: translateX(14%);
+        width: 100%;
+        text-align: left;
+    }
+}
+
+/* 其他被覆盖、无用、重复的 skill box 相关样式已删除 */
+
+/* 画廊区域样式 */
+.gallery-section {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #000000;
+    position: relative;
+}
+
+.gallery-nav {
+    width: 100%;
+    padding: 60px 0;
+    background-color: #000000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.gallery-content {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.gallery-item {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #000000; /* 确保背景为黑色 */
+  border: 3px solid #FAFF60;
+  box-shadow: 0 4px 8px rgba(250, 255, 96, 0.3);
+}
+
+.gallery-item::before,
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  transform: skewX(-25deg);
+  z-index: 3;
+}
+
+.gallery-item::before {
+  width: 70px;
+  opacity: 1;
+  transition: left 0.7s ease;
+}
+
+.gallery-item::after {
+  width: 20px;
+  opacity: 0.8;
+  left: -130%;
+  transition: left 0.7s ease;
+}
+
+.gallery-item:hover::before {
+  left: 150%;
+}
+
+.gallery-item:hover::after {
+  left: 170%;
+}
+
+.gallery-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: #000;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-item .item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    color: #FAFF60;
+    z-index: 2;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 100%;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.85) 0%,
+      rgba(0,0,0,0.6) 40%,
+      rgba(0,0,0,0.3) 70%,
+      transparent 100%
+    );
+}
+
+.gallery-item:hover .item-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.gallery-item .item-overlay h3 {
+    position: relative;
+    z-index: 1;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #FAFF60;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    white-space: nowrap; /* 禁止换行 */
+    overflow: hidden; /* 隐藏超出部分 */
+    text-overflow: ellipsis; /* 显示省略号 */
+    max-width: 80%; /* 限制最大宽度 */
+}
+
+.gallery-item .item-overlay h3::after {
+    content: none;
+}
+
+.item-overlay p {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 1rem;
+  color: white;
+  font-weight: 800;
+}
+
+/* 桌面端（預設） */
+.gallery-item .play-button {
+  display: none !important;
+}
+
+/* 平板端 */
+@media screen and (min-width: 541px) and (max-width: 1024px) {
+  .gallery-item .play-button {
+    display: none !important;
+  }
+  .skills {
+    height: 1800px !important;
+    min-height: 1800px !important;
+  }
+  .skill-box, .skill-box2 {
+    padding-top: 20px;
+    transform: translateX(14%);  /* 添加向右移动 */
+  }
+  .skill-box h2,
+  .skill-box2 h2 {
+    font-size: 1rem !important;
+  }
+  body > .social-icons {
+    display: none !important;
+  }
+  footer .social-icons-phone {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 40px !important;
+    width: 100vw !important;
+    padding: 30px 0 40px 0 !important;
+  }
+  footer .social-icons-phone img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .skill-box-all2 {
+    margin: 40px 0 !important;
+  }
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    font-size: 1rem !important;
+  }
+}
+
+/* 手機端 */
+@media screen and (max-width: 540px) {
+  .gallery-item .play-button {
+    display: none !important;
+  }
+}
+
+/* 360px 特例 */
+@media screen and (min-width: 320px) and (max-width: 540px) {
+  .gallery-item .play-button {
+    display: none !important;
+  }
+}
+
+/* 添加标题样式 */
+.item-overlay h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: #FAFF60;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.item-overlay p {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.social-links a {
+  font-family: 'Public Sans', sans-serif;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+  opacity: 1;
+}
+
+.gallery-item h3 {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+}
+
+.gallery-item p {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+}
+
+.gallery-category h3 {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+}
+
+.gallery-category p {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+}
+
+/* 添加标题样式 */
+h3 {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 800;
+}
+
+/* 爱拼才会赢等标题 */
+.gallery-item .item-overlay h3 {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #FAFF60;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 年份等描述文字 */
+.gallery-item .item-overlay p {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: white;
+}
+
+/* 添加 Here are my WORKKKKKK 文字样式 */
+.work-title {
+    position: absolute;
+    bottom: 50px;
+    margin-left: auto;
+    text-align: right;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+}
+
+.title-group {
+    position: relative;
+    margin-bottom: 10px;
+    transform: translate(65%, 20px);
+}
+
+.work-title h1 {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+    text-stroke: 2px white;
+    text-shadow: 
+        -1px -1px 0 #000000,
+        1px -1px 0 #000000,
+        -1px 1px 0 #000000,
+        1px 1px 0 #000000,
+        0 0 8px #000000;
+    text-align: right;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    transform: translate(-57%,-10%) 
+}
+
+.work-title h1.shadow {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    z-index: 0;
+    -webkit-text-stroke: 2px #FAFF60;
+    text-stroke: 0.5px #FAFF60;
+    color: #000000;
+    text-shadow: 
+        -1px -1px 0 #000000,
+        1px -1px 0 #000000,
+        -1px 1px 0 #000000,
+        1px 1px 0 #000000,
+        0 0 8px #000000;
+    text-align: right;
+    width: 100%;
+    transform: translate(-56%,-8%) !important;
+}
+
+/* 删除鼠标滚轮动画相关样式 */
+.scroll-indicator,
+.mouse,
+.wheel,
+.scroll-arrow,
+.scroll-arrow span {
+    display: none;
+}
+
+@keyframes scroll {
+    0%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes arrow {
+    0%, 100% {
+        opacity: 0;
+    }
+}
+
+.lightning-container {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 40px;
+    z-index: 10;
+}
+
+.lightning-container img {
+    width: 25px;
+    height: 25px;
+    filter: brightness(1);
+}
+
+.lightning-row {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+    transform: translateY(-50%);
+}
+
+.lightning-row img {
+    width: 35px;
+    height: auto;
+    transform: rotate(0deg);
+    object-fit: contain;
+}
+
+.lightning-row-2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+    transform: translateY(-50%);
+}
+
+.lightning-row-2 img {
+    width: 35px;
+    height: auto;
+    transform: rotate(0deg);
+    object-fit: contain;
+}
+
+.skill-box-wrapper2 {
+    clip-path: polygon(10% 0%, 90% 0%, 90% 90%, 90% 100%, 10% 100%, 0% 50%);
+    background-color: transparent;
+}
+
+.pattern-container {
+    position: absolute;
+    top: 0;
+    left: -100px;
+    width: 600px;
+    height: 600px;
+    z-index: 1;
+    opacity: 0.7;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+.pattern-container svg {
+    width: 100%;
+    height: 100%;
+}
+
+.work-title-container {
+    position: absolute;
+    bottom: 50px;
+    right: 650px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    gap: 30px;
+}
+
+.arrow-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.arrow-icon {
+    width: 40px;
+    height: 40px;
+    transform: rotate(-90deg);
+    filter: brightness(0) invert(1);
+}
+
+.work-title h1 {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+    text-stroke: 2px white;
+    text-align: right;
+}
+
+.skills-arrows img{
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(0 0 5px rgba(250, 255, 96, 0.5));
+}
+
+/* 社交媒體圖標 */
+.social-icons {
+    position: fixed;
+    left: 45px;
+    top: 54%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1000;
+}
+
+.social-icons a {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.social-icons img {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+.social-icons a:hover {
+    transform: translateX(5px);
+}
+
+.social-icons a:hover img {
+    filter: invert(89%) sepia(19%) saturate(1096%) hue-rotate(358deg) brightness(102%) contrast(102%);
+}
+
+/* 移动端下拉菜单样式 */
+@media screen and (max-width: 540px) {
+    .mobile-dropdown {
+        position: relative;
+        width: 100%;
+        max-width: 200px;
+        margin: 20px auto;
+        z-index: 1000;
+    }
+
+    .dropdown-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background: transparent;
+        border: 2px solid #FAFF60;
+        color: #FAFF60;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        user-select: none;
+        width: 100%;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .dropdown-btn .arrow {
+        margin-left: 10px;
+        transition: transform 0.3s;
+    }
+
+    .dropdown-btn.active .arrow {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        border: 2px solid #FAFF60;
+        border-top: none;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: none;
+        z-index: 1001;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .dropdown-list.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: 10px 15px;
+        color: #FAFF60;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+        user-select: none;
+        border-bottom: 1px solid rgba(250, 255, 96, 0.2);
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-item:active {
+        background-color: #FAFF60 !important;
+        color: #000 !important;
+    }
+
+    /* 隐藏桌面版导航 */
+    .gallery-nav {
+        display: none;
+    }
+}
+
+/* 技能区块内的箭头动画 */
+.skills {
+    position: relative;
+}
+
+.skills .arrow-section {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    z-index: 110;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.skills .skills-arrows img {
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(0 0 5px rgba(250, 255, 96, 0.5));
+    transform: rotate(90deg); /* 朝下 */
+    margin: 0 4px;
+}
+
+/* 移除全局.arrow-section样式 */
+.arrow-section {
+    display: none !important;
+}
+
+/* 移动端箭头适配 */
+@media screen and (max-width: 540px) {
+    .skills-arrows {
+        left: 10%;
+        gap: 20px;
+    }
+
+    .skills-arrows img {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+/* 电脑端样式 */
+@media screen and (min-width: 1024px) {
+    .skills {
+        height: 700px !important;
+        min-height: 600px !important;
+    }
+    .skills img {
+        width: 80%;
+        max-width: none;
+        min-width: 0;
+        left: 10%;
+    }
+    .skills .skill-box-all,
+    .skills .skill-box-all2 {
+        width: 40%;
+        min-width: 0;
+        max-width: none;
+        left: 70% !important;
+        right: auto;
+        transform: translateX(-50%);
+    }
+    .skills .skill-box-all {
+        top: -400px !important;
+        left: 63% !important;
+    }
+    .skills .skill-box-all2 {
+        top: -170px !important;
+    }
+    .skills-titles {
+        left: 82% !important;
+        top: 90px !important;
+    }
+    .work-title {
+        left: 150px !important;
+        top: 480px !important;
+        right: auto !important;
+        bottom: auto !important;
+        text-align: left !important;
+        align-items: flex-start !important;
+        margin: 0 !important;
+    }
+    .work-title h1,
+    .work-title h2,
+    .work-title .title-group {
+        text-align: left !important;
+        margin: 0 !important;
+    }
+    .work-title h1.shadow {
+        left: 0 !important;
+        right: auto !important;
+    }
+}
+
+@media screen and (min-width: 540px) and (max-width: 1024px) {
+  .main-header,
+  .nav-menu {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  .container,
+  .gallery-section {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  body {
+    overflow-x: hidden !important;
+  }
+  .skills .skill-boxes-container,
+  .skills .skill-boxes-floating {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 32px !important;
+    position: static !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+  .skills .skill-box-all,
+  .skills .skill-box-all2 {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    width: 95% !important;
+    max-width: 400px !important;
+  }
+  .skills .skill-box, .skills .skill-box2 {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+  .skills .skill-box h2, .skills .skill-box2 h2 {
+    margin: 8px auto !important;
+    padding-left: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  .social-icons {
+    display: flex !important;
+    position: fixed !important;
+    left: 45px;
+    top: 54%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1000;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  body > .social-icons {
+    display: none !important;
+  }
+  footer .social-icons {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 30px !important;
+    width: 100vw !important;
+    padding: 24px 0 16px 0 !important;
+    background: transparent !important;
+    margin: 0 auto !important;
+    position: static !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+  footer .social-icons a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  footer .social-icons img {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    position: static !important;
+  }
+  footer {
+    width: 100vw !important;
+    min-height: 80px;
+    background: transparent !important;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1366px) {
+  .skill-box, .skill-box2 {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    box-sizing: border-box;
+  }
+}
+
+/* 桌面端 */
+@media screen and (min-width: 1367px) {
+  .skills-titles {
+    left: 80% !important;
+    top: 10% !important;
+  }
+  .skills-titles h1 {
+    font-size: 2.2vw !important;
+  }
+  .skill-box-all,
+  .skill-box-all2 {
+    width: 440px !important;
+    height: 220px !important;
+    background-size: contain !important;
+  }
+}
+
+/* 1025~1366px 平板 */
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+  .skills-titles {
+    left: 78% !important;
+    top: 12% !important;
+  }
+  .skills-titles h1 {
+    font-size: 2.5vw !important;
+  }
+}
+
+/* 541~1024px 平板 */
+@media screen and (min-width: 541px) and (max-width: 1024px) {
+  .skills-titles {
+    left: 70% !important;
+    top: 13% !important;
+  }
+  .skills-titles h1 {
+    font-size: 3vw !important;
+  }
+}
+
+/* 手機端 */
+@media screen and (max-width: 540px) {
+  .skills-titles {
+    left: 65% !important;
+    top: 18% !important;
+  }
+  .skills-titles h1 {
+    font-size: 5vw !important;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 922px) {
+    .skills-titles h1 {
+      font-size: 2.5rem !important;
+    }
+  }
+
+@media screen and (min-width: 911px) and (max-width: 922px) {
+  .skills-titles h1 {
+    font-size: 2.5rem !important;
+  }
+  .skill-box-all2 {
+    top: 15vh !important;
+  }
+  .gallery-item .play-button {
+    width: 250px;
+    height: 150px;
+    left: 85%;
+    top: 10%;
+    transform: translate(-50%, -50%);
+  }
+  .gallery-item .play-button svg {
+    width: 250px;
+    height: 150px;
+  }
+}
+@media screen and (width: 1280px) and (height: 720px) {
+    .skill-box h2, .skill-box2 h2 {
+        font-size: 1.1rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        text-align: center !important;
+        transform: translateY(35%) !important;
+        line-height: 2 !important;
+    }
+  }
+
+@media screen and (max-width: 1024px) {
+  html, body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  .container,
+  .gallery-section,
+  .skills {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+@media screen and (max-width: 540px) {
+    .skills {
+      height: 800px !important;
+      min-height: 800px !important;
+    }
+  }
+  
+  @media screen and (min-width: 541px) and (max-width: 1023px) {
+    .skills {
+      height: 1000px !important;
+      min-height: 1000px !important;
+    }
+    
+    .skills-titles {
+        left: 70% !important;
+        top: 13% !important;
+    }
+    
+    .skills-titles h1 {
+        font-size: 1.5rem !important;
+        transform: scale(0.8) !important;
+    }
+    
+    .skills img {
+        width: 70% !important;
+        max-width: 400px !important;
+        min-width: 120px !important;
+        left: 10% !important;
+        top: 100px !important;
+        transform: rotate(-8deg) !important;
+    }
+    
+    .skill-box-all {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+    
+    .skill-box-all2 {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        top: 15vh !important;
+    }
+    
+    .intro-text {
+        margin-top: 100px !important;
+        top: 30% !important;
+    }
+    
+    .intro-text h1 {
+        font-size: 3.3rem !important;
+    }
+    
+    .intro-text p {
+        font-size: 1.05rem !important;
+    }
+    
+    .small-image {
+        width: 300px !important;
+        height: 200px !important;
+        left: 70% !important;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+  .work-title {
+    position: absolute !important;
+    left: 120px !important;
+    right: auto !important;
+    bottom: 60px !important;
+    margin: 0 !important;
+    max-width: 900px !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .work-title h1 {
+    font-size: 5rem !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+}
+
+@media screen and (min-width: 1920px) and (height: 1080px) {
+  .work-title {
+    position: absolute !important;
+    left: 160px !important;
+    bottom: 60px !important;
+    right: auto !important;
+    margin: 0 !important;
+    max-width: 1000px !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .work-title h1 {
+    font-size: 5rem !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+}
+
+/* 2K (QHD) */
+@media screen and (min-width: 2561px) and (max-width: 2560px) and (max-height: 1440px) {
+    .skills {
+        height: 65vh !important;
+        min-height: 65vh !important;
+  }
+  .skill-box-all, .skill-box-all2 {
+        width: 45% !important;
+        height: 280px !important;
+        top: -260px !important;
+    }
+    .skill-box-all2 {
+        top: 110px !important;
+    }
+    .work-title {
+        bottom: 100px !important;
+        right: 90px !important;
+        max-width: 50% !important;
+    }
+    .work-title h1 {
+        font-size: 6.5rem !important;
+    }
+}
+
+/* 4K UHD */
+@media screen and (min-width: 3841px) and (max-width: 3840px) and (max-height: 2160px) {
+    .skills {
+        height: 60vh !important;
+        min-height: 60vh !important;
+    }
+    .skill-box-all, .skill-box-all2 {
+        width: 40% !important;
+        height: 300px !important;
+        top: -280px !important;
+    }
+    .skill-box-all2 {
+        top: 120px !important;
+    }
+    .work-title {
+        bottom: 110px !important;
+        right: 100px !important;
+        max-width: 45% !important;
+    }
+    .work-title h1 {
+        font-size: 7rem !important;
+    }
+}
+
+/* 5K */
+@media screen and (min-width: 5121px) and (max-width: 5120px) and (max-height: 2880px) {
+    .skills {
+        height: 55vh !important;
+        min-height: 55vh !important;
+    }
+    .skill-box-all, .skill-box-all2 {
+        width: 35% !important;
+        height: 320px !important;
+        top: -300px !important;
+    }
+    .skill-box-all2 {
+        top: 130px !important;
+    }
+    .work-title {
+        bottom: 120px !important;
+        right: 110px !important;
+        max-width: 40% !important;
+    }
+    .work-title h1 {
+        font-size: 7.5rem !important;
+    }
+}
+
+/* 6K */
+@media screen and (min-width: 6145px) and (max-width: 6144px) and (max-height: 3456px) {
+    .skills {
+        height: 50vh !important;
+        min-height: 50vh !important;
+    }
+    .skill-box-all, .skill-box-all2 {
+        width: 30% !important;
+        height: 340px !important;
+        top: -320px !important;
+    }
+    .skill-box-all2 {
+        top: 140px !important;
+    }
+    .work-title {
+        bottom: 130px !important;
+        right: 120px !important;
+        max-width: 35% !important;
+    }
+    .work-title h1 {
+        font-size: 8rem !important;
+    }
+}
+
+/* 8K UHD */
+@media screen and (min-width: 7681px) and (max-width: 7680px) and (max-height: 4320px) {
+    .skills {
+        height: 45vh !important;
+        min-height: 45vh !important;
+    }
+    .skill-box-all, .skill-box-all2 {
+        width: 25% !important;
+        height: 360px !important;
+        top: -340px !important;
+    }
+    .skill-box-all2 {
+        top: 150px !important;
+    }
+    .work-title {
+        bottom: 140px !important;
+        right: 130px !important;
+        max-width: 30% !important;
+    }
+    .work-title h1 {
+        font-size: 8.5rem !important;
+    }
+}
+
+.gallery-nav .nav-item h2 {
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.dropdown-item {
+  transition: background 0.2s, color 0.2s;
+}
+.dropdown-item:active {
+  background-color: #FAFF60 !important;
+  color: #000 !important;
+}
+
+.dropdown-btn {
+  transition: background 0.2s, color 0.2s;
+}
+.dropdown-btn:active {
+  background-color: #FAFF60 !important;
+  color: #000 !important;
+}
+
+.gallery-nav .nav-item.active {
+  background: #FAFF60;
+  color: #000;
+  box-shadow: 0 4px 16px rgba(250,255,96,0.15);
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+}
+.gallery-nav .nav-item.active h2 {
+  color: #000;
+  font-weight: 900;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+footer .social-icons-phone {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 100vw;
+  padding: 24px 0 16px 0;
+  background: transparent;
+  margin: 0 auto;
+  position: static;
+  left: 0;
+  top: 0;
+  transform: none;
+}
+footer .social-icons-phone a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .social-icons-phone img {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  position: static;
+  filter: brightness(0) invert(1);
+}
+
+/* 项目详情页面样式 */
+.project-container {
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.project-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-header {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 60px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.back-button {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.back-button:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.back-button img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.project-header h1 {
+    font-size: 3rem;
+    color: #FAFF60;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.project-year {
+    font-size: 1.2rem;
+    color: #fff;
+    opacity: 0.8;
+}
+
+.project-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    margin-bottom: 60px;
+    flex: 1;
+}
+
+.project-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.main-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border: 3px solid #FAFF60;
+    box-shadow: 0 4px 8px rgba(250, 255, 96, 0.3);
+}
+
+.main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.image-grid img {
+    width: calc(33.333% - 20px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 2px solid #FAFF60;
+    transition: transform 0.3s ease;
+}
+
+.image-grid img:hover {
+    transform: scale(1.05);
+}
+
+.project-description {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.project-description h2 {
+    color: #FAFF60;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.project-description p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.project-description ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.project-description li {
+    font-size: 1.1rem;
+    padding-left: 20px;
+    position: relative;
+}
+
+.project-description li::before {
+    content: "•";
+    color: #FAFF60;
+    position: absolute;
+    left: 0;
+}
+
+.project-footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid rgba(250, 255, 96, 0.2);
+    flex-shrink: 0;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1024px) {
+    .project-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .image-grid img {
+        width: calc(50% - 15px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .project-container {
+        padding-top: 50vh;
+    }
+    
+    .project-header h1 {
+        font-size: 2rem;
+    }
+    
+    .project-description h2 {
+        font-size: 1.5rem;
+    }
+    
+    .project-description p,
+    .project-description li {
+        font-size: 1rem;
+    }
+    
+    .image-grid img {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .project-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .back-button {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .project-content {
+        gap: 40px;
+    }
+    
+    .project-gallery {
+        gap: 20px;
+    }
+}
+
+/* 视频背景样式 */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.video-background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+    .video-background {
+        height: 50vh;
+    }
+    
+    .project-container {
+        padding-top: 50vh;
+    }
+}
+
+html, body, h1, h2, h3, h4, h5, h6, p, a, ul, li, span, div, button, input, textarea {
+    font-family: 'Public Sans', sans-serif !important;
+}
+
+@media screen and (min-width: 1025px) {
+  body.index .social-icons-phone {
+    display: none !important;
+  }
+  .project-container .social-icons-phone,
+  body .project-container + footer .social-icons-phone {
+    padding-bottom: 48px !important;
+  }
+}
+
+.skill-box-all ul, .skill-box-all2 ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+.skill-box-all ul li {
+  color: #FAFF60 !important;
+}
+.skill-box-all2 ul li {
+  color: #1b1b1b !important;
+}
+
+.skill-box-all ul li, .skill-box-all2 ul li {
+  font-family: 'Public Sans', sans-serif !important;
+  font-size: 1.8vw !important;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+
+@media screen and (min-width: 1367px) {
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    font-size: 1.1rem !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .skill-box-all ul, .skill-box-all2 ul {
+    gap: 10px !important;
+  }
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    line-height: 1.1 !important;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    font-size: 1rem !important;
+  }
+}
+
+/* 平板字體最終強制縮小 */
+@media screen and (min-width: 541px) and (max-width: 1366px) and (orientation: portrait) {
+  .skills-titles h1 {
+    font-size: 4vw !important;
+  }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    font-size: 1.1rem !important;
+  }
+}
+@media screen and (min-width: 1025px) and (max-width: 1366px) and (orientation: landscape) {
+  .skill-box-all ul li, .skill-box-all2 ul li {
+    font-size: 1rem !important;
+  }
+}
+
+@media screen and (max-width: 1366px) {
+  .work-title {
+    display: none !important;
+  }
+}
+
+/* 项目导航按钮样式 */
+.project-nav-fixed {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.project-nav-fixed.visible {
+    opacity: 1;
+}
+
+.prev-btn-fixed,
+.next-btn-fixed {
+    background-color: #FAFF60;
+    color: #000000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    opacity: 0.8;
+    line-height: 0.8;
+}
+
+.prev-btn-fixed::before,
+.next-btn-fixed::before {
+    content: '';
+    display: inline-block;
+    transform: translateY(-2px);
+}
+
+.prev-btn-fixed:hover,
+.next-btn-fixed:hover {
+    background-color: #0400ff;
+    color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    opacity: 1;
+}
+
+/* HOME按钮动画 */
+.home-button-fixed {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #FAFF60;
+    color: #000000;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-100%);
+    opacity: 0;
+    min-width: 80px;
+    text-align: center;
+}
+
+.home-button-fixed.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.home-button-fixed:hover {
+    background-color: #0400ff;
+    color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+    .project-nav-fixed {
+        padding: 0 10px;
+    }
+    
+    .prev-btn-fixed,
+    .next-btn-fixed {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .home-button-fixed {
+        top: 15px;
+        right: 15px;
+        padding: 10px 20px;
+        font-size: 15px;
+        min-width: 70px;
+        border-radius: 25px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .prev-btn-fixed,
+    .next-btn-fixed {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+    
+    .home-button-fixed {
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        font-size: 14px;
+        min-width: 60px;
+        border-radius: 20px;
+    }
+}
+
+/* 平板横屏优化 */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .home-button-fixed {
+        top: 15px;
+        right: 15px;
+        padding: 12px 24px;
+        font-size: 16px;
+        min-width: 80px;
+        border-radius: 25px;
+    }
+}
+
+/* 手机横屏优化 */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+    .home-button-fixed {
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        font-size: 14px;
+        min-width: 60px;
+        border-radius: 20px;
+    }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FAFF60;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0400ff;
+}
+

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自我花園 Self Garden - 梁芷穎作品集</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../weekendergirl/weekendergirl.css">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="project-container">
+    <header class="project-header">
+      <h1>APP企劃案 Self Garden</h1>
+      <p class="project-year">2024-10</p>
+    </header>
+    <main class="project-content">
+      <div class="project-gallery">
+        <div class="main-image">
+          <img src="../../assets/Installation Art/Self-card.png" alt="Self Garden主圖" onclick="openModal(this.src)">
+        </div>
+      </div>
+
+      <div class="project-description">
+        <div class="media-flex">
+          <div class="media-box">
+            <div class="media-left">
+              <h2>使用媒材Tools</h2>
+              <ul>
+                <li>Canva簡報</li>
+                <li>AI生成概念圖</li>
+              </ul>
+            </div>
+          </div>
+          <div class="media-divider"></div>
+          <div class="media-box">
+            <div class="media-right">
+              <h2>負責項目responsible</h2>
+              <ul>
+                <li>完整企劃案</li>
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>簡介Introduction</h2>
+      <p>其實這是我大二的通識作業，老師的要求是:做一個讓人產生正向心理的APP。既然要產生正向心理，那人類對於自我認同的<br>
+      需求就很重要，所以我就以自我認同為主軸，設計了這個APP。</p>
+      <p>透過種花寫日記，慢慢滋養名為「自我」的心靈花園。</p>
+      <div class="peek-gallery">
+        <div class="peek-image"><img src="2.png" alt="Self 2"></div>
+        <div class="peek-image"><img src="3.png" alt="Self 3"></div>
+        <div class="peek-image"><img src="4.png" alt="Self 4"></div>
+      </div>
+
+      <h2>完整圖集Gallery</h2>
+      <div class="peek-gallery">
+        <div class="peek-image"><img src="5.png" alt="Self 5"></div>
+        <div class="peek-image"><img src="6.png" alt="Self 6"></div>
+        <div class="peek-image"><img src="7.png" alt="Self 7"></div>
+        <div class="peek-image"><img src="8.png" alt="Self 8"></div>
+        <div class="peek-image"><img src="9.png" alt="Self 9"></div>
+        <div class="peek-image"><img src="10.png" alt="Self 10"></div>
+        <div class="peek-image"><img src="11.png" alt="Self 11"></div>
+        <div class="peek-image"><img src="12.png" alt="Self 12"></div>
+        <div class="peek-image"><img src="13.png" alt="Self 13"></div>
+        <div class="peek-image"><img src="14.png" alt="Self 14"></div>
+        <div class="peek-image"><img src="15.png" alt="Self 15"></div>
+        <div class="peek-image"><img src="16.png" alt="Self 16"></div>
+        <div class="peek-image"><img src="17.png" alt="Self 17"></div>
+        <div class="peek-image"><img src="18.png" alt="Self 18"></div>
+        <div class="peek-image"><img src="19.png" alt="Self 19"></div>
+      </div>
+    </main>
+  </div>
+  <footer class="project-footer">
+    <div class="social-icons-phone">
+      <a href="https://www.behance.net/7affe83c" target="_blank">
+        <img src="../../assets/icon _behance_.png" alt="Behance">
+      </a>
+      <a href="https://www.instagram.com/z_t.0415/" target="_blank">
+        <img src="../../assets/icon _instagram_.png" alt="Instagram">
+      </a>
+      <a href="https://medium.com/@qazwsx04152" target="_blank">
+        <img src="../../assets/icon _medium_.png" alt="Medium">
+      </a>
+    </div>
+  </footer>
+  <a href="../../index.html" class="home-button-fixed">HOME</a>
+  <div class="project-nav-fixed">
+    <a href="../outofhole/outofhole.html" class="prev-btn-fixed">&#x2039;</a>
+    <a href="../weekendergirl/weekendergirl.html" class="next-btn-fixed">&#x203A;</a>
+  </div>
+
+  <!-- 图片放大 Modal -->
+  <div id="img-modal" class="img-modal">
+    <span class="img-modal-close">&times;</span>
+    <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖">
+  </div>
+
+  <script>
+  // 页面加载动画
+  document.addEventListener('DOMContentLoaded', function() {
+    const projectContainer = document.querySelector('.project-container');
+    const navButtons = document.querySelector('.project-nav-fixed');
+    const homeButton = document.querySelector('.home-button-fixed');
+    
+    // 初始状态
+    projectContainer.style.opacity = '0';
+    navButtons.style.opacity = '0';
+    homeButton.style.opacity = '0';
+    
+    // 页面加载动画
+    setTimeout(() => {
+      projectContainer.style.opacity = '1';
+      navButtons.style.opacity = '1';
+      homeButton.style.opacity = '1';
+      navButtons.classList.add('visible');
+      homeButton.classList.add('visible');
+    }, 100);
+  });
+
+  // 图片模态框
+  document.querySelectorAll('.project-gallery img, .peek-gallery img').forEach(img => {
+    img.addEventListener('click', function() {
+      document.getElementById('img-modal-img').src = this.src;
+      document.getElementById('img-modal').classList.add('show');
+    });
+  });
+  document.querySelector('.img-modal-close').onclick = function() {
+    document.getElementById('img-modal').classList.remove('show');
+  };
+  document.getElementById('img-modal').onclick = function(e) {
+    if(e.target === this) this.classList.remove('show');
+  };
+
+  function openModal(src) {
+    document.getElementById('img-modal-img').src = src;
+    document.getElementById('img-modal').classList.add('show');
+  }
+  </script>
+</body>
+</html> 

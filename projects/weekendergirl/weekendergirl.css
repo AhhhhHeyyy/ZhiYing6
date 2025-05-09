@@ -1,7 +1,7 @@
 .project-video {
-    width: 80%;
-    max-width: 800px;
-    min-width: 300px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
     margin: 0 auto 20px auto;
 }
 
@@ -9,6 +9,8 @@
     width: 100%;
     height: auto;
     max-width: 100%;
+    border: none;
+    box-shadow: none;
 }
 
 h2 {
@@ -218,14 +220,14 @@ body, .project-description, .project-content, .project-container {
     flex-direction: column;
     align-items: center;
     gap: 25px;
-    margin:  0;
+    margin: 0;
     width: 100%;
 }
 
 .peek-image {
-    width: 80%;
-    max-width: 800px;
-    min-width: 300px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -234,17 +236,25 @@ body, .project-description, .project-content, .project-container {
     width: 100%;
     max-width: 100%;
     height: auto;
-    border: 2px solid #fff;
+    border: none;
     border-radius: 0;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
-    background: #fff;
+    box-shadow: none;
+    background: transparent;
     display: block;
 }
 
 .project-gallery {
-    width: 70%;
-    max-width: 800px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto 32px auto;
+}
+
+.project-gallery img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    border: none;
+    box-shadow: none;
 }
 
 .img-modal {
@@ -379,7 +389,7 @@ body, .project-description, .project-content, .project-container {
 .custom-video-wrapper {
     position: relative;
     width: 100%;
-    border: 2px solid #ffffff;
+    border: none;
     border-radius: 0;
     overflow: hidden;
 }

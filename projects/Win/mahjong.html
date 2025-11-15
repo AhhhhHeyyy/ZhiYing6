@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>愛拼才會營 - 梁芷穎作品集</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../weekendergirl/weekendergirl.css">
+    <link rel="stylesheet" href="../project-common.css">
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
     .project-description a {
@@ -100,8 +100,8 @@
     </footer>
     <a href="../../index.html" class="home-button-fixed">HOME</a>
     <div class="project-nav-fixed">
-      <a href="../weekendergirl/weekendergirl.html" class="prev-btn-fixed">&#x2039;</a>
-      <a href="../Post/post.html" class="next-btn-fixed">&#x203A;</a>
+      <a href="#" class="prev-btn-fixed">&#x2039;</a>
+      <a href="#" class="next-btn-fixed">&#x203A;</a>
     </div>
 
     <!-- 图片放大 Modal -->
@@ -113,23 +113,24 @@
     <script>
     // 页面加载动画
     document.addEventListener('DOMContentLoaded', function() {
-        const projectContainer = document.querySelector('.project-container');
+        const container = document.querySelector('.project-container');
         const navButtons = document.querySelector('.project-nav-fixed');
         const homeButton = document.querySelector('.home-button-fixed');
         
-        // 初始状态
-        projectContainer.style.opacity = '0';
-        navButtons.style.opacity = '0';
-        homeButton.style.opacity = '0';
-        
         // 页面加载动画
         setTimeout(() => {
-            projectContainer.style.opacity = '1';
-            navButtons.style.opacity = '1';
-            homeButton.style.opacity = '1';
-            navButtons.classList.add('visible');
-            homeButton.classList.add('visible');
+            container.classList.add('visible');
         }, 100);
+        
+        // 导航按钮动画
+        setTimeout(() => {
+            navButtons.classList.add('visible');
+        }, 300);
+        
+        // HOME按钮动画
+        setTimeout(() => {
+            homeButton.classList.add('visible');
+        }, 500);
     });
 
     // 图片模态框
@@ -167,5 +168,11 @@
         document.getElementById('img-modal').classList.add('show');
     }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.38/bundled/lenis.min.js"></script>
+    <script src="../project-script.js"></script>
+    <script src="../navigation.js"></script>
 </body>
+</html> 
 </html> 

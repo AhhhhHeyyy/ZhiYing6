@@ -1,0 +1,74 @@
+{
+  "installation": [
+    {
+      "title": "孔外狂徒",
+      "date": "2025-1",
+      "image": "assets/Installation Art/OutofHole/out1.png",
+      "link": "projects/outofhole/outofhole.html",
+      "order": 1,
+      "hasModal": true
+    },
+    {
+      "title": "艟Tong",
+      "date": "2024-6",
+      "image": "assets/Installation Art/tong-card.png",
+      "link": "projects/tong/tong.html",
+      "order": 2,
+      "hasModal": true
+    }
+  ],
+  "animation": [
+    {
+      "title": "Weekender Girl",
+      "date": "2024-9",
+      "image": "assets/Animation/card-1.png",
+      "link": "projects/weekendergirl/weekendergirl.html",
+      "order": 1
+    },
+    {
+      "title": "愛拼才會營",
+      "date": "2025-1",
+      "image": "assets/Animation/card-2.png",
+      "link": "projects/Win/mahjong.html",
+      "order": 2
+    },
+    {
+      "title": "有料沒料?",
+      "date": "2025-3",
+      "image": "assets/Animation/card-3.png",
+      "link": "projects/Post/post.html",
+      "order": 3
+    },
+    {
+      "title": "Walker",
+      "date": "2024-11",
+      "image": "assets/Animation/card-4.png",
+      "link": "projects/Walker/walker.html",
+      "order": 4
+    },
+    {
+      "title": "The Rose",
+      "date": "2024-11",
+      "image": "assets/Animation/card-5.png",
+      "link": "projects/Rose/Rose.html",
+      "order": 5
+    }
+  ],
+  "painting": [
+    {
+      "title": "Summer Week",
+      "date": "2023-8",
+      "image": "projects/Summer Week/peek1.jfif",
+      "link": "projects/Summer Week/summerweek.html",
+      "order": 1
+    },
+    {
+      "title": "Kiss",
+      "date": "2023-8",
+      "image": "projects/Kiss/peek1.jfif",
+      "link": "projects/Kiss/kiss.html",
+      "order": 2
+    }
+  ]
+}
+

@@ -1,24 +1,37 @@
+html, body, * {
+    /* 移除 scroll-behavior: smooth，由 Lenis 处理 */
+}
+
 .project-video {
     width: 100%;
     max-width: 100%;
     min-width: 100%;
-    margin: 0 auto 20px auto;
+    margin: 0 auto;
 }
 
 .project-video video {
     width: 100%;
     height: auto;
     max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
     border: none;
     box-shadow: none;
 }
 
+.project-video iframe {
+    width: 100%;
+    max-width: 100%;
+    max-height: 60vh;
+    aspect-ratio: 16 / 9;
+}
+
 h2 {
-    color: #FAFF60;  /* 使用更亮的黄色 */
+    color: #92C7CF;
 }
 
 p{
-    color: #FFFFFF;
+    color: #404F63;
 }
 
 .project-description h2 {
@@ -29,7 +42,7 @@ p{
 .project-description,
 .project-description p,
 .project-description li {
-    color: #FFFFFF;  /* 白色 */
+    color: #404F63;
     font-size: 20px;
     line-height: 1.6;
     font-weight: 400;
@@ -40,7 +53,7 @@ p{
 .project-description a:active,
 .project-description a:focus,
 .project-description a:hover {
-    color: #FAFF60 !important;
+    color: #92C7CF !important;
     text-decoration: underline !important;
 }
 
@@ -50,7 +63,7 @@ p{
     left: 92%;
     width: 80px;
     height: 80px;
-    background-color: #FAFF60;
+    background-color: #92C7CF;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -66,7 +79,7 @@ p{
 }
 
 .back-button:hover {
-    background-color: #0400ff;
+    background-color: #005C80;
     color: #ffffff;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
@@ -79,6 +92,10 @@ p{
 
 /* 响应式设计 */
 @media screen and (max-width: 1024px) {
+    .main-image {
+        height: 400px;
+    }
+    
     .back-button {
         width: 70px;
         height: 70px;
@@ -95,7 +112,26 @@ p{
         display: flex !important;
     }
     .project-container {
-        padding: 12vw 7vw 12vw 7vw;
+        padding: calc(400px + 20px) 7vw 12vw 7vw;
+    }
+    .project-video video,
+    .project-video iframe,
+    .custom-video-wrapper,
+    .custom-video {
+        max-height: 55vh;
+    }
+    .project-content {
+        gap: 40px;
+    }
+    .project-gallery > p:first-of-type {
+        padding-top: 40px;
+        text-align: center;
+        font-size: 1.3rem;
+        color: #005C80;
+        font-weight: 600;
+    }
+    .project-description {
+        gap: 30px;
     }
     .project-description,
     .project-description p,
@@ -111,15 +147,29 @@ p{
         width: 100%;
         height: 1.2px;
         min-height: 0;
-        margin: 24px 0;
+        margin: 40px 0;
         display: block;
     }
     .media-left, .media-right {
         padding: 0 12px;
     }
+    .media-left ul, .media-right ul {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0 0 0;
+    }
 }
 
 @media screen and (max-width: 768px) {
+    .main-image {
+        height: 350px;
+    }
+    
     .back-button {
         width: 60px;
         height: 60px;
@@ -136,7 +186,30 @@ p{
         display: flex !important;
     }
     .project-container {
-        padding: 15vw 5vw 10vw 5vw;
+        padding: calc(350px + 20px) 5vw 10vw 5vw;
+    }
+    .project-video {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+    .project-video video,
+    .project-video iframe,
+    .custom-video-wrapper,
+    .custom-video {
+        max-height: 50vh;
+    }
+    .project-content {
+        gap: 40px;
+    }
+    .project-gallery > p:first-of-type {
+        padding-top: 40px;
+        text-align: center;
+        font-size: 1.3rem;
+        color: #005C80;
+        font-weight: 600;
+    }
+    .project-description {
+        gap: 30px;
     }
     .project-description,
     .project-description p,
@@ -144,9 +217,23 @@ p{
         font-size: 15px;
         line-height: 1.7;
     }
+    .media-left ul, .media-right ul {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0 0 0;
+    }
 }
 
 @media screen and (max-width: 480px) {
+    .main-image {
+        height: 300px;
+    }
+    
     .back-button {
         width: 50px;
         height: 50px;
@@ -163,7 +250,30 @@ p{
         display: flex !important;
     }
     .project-container {
-        padding: 12vw 3vw 8vw 3vw;
+        padding: calc(300px + 20px) 3vw 8vw 3vw;
+    }
+    .project-video {
+        max-width: 85%;
+        margin: 0 auto;
+    }
+    .project-video video,
+    .project-video iframe,
+    .custom-video-wrapper,
+    .custom-video {
+        max-height: 45vh;
+    }
+    .project-content {
+        gap: 40px;
+    }
+    .project-gallery > p:first-of-type {
+        padding-top: 40px;
+        text-align: center;
+        font-size: 1.3rem;
+        color: #005C80;
+        font-weight: 600;
+    }
+    .project-description {
+        gap: 30px;
     }
     .project-description,
     .project-description p,
@@ -173,6 +283,17 @@ p{
     }
     .media-divider {
         height: 1px;
+        margin: 30px 0;
+    }
+    .media-left ul, .media-right ul {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0 0 0;
     }
 }
 
@@ -246,7 +367,19 @@ body, .project-description, .project-content, .project-container {
 .project-gallery {
     width: 100%;
     max-width: 100%;
-    margin: 0 auto 32px auto;
+    margin: 0;
+}
+
+.project-gallery > p:first-of-type {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    position: relative;
+    z-index: 2;
+    font-size: 1.5rem;
+    color: #005C80;
+    font-weight: 600;
 }
 
 .project-gallery img {
@@ -288,7 +421,7 @@ body, .project-description, .project-content, .project-container {
     transition: color 0.2s;
 }
 .img-modal-close:hover {
-    color: #FAFF60;
+    color: #92C7CF;
 }
 
 .media-flex {
@@ -305,26 +438,69 @@ body, .project-description, .project-content, .project-container {
     flex: 1 1 0;
     background: transparent;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     padding: 24px 18px;
-    margin: 0 12px;
+    margin: 0 auto;
     min-width: 180px;
     max-width: 350px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
 }
 
 .media-left, .media-right {
-    text-align: left;
+    text-align: center;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.media-left h2, .media-right h2 {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto 15px auto;
+    padding: 0;
+}
+
+.media-left ul, .media-right ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 25px;
+    list-style: none;
+    padding: 20px 0 0 0;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+.media-left ul li, .media-right ul li {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    position: relative;
+    list-style: none;
+}
+
+
+.media-left ul li::before,
+.media-right ul li::before {
+    content: "•";
+    margin-right: 10px;
+    color: #000000;
+    display: inline-block;
+    position: relative;
 }
 
 .media-divider {
     width: 100%;
     height: 1.2px;
     min-height: 0;
-    margin: 24px 0;
-    background: #fff;
+    margin: 40px 0;
+    background: #404F63;
     opacity: 0.5;
     display: block;
 }
@@ -340,55 +516,93 @@ body, .project-description, .project-content, .project-container {
         width: 100%;
         height: 1.2px;
         min-height: 0;
-        margin: 18px 0;
+        margin: 40px 0;
         display: block;
     }
     .media-left, .media-right {
         padding: 0 4vw;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
     }
-    .media-left ul li,
-    .media-right ul li {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        padding-top: 0;
-        padding-bottom: 0;
+    .media-left ul, .media-right ul {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0 0 0;
+    }
+    .media-left ul li, .media-right ul li {
+        white-space: nowrap;
+        padding: 0;
+        position: relative;
+    }
+    .media-left ul li::before,
+    .media-right ul li::before {
+        content: "•";
+        margin-right: 8px;
+        color: #000000;
+        display: inline-block;
+        position: relative;
     }
     .project-description {
-        padding: 8px 4vw;
+        padding: 20px 4vw;
+    }
+    
+    .project-description > * {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+    .project-description h2 {
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
 @media (max-width: 480px) {
     .project-description {
-        padding: 4px 2vw;
+        padding: 20px 2vw;
+    }
+    
+    .project-description > * {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+    .project-description h2 {
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
 .project-description > * {
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .project-description h2 {
-    margin-top: 10px;
-    margin-bottom: 18px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .project-description ul,
 .project-description ol {
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
 }
 
 .project-description p {
-    margin-top: 2px;
-    margin-bottom: 2px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .custom-video-wrapper {
     position: relative;
     width: 100%;
+    max-height: 60vh;
     border: none;
     border-radius: 0;
     overflow: hidden;
@@ -397,6 +611,8 @@ body, .project-description, .project-content, .project-container {
 .custom-video {
     width: 100%;
     height: auto;
+    max-height: 60vh;
+    object-fit: contain;
     display: block;
 }
 
@@ -407,7 +623,7 @@ body, .project-description, .project-content, .project-container {
     transform: translate(-50%, -50%);
     width: 60px;
     height: 60px;
-    background-color: #FAFF60;
+    background-color: #92C7CF;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -428,7 +644,7 @@ body, .project-description, .project-content, .project-container {
 
 .custom-play-btn:hover {
     transform: translate(-50%, -50%) scale(1.1);
-    background-color: #0400ff;
+    background-color: #005C80;
 }
 
 .custom-play-btn:hover::before {
@@ -437,4 +653,5 @@ body, .project-description, .project-content, .project-container {
 
 .custom-play-btn.hide {
     display: none;
-} 
+}
+

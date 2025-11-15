@@ -3,19 +3,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    scroll-behavior: smooth;
+    /* 移除scroll-behavior: smooth，由Lenis处理 */
 }
 
 html, body {
     width: 100%;
     overflow-x: hidden;
     position: relative;
+    /* 移除scroll-behavior: smooth，由Lenis处理 */
 }
 
 /* 文字與顏色設定 */
 body {
     background-color: #000000;
-    scroll-behavior: smooth;
+    /* 移除scroll-behavior: smooth，由Lenis处理 */
 }
 
 /* 頂部導航欄 */
@@ -109,6 +110,7 @@ body {
     font-size: 9rem;
     margin-bottom: 10px;
     font-weight: 800;
+    will-change: transform;  /* 优化滚动性能 */
 }
 
 .intro-text p {
@@ -667,6 +669,7 @@ body {
   background: #000;
   box-sizing: border-box;
   transition: transform 0.3s ease;
+  will-change: transform;  /* 优化滚动性能 */
 }
 
 .gallery-item:hover img {

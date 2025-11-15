@@ -1,20 +1,26 @@
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 初始化Lenis平滑滚动
+    // 初始化Lenis平滑滚动 - 优化性能
     const lenis = new Lenis({
-        duration: 1.2,
+        duration: 0.8,  // 减少延迟，从1.2改为0.8
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         direction: 'vertical',
         gestureDirection: 'vertical',
         smooth: true,
         smoothTouch: false,
-        touchMultiplier: 2
+        touchMultiplier: 2,
+        wheelMultiplier: 1,  // 增加滚轮响应速度
+        infinite: false
     });
 
-    // 请求动画帧
+    // 将Lenis与GSAP ScrollTrigger集成
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // 请求动画帧 - 优化性能
     function raf(time) {
         lenis.raf(time);
+        ScrollTrigger.update();  // 确保ScrollTrigger同步更新
         requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
@@ -31,16 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const headerHeight = document.querySelector('.main-header').offsetHeight;
                 lenis.scrollTo(targetElement, {
                     offset: -headerHeight,
-                    duration: 1.2,
+                    duration: 0.8,  // 减少延迟
                     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                 });
             }
         });
     });
 
-    // 确保DOM完全加载后再初始化GSAP动画
+        // 确保DOM完全加载后再初始化GSAP动画
     setTimeout(() => {
-        // 添加skill-H2的动画
+        // 添加skill-H2的动画 - 优化ScrollTrigger性能
         const skillH2 = document.querySelector('.skill-H2');
         const skillH2Bg = document.querySelector('.skill-H2-bg');
         const skillH2Text = document.querySelector('.skill-H2 h2');
@@ -55,7 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         trigger: skillH2,
                         start: "top 60%",
                         toggleActions: "play none none reverse",
-                        pin: false  // 移除固定定位
+                        pin: false,
+                        refreshPriority: -1  // 优化性能
                     },
                     scaleX: 1,
                     duration: 0.5,
@@ -73,7 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         trigger: skillH2,
                         start: "top 60%",
                         toggleActions: "play none none reverse",
-                        pin: false  // 移除固定定位
+                        pin: false,
+                        refreshPriority: -1  // 优化性能
                     },
                     opacity: 1,
                     y: 0,
@@ -83,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-        // 画廊动画
+        // 画廊动画 - 优化性能
         const gallerySection = document.querySelector(".gallery-section");
         if (gallerySection) {
             ScrollTrigger.create({
@@ -91,7 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 start: "top top",
                 end: "+=3000",
                 pin: false,
-                pinSpacing: false
+                pinSpacing: false,
+                refreshPriority: -1  // 优化性能
             });
         }
 
@@ -145,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // 技能区域动画
+        // 技能区域动画 - 优化性能
         const skillsSection = document.querySelector('.skills');
         if (skillsSection) {
             // 圆点图案动画
@@ -154,7 +163,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     trigger: skillsSection,
                     start: "top 80%",
                     toggleActions: "play none none reverse",
-                    pin: false  // 移除固定定位
+                    pin: false,
+                    refreshPriority: -1  // 优化性能
                 },
                 scale: 0.5,
                 opacity: 0,
@@ -168,7 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     trigger: skillsSection,
                     start: "top 70%",
                     toggleActions: "play none none reverse",
-                    pin: false  // 移除固定定位
+                    pin: false,
+                    refreshPriority: -1  // 优化性能
                 },
                 y: 50,
                 opacity: 0,
@@ -182,7 +193,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     trigger: '.work-title',
                     start: "top 90%",
                     toggleActions: "play none none reverse",
-                    pin: false  // 移除固定定位
+                    pin: false,
+                    refreshPriority: -1  // 优化性能
                 },
                 y: 100,
                 opacity: 0,

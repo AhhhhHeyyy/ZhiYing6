@@ -756,12 +756,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             display: 'none'
         });
         
-        // 初始化 active 项目的颜色
-        const activeDropdownItem = document.querySelector('.dropdown-item.active');
+        // 初始化 active 项目：如果没有active项目，设置第一个为active
+        let activeDropdownItem = document.querySelector('.dropdown-item.active');
+        if (!activeDropdownItem && dropdownItems.length > 0) {
+            dropdownItems[0].classList.add('active');
+            activeDropdownItem = dropdownItems[0];
+        }
+        
         if (activeDropdownItem) {
             gsap.set(activeDropdownItem, {
                 backgroundColor: "#92C7CF",
-                color: "#000"
+                color: "#404F63",
+                fontWeight: "700"
             });
         }
         
@@ -769,8 +775,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         dropdownItems.forEach(item => {
             if (!item.classList.contains('active')) {
                 gsap.set(item, {
-                    backgroundColor: "rgba(0,0,0,0.9)",
-                    color: "#92C7CF"
+                    backgroundColor: "white",
+                    color: "#005C80",
+                    fontWeight: "600"
                 });
             }
         });
@@ -813,8 +820,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     i.classList.remove('active');
                     // 恢复非 active 状态的颜色
                     gsap.to(i, {
-                        backgroundColor: "rgba(0,0,0,0.9)",
-                        color: "#92C7CF",
+                        backgroundColor: "white",
+                        color: "#005C80",
+                        fontWeight: "600",
                         duration: 0.2,
                         overwrite: "auto"
                     });
@@ -823,7 +831,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // 设置 active 状态的颜色
                 gsap.to(item, {
                     backgroundColor: "#92C7CF",
-                    color: "#000",
+                    color: "#404F63",
+                    fontWeight: "700",
                     duration: 0.2,
                     overwrite: "auto"
                 });
@@ -960,8 +969,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const isActive = item.classList.contains('active');
             gsap.to(item, {
                 scale: 1,
-                backgroundColor: isActive ? "#92C7CF" : "rgba(0,0,0,0.9)",
-                color: isActive ? "#000" : "#92C7CF",
+                backgroundColor: isActive ? "#92C7CF" : "white",
+                color: isActive ? "#404F63" : "#005C80",
                 duration: 0.2,
                 overwrite: "auto"
             });

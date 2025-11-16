@@ -9,6 +9,15 @@
     font-display: swap;
 }
 
+/* ShipporiAntique 字体引入 - 标题字体（最粗版本 B1） */
+@font-face {
+    font-family: 'ShipporiAntique';
+    src: url('../assets/ShipporiAntique-master/fonts/ttf/ShipporiAntiqueB1-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* 基本样式已由主样式表处理 */
 
 .project-video {
@@ -44,6 +53,7 @@
 
 h2 {
     color: #92C7CF;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif !important;
 }
 
 p{

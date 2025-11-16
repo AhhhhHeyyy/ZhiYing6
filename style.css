@@ -9,6 +9,24 @@
     font-display: swap;
 }
 
+/* ShipporiAntique 字体引入 - 标题字体（最粗版本 B1） */
+@font-face {
+    font-family: 'ShipporiAntique';
+    src: url('./assets/ShipporiAntique-master/fonts/ttf/ShipporiAntiqueB1-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ChillDINGothic Bold 字体引入 - Intro 标题（最粗版本） */
+@font-face {
+    font-family: 'ChillDINGothicBold';
+    src: url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/otf/ChillDINGothic_Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* 基本重设 */
 * {
     margin: 0;
@@ -125,10 +143,10 @@ body {
 }
 
 .intro-text h1 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'Public Sans', sans-serif !important;
     font-size: 9rem;
     margin-bottom: 10px;
-    font-weight: 800;
+    font-weight: bold !important;
     color: #E6F4F7;
     will-change: transform;  /* 优化滚动性能 */
 }
@@ -360,7 +378,7 @@ body {
 
 .skill-H2 h2 {
     display: inline-block;
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 800;
     font-size: 20px;
     color: #FCFCD4;
@@ -621,7 +639,7 @@ body {
 .skills-titles h1 {
     color: #92C7CF;
     font-size: 2.5vw !important;
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 900;
     text-align: left;
     margin: 0;
@@ -859,7 +877,7 @@ body {
  
 }
 .skill-box h2, .skill-box2 h2 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 800;
     font-size: 20px;
     margin: 12px 8px;
@@ -1330,7 +1348,7 @@ body {
 .gallery-item .item-overlay h3 {
     position: relative;
     z-index: 1;
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
     color: #ffffff;
@@ -1456,7 +1474,7 @@ body {
 }
 
 .gallery-item h3 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 800;
 }
 
@@ -1466,7 +1484,7 @@ body {
 }
 
 .gallery-category h3 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 800;
 }
 
@@ -1477,13 +1495,13 @@ body {
 
 /* 添加标题样式 */
 h3 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 800;
 }
 
 /* 爱拼才会赢等标题 */
 .gallery-item .item-overlay h3 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
     color: #ffffff;
@@ -1518,7 +1536,7 @@ h3 {
 }
 
 .work-title h1 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-size: 5rem;
     font-weight: 800;
     line-height: 1;
@@ -1675,7 +1693,7 @@ h3 {
 }
 
 .work-title h1 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-size: 5rem;
     font-weight: 800;
     line-height: 1;
@@ -1739,8 +1757,8 @@ h3 {
         align-items: center;
         padding: 10px 15px;
         background: transparent;
-        border: 2px solid #92C7CF;
-        color: #92C7CF;
+        border: 2px solid #005C80;
+        color: #005C80;
         cursor: pointer;
         font-size: 0.9rem;
         font-weight: 600;
@@ -1763,8 +1781,8 @@ h3 {
         top: 100%;
         left: 0;
         width: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        border: 2px solid #92C7CF;
+        background: white !important;
+        border: 2px solid #005C80;
         border-top: none;
         margin: 0;
         padding: 0;
@@ -1781,20 +1799,27 @@ h3 {
 
     .dropdown-item {
         padding: 10px 15px;
-        color: #92C7CF;
+        color: #005C80;
+        background: white !important;
         cursor: pointer;
         transition: background 0.2s, color 0.2s;
         user-select: none;
-        border-bottom: 1px solid rgba(146, 199, 207, 0.2);
+        border-bottom: 1px solid rgba(0, 92, 128, 0.2);
     }
 
     .dropdown-item:last-child {
         border-bottom: none;
     }
 
+    .dropdown-item.active {
+        background-color: #92C7CF !important;
+        color: #404F63 !important;
+        font-weight: 700 !important;
+    }
+
     .dropdown-item:active {
         background-color: #92C7CF !important;
-        color: #000 !important;
+        color: #404F63 !important;
     }
 
     /* 隐藏桌面版导航 */
@@ -1851,6 +1876,10 @@ h3 {
 
 /* 电脑端样式 */
 @media screen and (min-width: 1025px) {
+    .intro-text {
+        margin-left: 80px !important; /* 电脑端向右移动 */
+    }
+    
     .skills {
         height: 700px !important;
         min-height: 600px !important;
@@ -2486,9 +2515,14 @@ h3 {
 .dropdown-item {
   transition: background 0.2s, color 0.2s;
 }
+.dropdown-item.active {
+  background-color: #92C7CF !important;
+  color: #404F63 !important;
+  font-weight: 700 !important;
+}
 .dropdown-item:active {
   background-color: #92C7CF !important;
-  color: #000 !important;
+  color: #404F63 !important;
 }
 
 .dropdown-btn {
@@ -2921,7 +2955,13 @@ footer .social-icons-phone a:hover img {
 
 /* 标题使用 Public Sans */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Public Sans', sans-serif !important;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif !important;
+}
+
+/* Intro 标题使用 ChillDINGothic Bold - 必须在全局 h1 规则之后，确保优先级 */
+.intro-text h1 {
+    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'Public Sans', sans-serif !important;
+    font-weight: bold !important;
 }
 
 /* 内文使用 ChillDINGothic */

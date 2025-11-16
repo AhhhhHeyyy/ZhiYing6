@@ -1,3 +1,14 @@
+/* 字体引入 */
+@font-face {
+    font-family: 'ChillDINGothic';
+    src: url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff2') format('woff2'),
+         url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff') format('woff'),
+         url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* 基本重设 */
 * {
     margin: 0;
@@ -20,6 +31,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
     /* 移除scroll-behavior: smooth，由Lenis处理 */
 }
 
@@ -132,11 +144,12 @@ body {
 }
 
 .intro-text p {
-    font-family: 'Public Sans', sans-serif;
-    font-size: 1.1rem;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
+    font-size: 1.2rem;
     margin-bottom: 20px;
     font-weight: 800;
     color: #E6F4F7;
+    letter-spacing: 0.05em;
 }
 
 .intro-image {
@@ -274,6 +287,7 @@ body {
     position: relative;
     width: 430px;
     height: 430px;
+    animation: float 3s ease-in-out infinite;
 }
 
 .skills-image-top,
@@ -293,6 +307,16 @@ body {
 .skills-image-bottom {
     z-index: 2;
     animation: blink 2s infinite steps(1);
+}
+
+/* 上下漂浮动画 */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 @keyframes blink {
@@ -722,8 +746,8 @@ body {
 }
 
 .skill-text-item p {
-    font-family: 'Public Sans', sans-serif;
-    font-size: 1.1rem;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
+    font-size: 1.2rem;
     font-weight: 500;
     color: #005C80;
     line-height: 1.5; /* 缩小行距 */
@@ -734,6 +758,7 @@ body {
     white-space: normal; /* 允许正常换行，但保持词语完整 */
     overflow-wrap: break-word; /* 允许长文字换行 */
     box-sizing: border-box;
+    letter-spacing: 0.05em;
 }
 
 .skill-text-item p:nth-child(2) {
@@ -915,8 +940,8 @@ body {
         width: 90%;
         max-width: 600px;
         height: auto;
-        min-height: 290px; /* 增加最小高度 */
-        padding: 20px 40px 75px 40px; /* 减少上padding */
+        min-height: 350px; /* 从 290px 增加到 350px */
+        padding: 25px 40px 85px 40px; /* 增加上下 padding */
         border-radius: 15px;
         overflow: hidden;
         box-sizing: border-box;
@@ -927,10 +952,10 @@ body {
     .skill-text-item {
         width: calc(100% - 40px - 40px); /* 减去左右padding */
         height: auto; /* 改为auto，让内容决定高度 */
-        max-height: calc(100% - 20px - 75px); /* 调整底部空间计算 */
+        max-height: calc(100% - 25px - 85px); /* 配合新的 padding */
         position: absolute;
         left: 40px;
-        top: 20px;
+        top: 25px; /* 从 20px 增加到 25px */
         overflow: visible; /* 改为visible，让文字完整显示不被切掉 */
         padding: 0;
         padding-bottom: 5px; /* 减少底部padding */
@@ -945,8 +970,9 @@ body {
         overflow-wrap: break-word;
         line-height: 1.5;
         margin: 5px 0;
-        font-size: 1rem;
+        font-size: 1.1rem;
         max-width: 100%; /* 确保不超出 */
+        letter-spacing: 0.05em;
     }
     
     .skill-text-item p:nth-child(2) {
@@ -977,7 +1003,7 @@ body {
         right: auto;
         top: auto;
         transform: none;
-        margin-top: 30px !important; /* 增加上边距，避免叠到Skill H2 */
+        margin-top: -40px !important; /* 从 30px 减少到 10px，往上移 */
         margin-bottom: 20px;
         padding: 0 20px;
         width: 100%;
@@ -990,8 +1016,8 @@ body {
         width: 100%;
         max-width: 100%;
         height: auto;
-        min-height: 380px; /* 再次增加最小高度，为按钮留更多空间 */
-        padding: 20px 35px 95px 35px; /* 再次增加底部padding，避免按钮重叠 */
+        min-height: 450px; /* 从 380px 增加到 450px */
+        padding: 25px 35px 100px 35px; /* 增加上下 padding */
         border-radius: 15px;
         overflow: hidden;
         box-sizing: border-box;
@@ -1002,10 +1028,10 @@ body {
     .skill-text-item {
         width: calc(100% - 35px - 35px);
         height: auto; /* 改为auto */
-        max-height: calc(100% - 20px - 95px); /* 调整底部空间计算，配合新的padding */
+        max-height: calc(100% - 25px - 100px); /* 配合新的 padding */
         position: absolute;
         left: 35px;
-        top: 20px;
+        top: 25px; /* 从 20px 增加到 25px */
         overflow: visible; /* 改为visible，让文字完整显示不被切掉 */
         padding: 0;
         padding-bottom: 5px; /* 减少底部padding */
@@ -1020,8 +1046,9 @@ body {
         overflow-wrap: break-word;
         line-height: 1.5;
         margin: 5px 0;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         max-width: 100%;
+        letter-spacing: 0.05em;
     }
     
     .skill-text-item p:nth-child(2) {
@@ -1050,18 +1077,97 @@ body {
     }
 }
 
-/* 中型尺寸特殊处理 (768px - 1024px) */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+/* 小手机尺寸特殊处理 (300px - 400px) */
+@media screen and (max-width: 400px) {
+    .skill-text-item p {
+        font-size: 0.9rem !important; /* 从 1.05rem 缩小到 0.9rem */
+        margin: 4px 0 !important; /* 从 5px 缩小到 4px */
+        line-height: 1.4 !important; /* 稍微缩小行距 */
+    }
+    
+    .skill-text-item .skill-tech-item {
+        font-size: 0.9rem !important; /* 跟随文字大小 */
+        padding: 3px 6px !important; /* 缩小 padding */
+    }
+    
+    /* 按钮稍微缩小 */
+    .skill-arrow-btn img {
+        width: 80px !important; /* 从 95px 缩小到 80px */
+        min-width: 80px !important;
+        max-width: 80px !important;
+    }
+    
+    /* 分页指示器稍微缩小 */
+    .pagination-dot {
+        width: 7px !important; /* 从 8px 缩小到 7px */
+        height: 7px !important;
+    }
+    
+    /* 文字框内边距稍微缩小 */
     .skill-text-wrapper {
-        min-height: 300px !important; /* 增加中型尺寸高度 */
-        padding-bottom: 80px !important; /* 减少底部空间 */
+        padding: 20px 30px 90px 30px !important; /* 从 25px 35px 100px 35px 缩小 */
     }
     
     .skill-text-item {
-        max-height: calc(100% - 20px - 80px) !important;
+        width: calc(100% - 30px - 30px) !important; /* 配合新的 padding */
+        left: 30px !important;
+        top: 20px !important;
+        max-height: calc(100% - 20px - 90px) !important;
+    }
+}
+
+/* 超小手机尺寸特殊处理 (300px 及以下) */
+@media screen and (max-width: 360px) {
+    .skill-text-item p {
+        font-size: 0.85rem !important; /* 从 0.9rem 进一步缩小到 0.85rem */
+        margin: 3px 0 !important; /* 从 4px 缩小到 3px */
+        line-height: 1.35 !important; /* 进一步缩小行距 */
+    }
+    
+    .skill-text-item .skill-tech-item {
+        font-size: 0.85rem !important; /* 跟随文字大小 */
+        padding: 2px 5px !important; /* 进一步缩小 padding */
+    }
+    
+    /* 按钮进一步缩小 */
+    .skill-arrow-btn img {
+        width: 70px !important; /* 从 80px 缩小到 70px */
+        min-width: 70px !important;
+        max-width: 70px !important;
+    }
+    
+    /* 分页指示器进一步缩小 */
+    .pagination-dot {
+        width: 6px !important; /* 从 7px 缩小到 6px */
+        height: 6px !important;
+    }
+    
+    /* 文字框内边距进一步缩小 */
+    .skill-text-wrapper {
+        padding: 18px 25px 85px 25px !important; /* 进一步缩小 padding */
+        min-height: 420px !important; /* 稍微减少高度 */
+    }
+    
+    .skill-text-item {
+        width: calc(100% - 25px - 25px) !important; /* 配合新的 padding */
+        left: 25px !important;
+        top: 18px !important;
+        max-height: calc(100% - 18px - 85px) !important;
+    }
+}
+
+/* 中型尺寸特殊处理 (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .skill-text-wrapper {
+        min-height: 360px !important; /* 从 300px 增加到 360px */
+        padding-bottom: 90px !important; /* 从 80px 增加到 90px */
+    }
+    
+    .skill-text-item {
+        max-height: calc(100% - 25px - 90px) !important; /* 配合新的 padding */
         padding-bottom: 5px !important; /* 减少文字底部间距 */
         overflow: visible !important; /* 确保文字不被切掉 */
-        top: 20px !important; /* 调整顶部位置 */
+        top: 25px !important; /* 从 20px 增加到 25px */
     }
     
     .skill-arrow-section {
@@ -1078,12 +1184,6 @@ body {
     }
 }
 
-/* 1280px尺寸特殊处理 - 文字框往右移 */
-@media screen and (min-width: 1200px) and (max-width: 1350px) {
-    .skill-text-box-container {
-        right: 5% !important; /* 往右移动，从10%减少到5% */
-    }
-}
 
 /* 其他被覆盖、无用、重复的 skill box 相关样式已删除 */
 
@@ -1247,10 +1347,11 @@ body {
 }
 
 .item-overlay p {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 1rem;
+  font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
+  font-size: 1.15rem;
   color: #92C7CF;
   font-weight: 800;
+  letter-spacing: 0.05em;
 }
 
 /* 桌面端（預設） */
@@ -1360,7 +1461,7 @@ body {
 }
 
 .gallery-item p {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
     font-weight: 800;
 }
 
@@ -1370,7 +1471,7 @@ body {
 }
 
 .gallery-category p {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
     font-weight: 800;
 }
 
@@ -1392,10 +1493,11 @@ h3 {
 
 /* 年份等描述文字 */
 .gallery-item .item-overlay p {
-    font-family: 'Public Sans', sans-serif;
-    font-size: 1rem;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
+    font-size: 1.15rem;
     font-weight: 800;
     color: #92C7CF;
+    letter-spacing: 0.05em;
 }
 
 /* 添加 Here are my WORKKKKKK 文字样式 */
@@ -1799,6 +1901,115 @@ h3 {
     .work-title h1.shadow {
         left: 0 !important;
         right: auto !important;
+    }
+    
+    /* 电脑版文字框整体放大 */
+    .skill-text-box-container {
+        margin-top: -30px !important; /* 从 -60px 改为 -30px，往下移 */
+    }
+    
+    .skill-text-wrapper {
+        width: 780px !important; /* 从 650px 放大到 780px */
+        height: 450px !important; /* 从 384px 增加到 450px */
+        padding: 35px 120px 50px 60px !important; /* 增加上下 padding */
+        border-width: 5px !important; /* 从 4px 放大到 5px */
+        border-radius: 24px !important; /* 从 20px 放大到 24px */
+    }
+    
+    .skill-text-item {
+        width: calc(100% - 60px - 120px) !important; /* 配合新的 padding */
+        height: calc(100% - 35px - 50px) !important; /* 配合新的 padding */
+        left: 60px !important;
+        top: 35px !important; /* 配合新的 padding */
+    }
+    
+    .skill-text-item p {
+        font-size: 1.44rem !important; /* 从 1.2rem 放大到 1.44rem (1.2 * 1.2) */
+        margin: 7px 0 !important; /* 从 6px 放大到 7px */
+    }
+    
+    .skill-text-item .skill-tech-item {
+        padding: 5px 10px !important; /* 从 4px 8px 放大 */
+        font-size: 1.44rem !important; /* 跟随文字大小 */
+    }
+    
+    /* 按钮放大 */
+    .skill-arrow-btn img {
+        width: 144px !important; /* 从 120px 放大到 144px (1.2倍) */
+        min-width: 144px !important;
+        max-width: 144px !important;
+    }
+    
+    /* 分页指示器放大 */
+    .pagination-dot {
+        width: 12px !important; /* 从 10px 放大到 12px */
+        height: 12px !important;
+    }
+    
+    .skill-pagination {
+        gap: 10px !important; /* 从 8px 放大到 10px */
+    }
+    
+    .skill-arrow-section {
+        right: 18px !important; /* 从 15px 放大到 18px */
+        bottom: 18px !important;
+        gap: 10px !important; /* 从 8px 放大到 10px */
+    }
+}
+
+/* 1280px尺寸特殊处理 - 文字框往右移并缩小（必须在1025px之后，才能覆盖） */
+@media screen and (min-width: 1200px) and (max-width: 1350px) {
+    .skill-text-box-container {
+        right: 5% !important; /* 往右移动，从10%减少到5% */
+    }
+    
+    /* 缩小文字框尺寸 */
+    .skill-text-wrapper {
+        width: 620px !important; /* 从 780px 缩小到 620px */
+        height: 380px !important; /* 从 450px 缩小到 380px */
+        padding: 28px 100px 42px 55px !important; /* 缩小 padding */
+        border-width: 4px !important; /* 从 5px 缩小到 4px */
+        border-radius: 20px !important; /* 从 24px 缩小到 20px */
+    }
+    
+    .skill-text-item {
+        width: calc(100% - 55px - 100px) !important; /* 配合新的 padding */
+        height: calc(100% - 28px - 42px) !important;
+        left: 55px !important;
+        top: 28px !important;
+    }
+    
+    .skill-text-item p {
+        font-size: 1.2rem !important; /* 从 1.44rem 缩小到 1.2rem */
+        margin: 6px 0 !important; /* 从 7px 缩小到 6px */
+    }
+    
+    .skill-text-item .skill-tech-item {
+        padding: 4px 8px !important; /* 从 5px 10px 缩小 */
+        font-size: 1.2rem !important; /* 跟随文字大小 */
+    }
+    
+    /* 按钮缩小 */
+    .skill-arrow-btn img {
+        width: 120px !important; /* 从 144px 缩小到 120px */
+        min-width: 120px !important;
+        max-width: 120px !important;
+    }
+    
+    /* 分页指示器缩小 */
+    .pagination-dot {
+        width: 10px !important; /* 从 12px 缩小到 10px */
+        height: 10px !important;
+    }
+    
+    .skill-pagination {
+        gap: 8px !important; /* 从 10px 缩小到 8px */
+    }
+    
+    .skill-arrow-section {
+        right: 15px !important; /* 从 18px 缩小到 15px */
+        bottom: 15px !important;
+        gap: 8px !important; /* 从 10px 缩小到 8px */
     }
 }
 
@@ -2487,6 +2698,7 @@ footer .social-icons-phone a:hover img {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
 }
 
 .project-description h2 {
@@ -2497,11 +2709,12 @@ footer .social-icons-phone a:hover img {
 }
 
 .project-description p {
-    font-size: 1.1rem;
+    font-size: 1.3rem; /* 默认字体大小 */
     line-height: 1.6;
     margin-bottom: 0;
     color: #404F63;
     opacity: 0.9;
+    letter-spacing: 0.05em;
 }
 
 .project-description ul {
@@ -2513,10 +2726,11 @@ footer .social-icons-phone a:hover img {
 }
 
 .project-description li {
-    font-size: 1.1rem;
+    font-size: 1.3rem; /* 默认字体大小 */
     padding-left: 20px;
     position: relative;
     color: #404F63;
+    letter-spacing: 0.05em;
 }
 
 .project-description li::before {
@@ -2705,8 +2919,34 @@ footer .social-icons-phone a:hover img {
     }
 }
 
-html, body, h1, h2, h3, h4, h5, h6, p, a, ul, li, span, div, button, input, textarea {
+/* 标题使用 Public Sans */
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Public Sans', sans-serif !important;
+}
+
+/* 内文使用 ChillDINGothic */
+html, body, p, a, ul, li, span, div, button, input, textarea {
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* 内文段落字体放大 - 但项目页面的段落由下面的规则单独处理 */
+p, li, span {
+    font-size: 1.15em !important;
+}
+
+/* 项目页面内文特殊处理 - 电脑版字体放大、行距和字距增加 - 仅针对段落（必须在最后，确保优先级最高） */
+/* 使用最高优先级选择器，确保覆盖所有其他规则（包括上面的全局 p 规则） */
+@media screen and (min-width: 1024px) {
+    html body .project-container .project-content .project-description p,
+    html body .project-container main .project-description p,
+    body .project-container .project-content .project-description p,
+    .project-container .project-content .project-description p,
+    .project-description p {
+        font-size: 1.5rem !important; /* 电脑版段落字体 1.5rem (约24px) */
+        line-height: 2.2 !important; /* 行距增加到 2.2 */
+        letter-spacing: 0.1em !important; /* 字距增加到 0.1em */
+    }
 }
 
 @media screen and (min-width: 1025px) {
@@ -2739,7 +2979,7 @@ html, body, h1, h2, h3, h4, h5, h6, p, a, ul, li, span, div, button, input, text
 }
 
 .skill-box-all ul li, .skill-box-all2 ul li {
-  font-family: 'Public Sans', sans-serif !important;
+  font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif !important;
   font-size: 1.8vw !important;
   font-weight: 800;
   text-align: center;

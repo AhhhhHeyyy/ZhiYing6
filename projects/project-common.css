@@ -1,6 +1,15 @@
-html, body, * {
-    /* 移除 scroll-behavior: smooth，由 Lenis 处理 */
+/* 字体引入 */
+@font-face {
+    font-family: 'ChillDINGothic';
+    src: url('../assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff2') format('woff2'),
+         url('../assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff') format('woff'),
+         url('../assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
+
+/* 基本样式已由主样式表处理 */
 
 .project-video {
     width: 100%;
@@ -8,10 +17,12 @@ html, body, * {
     min-width: 100%;
     margin: 0 auto;
     transition: transform 0.3s ease;
+    box-shadow: none !important;
 }
 
 .project-video:hover {
     transform: scale(1.05);
+    box-shadow: none !important;
 }
 
 .project-video video {
@@ -37,6 +48,7 @@ h2 {
 
 p{
     color: #404F63;
+    letter-spacing: 0.05em; /* 添加字距，与首页一致 */
 }
 
 .project-description h2 {
@@ -48,17 +60,19 @@ p{
 .project-description p,
 .project-description li {
     color: #404F63;
-    font-size: 20px;
+    font-size: 1.3rem; /* 默认字体大小 */
     line-height: 1.6;
     font-weight: 400;
+    letter-spacing: 0.05em;
 }
+
 
 .project-description a,
 .project-description a:visited,
 .project-description a:active,
 .project-description a:focus,
 .project-description a:hover {
-    color: #92C7CF !important;
+    color: #005C80 !important;
     text-decoration: underline !important;
 }
 
@@ -141,8 +155,9 @@ p{
     .project-description,
     .project-description p,
     .project-description li {
-        font-size: 16px;
+        font-size: 1.2rem !important; /* 从 1.1rem 增加到 1.2rem，使用 !important */
         line-height: 1.7;
+        letter-spacing: 0.05em; /* 添加字距 */
     }
     .media-flex {
         flex-direction: column;
@@ -219,8 +234,9 @@ p{
     .project-description,
     .project-description p,
     .project-description li {
-        font-size: 15px;
+        font-size: 1.15rem !important; /* 从 1.05rem 增加到 1.15rem，使用 !important */
         line-height: 1.7;
+        letter-spacing: 0.05em; /* 添加字距 */
     }
     .media-left ul, .media-right ul {
         flex-direction: column !important;
@@ -283,8 +299,9 @@ p{
     .project-description,
     .project-description p,
     .project-description li {
-        font-size: 14px;
+        font-size: 1.1rem !important; /* 从 1rem 增加到 1.1rem，使用 !important */
         line-height: 1.6;
+        letter-spacing: 0.05em; /* 添加字距 */
     }
     .media-divider {
         height: 1px;
@@ -338,7 +355,7 @@ p{
 }
 
 body, .project-description, .project-content, .project-container {
-    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', 'Arial Rounded MT Bold', Arial, sans-serif;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', 'Arial Rounded MT Bold', Arial, sans-serif;
 }
 
 .peek-gallery {
@@ -681,10 +698,12 @@ body, .project-description, .project-content, .project-container {
     border-radius: 0;
     overflow: hidden;
     transition: transform 0.3s ease;
+    box-shadow: none !important;
 }
 
 .custom-video-wrapper:hover {
     transform: scale(1.05);
+    box-shadow: none !important;
 }
 
 .custom-video {
@@ -732,5 +751,19 @@ body, .project-description, .project-content, .project-container {
 
 .custom-play-btn.hide {
     display: none;
+}
+
+/* 电脑版段落字体放大、行距和字距增加 - 文件最后，使用最高优先级选择器 */
+/* 使用最高优先级选择器，确保覆盖所有其他规则 */
+@media screen and (min-width: 1024px) {
+    html body .project-container .project-content .project-description p,
+    html body .project-container main .project-description p,
+    body .project-container .project-content .project-description p,
+    .project-container .project-content .project-description p,
+    .project-description p {
+        font-size: 1.5rem !important; /* 电脑版段落字体 1.5rem (约24px) */
+        line-height: 2.2 !important; /* 行距增加到 2.2 */
+        letter-spacing: 0.1em !important; /* 字距增加到 0.1em */
+    }
 }
 

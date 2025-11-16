@@ -21,14 +21,17 @@
 
 <body class="index">
   <div class="social-icons">
-    <a href="https://www.behance.net/7affe83c" target="_blank">
-      <img src="assets/icon _behance_.png" alt="Behance">
-    </a>
     <a href="https://www.instagram.com/z_t.0415/" target="_blank">
       <img src="assets/icon _instagram_.png" alt="Instagram">
     </a>
     <a href="https://medium.com/@qazwsx04152" target="_blank">
       <img src="assets/icon _medium_.png" alt="Medium">
+    </a>
+    <a href="https://www.youtube.com/@Zong-g9r" target="_blank">
+      <img src="assets/icon _Youtube_.png" alt="Youtube">
+    </a>
+    <a href="https://linktr.ee/qi.4145" target="_blank">
+      <img src="assets/icon_inktree_.png" alt="LinkTree">
     </a>
   </div>
 
@@ -48,11 +51,13 @@
   <!-- 自我介紹區域 -->
   <section class="intro" id="intro">
     <div class="intro-images">
-      <div class="small-image">
-        <img src="assets/intro (3).png" alt="Small Image">
+      <!-- 项目图片满版显示 -->
+      <div class="intro-project-image">
+        <img id="introProjectImage" src="" alt="Project Image">
       </div>
-      <div class="overlay-image">
-        <img src="assets/intro (1).jpg" alt="Overlay Image">
+      <!-- 添加分页指示器 -->
+      <div class="intro-pagination" id="introPagination">
+        <!-- 圆点将通过 JavaScript 动态生成 -->
       </div>
     </div>
 
@@ -89,20 +94,20 @@
     <div class="skills-container">
       <div class="skills-images">
         <div class="skills-image-wrapper">
-          <img src="assets/Skills Image.jpg" alt="Skills Image" class="skills-image-top">
-          <img src="assets/Skills Image2.png" alt="Skills Image 2" class="skills-image-bottom">
+          <img src="assets/intro2.jpg" alt="Skills Image" class="skills-image-top">
+          <img src="assets/intro2.1.png" alt="Skills Image 2" class="skills-image-bottom">
         </div>
       </div>
     </div>
     
-    <div class="skills-titles">
+    <div class="skills-titles" style="display: none;">
       <h1>#互動裝置</h1>
       <h1>#動畫</h1>
       <h1>#跨領域</h1>
       <h1>#手繪</h1>
     </div>
 
-    <div class="work-title">
+    <div class="work-title" style="display: none;">
       <div class="title-group">
         <h1 class="shadow">Here are my</h1>
         <h1>Here are my</h1>
@@ -113,21 +118,35 @@
       </div>
     </div>
 
-    <!-- skill box 结构移到这里 -->
-    <div class="skill-boxes-floating">
-      <div class="skill-box-all">
-        <ul>
-          <li>TouchDesigner</li>
-          <li>After Effect</li>
-          <li>Ai Tools</li>
-        </ul>
-      </div>
-      <div class="skill-box-all2">
-        <ul>
-          <li>Html/CSS</li>
-          <li>Unity</li>
-          <li>MediaPipe</li>
-        </ul>
+    <!-- skill text box 结构 -->
+    <div class="skill-text-box-container">
+      <div class="skill-text-wrapper">
+        <div class="skill-text-item active">
+          <p>Hello！我叫梁芷穎，你也可以叫我啊嘿AHEY。</p>
+          <p>我高中是廣告設計科出身，目前於台北科技大學就讀互動設計系大三。</p>
+          <p>我擅長把各種工具串來串去，你也可以說我是混合型專業（奇行種）</p>
+          <p>也在一次次專題中走上了vibe coding的不歸路。</p>
+        </div>
+        <div class="skill-text-item">
+          <p>近期我正在製作物聯網與裸眼3D的互動裝置。</p>
+          <p>過去我也做過...</p>
+          <p><span class="skill-tech-item">手機網頁 x Unity</span></p>
+          <p><span class="skill-tech-item">AI即時生成圖文 x TouchDesigner</span></p>
+          <p><span class="skill-tech-item">Mediapipe x TouchDesigner</span></p>
+          <p>我是走到哪學到哪的類型。</p>
+          <p>如果你對我的感興趣，就往下滑吧!</p>
+         
+        </div>
+        <!-- 箭头和分页指示器在文字框内部 -->
+        <div class="skill-arrow-section">
+          <button class="skill-arrow-btn" id="skillArrowBtn">
+            <img src="assets/20.png" alt="arrow">
+          </button>
+          <div class="skill-pagination">
+            <span class="pagination-dot active" data-index="0"></span>
+            <span class="pagination-dot" data-index="1"></span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -193,14 +212,17 @@
 
   <footer>
     <div class="social-icons-phone">
-      <a href="https://www.behance.net/7affe83c" target="_blank">
-        <img src="assets/icon _behance_.png" alt="Behance">
-      </a>
       <a href="https://www.instagram.com/z_t.0415/" target="_blank">
         <img src="assets/icon _instagram_.png" alt="Instagram">
       </a>
       <a href="https://medium.com/@qazwsx04152" target="_blank">
         <img src="assets/icon _medium_.png" alt="Medium">
+      </a>
+      <a href="https://www.youtube.com/@Zong-g9r" target="_blank">
+        <img src="assets/icon _Youtube_.png" alt="Youtube">
+      </a>
+      <a href="https://linktr.ee/qi.4145" target="_blank">
+        <img src="assets/icon_inktree_.png" alt="LinkTree">
       </a>
     </div>
   </footer>

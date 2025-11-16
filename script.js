@@ -49,9 +49,161 @@ async function loadAndRenderProjects() {
     }
 }
 
+// 初始化 intro-images 随机项目显示
+async function initIntroProjects() {
+    try {
+        const response = await fetch('projects.json');
+        const projects = await response.json();
+        
+        // 收集所有项目的图片
+        const allProjects = [];
+        Object.keys(projects).forEach(category => {
+            projects[category].forEach(project => {
+                allProjects.push({
+                    image: project.image,
+                    title: project.title,
+                    link: project.link
+                });
+            });
+        });
+        
+        // 随机打乱数组
+        const shuffledProjects = allProjects.sort(() => Math.random() - 0.5);
+        
+        // 限制显示的项目数量（例如显示 5 个）
+        const displayCount = Math.min(5, shuffledProjects.length);
+        const selectedProjects = shuffledProjects.slice(0, displayCount);
+        
+        // 获取 DOM 元素
+        const introImage = document.getElementById('introProjectImage');
+        const paginationContainer = document.getElementById('introPagination');
+        
+        if (!introImage || !paginationContainer) return;
+        
+        let currentIndex = 0;
+        
+        // 创建分页圆点
+        selectedProjects.forEach((project, index) => {
+            const dot = document.createElement('span');
+            dot.className = 'intro-pagination-dot';
+            if (index === 0) dot.classList.add('active');
+            dot.setAttribute('data-index', index);
+            dot.addEventListener('click', () => {
+                switchToProject(index);
+            });
+            paginationContainer.appendChild(dot);
+        });
+        
+        // 切换项目函数
+        function switchToProject(index) {
+            if (index === currentIndex || index < 0 || index >= selectedProjects.length) return;
+            
+            const project = selectedProjects[index];
+            const dots = paginationContainer.querySelectorAll('.intro-pagination-dot');
+            
+            // 更新圆点状态
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // 停止当前的动画
+            gsap.killTweensOf(introImage);
+            
+            // 淡出并缩小当前图片
+            gsap.to(introImage, {
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.4,
+                ease: "power2.in",
+                onComplete: () => {
+                    // 切换图片
+                    introImage.src = project.image;
+                    introImage.alt = project.title;
+                    
+                    // 设置初始状态（放大并透明）
+                    gsap.set(introImage, {
+                        opacity: 0,
+                        scale: 1.05
+                    });
+                    
+                    // 淡入并缩小到正常大小，然后开始缓慢放大动画
+                    const tl = gsap.timeline();
+                    tl.to(introImage, {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    })
+                    .to(introImage, {
+                        scale: 1.08,
+                        duration: 4.5,
+                        ease: "power1.inOut"
+                    }, "-=0.2");
+                }
+            });
+            
+            currentIndex = index;
+        }
+        
+        // 设置初始图片
+        if (selectedProjects.length > 0) {
+            introImage.src = selectedProjects[0].image;
+            introImage.alt = selectedProjects[0].title;
+            gsap.set(introImage, {
+                opacity: 1,
+                scale: 1
+            });
+            
+            // 初始图片也添加缓慢放大动画
+            gsap.to(introImage, {
+                scale: 1.08,
+                duration: 5,
+                ease: "power1.inOut"
+            });
+        }
+        
+        // 可选：自动轮播（每 5 秒切换一次）
+        let autoPlayInterval = setInterval(() => {
+            const nextIndex = (currentIndex + 1) % selectedProjects.length;
+            switchToProject(nextIndex);
+        }, 5000);
+        
+        // 鼠标悬停时暂停自动轮播
+        const introImagesContainer = document.querySelector('.intro-images');
+        if (introImagesContainer) {
+            introImagesContainer.addEventListener('mouseenter', () => {
+                clearInterval(autoPlayInterval);
+            });
+            introImagesContainer.addEventListener('mouseleave', () => {
+                autoPlayInterval = setInterval(() => {
+                    const nextIndex = (currentIndex + 1) % selectedProjects.length;
+                    switchToProject(nextIndex);
+                }, 5000);
+            });
+        }
+        
+        // 点击图片可以跳转到项目页面
+        introImage.style.cursor = 'pointer';
+        introImage.addEventListener('click', () => {
+            if (selectedProjects[currentIndex].link) {
+                window.location.href = selectedProjects[currentIndex].link;
+            }
+        });
+        
+    } catch (error) {
+        console.error('加载 intro 项目失败:', error);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     // 先加载作品
     await loadAndRenderProjects();
+    // 初始化 intro-images 随机项目显示
+    initIntroProjects();
     // 初始化Lenis平滑滚动 - 优化性能
     const lenis = new Lenis({
         duration: 0.8,  // 减少延迟，从1.2改为0.8
@@ -94,6 +246,108 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     });
+
+    // Skill 文字框切换功能
+    function initSkillTextSwitch() {
+        const arrowBtn = document.getElementById('skillArrowBtn');
+        const textItems = document.querySelectorAll('.skill-text-item');
+        const paginationDots = document.querySelectorAll('.pagination-dot');
+        let currentIndex = 0;
+        let isAnimating = false;
+
+        if (!arrowBtn || textItems.length === 0) return;
+
+        function updatePagination() {
+            paginationDots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function switchSkillText() {
+            // 防止动画进行中重复点击
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const currentItem = textItems[currentIndex];
+            const nextIndex = (currentIndex + 1) % textItems.length;
+            const nextItem = textItems[nextIndex];
+            const arrowImg = arrowBtn.querySelector('img');
+            
+            // 判断方向：0→1 往左滑，1→0 往右滑
+            const isMovingLeft = currentIndex === 0;
+            
+            // 翻转箭头方向（反过来）
+            if (isMovingLeft) {
+                // 往左滑：箭头指向左边（scaleX(1)）
+                arrowImg.style.transform = 'scaleX(1)';
+            } else {
+                // 往右滑：箭头指向右边（scaleX(-1)）
+                arrowImg.style.transform = 'scaleX(-1)';
+            }
+
+            // 移除当前活动项
+            currentItem.classList.remove('active');
+            
+            // 根据方向设置动画
+            if (isMovingLeft) {
+                // 往左滑：当前项向左滑出，下一项从右边滑入
+                currentItem.classList.add('prev');
+                
+                // 先设置下一项在右边位置
+                nextItem.classList.remove('active', 'prev', 'next');
+                nextItem.style.transform = 'translateX(100%)';
+                nextItem.style.opacity = '0';
+            } else {
+                // 往右滑：当前项向右滑出，下一项从左边滑入
+                currentItem.classList.add('next');
+                
+                // 先设置下一项在左边位置
+                nextItem.classList.remove('active', 'prev', 'next');
+                nextItem.style.transform = 'translateX(-100%)';
+                nextItem.style.opacity = '0';
+            }
+
+            // 更新索引
+            currentIndex = nextIndex;
+
+            // 短暂延迟后触发滑入动画
+            setTimeout(() => {
+                // 强制重排以触发动画
+                void nextItem.offsetWidth;
+                
+                // 添加 active 类，触发滑入动画
+                nextItem.classList.add('active');
+                nextItem.style.transform = '';
+                nextItem.style.opacity = '';
+                
+                // 更新分页指示器
+                updatePagination();
+                
+                // 动画完成后重置标志
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 600);
+            }, 50);
+        }
+
+        arrowBtn.addEventListener('click', switchSkillText);
+        
+        // 初始化分页指示器
+        updatePagination();
+        
+        // 初始化箭头方向（第一句时箭头指向右边）
+        const arrowImg = arrowBtn.querySelector('img');
+        if (arrowImg) {
+            arrowImg.style.transform = 'scaleX(-1)';
+        }
+    }
+
+    // 初始化文字切换功能
+    initSkillTextSwitch();
 
     // 初始化模态窗口功能（在作品加载后调用）
     function initModal() {
@@ -143,6 +397,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         const skillH2Text = document.querySelector('.skill-H2 h2');
 
         if (skillH2 && skillH2Bg && skillH2Text) {
+            // 检测设备类型
+            const width = window.innerWidth;
+            let triggerStart;
+            
+            if (width <= 540) {
+                // 手机端：更早触发
+                triggerStart = "top 90%";
+            } else if (width <= 1024) {
+                // 平板端
+                triggerStart = "top 80%";
+            } else {
+                // 桌面端
+                triggerStart = "top 60%";
+            }
+            
+            // 背景动画（和电脑端一样的方法）
             gsap.fromTo(skillH2Bg, 
                 {
                     scaleX: 0
@@ -150,17 +420,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 {
                     scrollTrigger: {
                         trigger: skillH2,
-                        start: "top 60%",
+                        start: triggerStart,
                         toggleActions: "play none none reverse",
                         pin: false,
-                        refreshPriority: -1  // 优化性能
+                        refreshPriority: -1
                     },
                     scaleX: 1,
-                    duration: 0.5,
+                    duration: 0.6,
                     ease: "power2.out"
                 }
             );
 
+            // 文字动画（和电脑端一样的方法）
             gsap.fromTo(skillH2Text,
                 {
                     opacity: 0,
@@ -169,14 +440,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 {
                     scrollTrigger: {
                         trigger: skillH2,
-                        start: "top 60%",
+                        start: triggerStart,
                         toggleActions: "play none none reverse",
                         pin: false,
-                        refreshPriority: -1  // 优化性能
+                        refreshPriority: -1
                     },
                     opacity: 1,
                     y: 0,
-                    duration: 0.5,
+                    duration: 0.6,
+                    delay: 0.1,
                     ease: "power2.out"
                 }
             );
@@ -636,22 +908,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             firstCategory.style.opacity = '1';
         }
     };
-
-    // 测试下拉菜单
-    const testDropdown = () => {
-        const btn = document.getElementById('dropdownBtn');
-        const list = document.getElementById('dropdownList');
-        
-        if (btn && list) {
-            btn.addEventListener('click', () => {
-                console.log('点击按钮');
-                list.style.display = list.style.display === 'block' ? 'none' : 'block';
-            });
-        }
-    };
-
-    // 在DOM加载完成后运行测试
-    document.addEventListener('DOMContentLoaded', testDropdown);
 
     // 桌面版 nav-item hover 動畫
     const galleryNavItems = document.querySelectorAll('.gallery-nav .nav-item');

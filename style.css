@@ -162,7 +162,8 @@ body {
     overflow: hidden;
 }
 
-.overlay-image {
+/* 项目图片满版显示 */
+.intro-project-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -172,7 +173,7 @@ body {
     overflow: hidden;
 }
 
-.overlay-image::after {
+.intro-project-image::after {
     content: '';
     position: absolute;
     top: 0;
@@ -184,38 +185,54 @@ body {
     pointer-events: none;
 }
 
-.overlay-image img {
+.intro-project-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%;
+    object-position: center;
     filter: grayscale(100%);
-    pointer-events: none;
     position: relative;
     z-index: 1;
+    cursor: pointer;
+    transform-origin: center center;
+    will-change: transform, opacity;
 }
 
-.small-image {
+/* Intro 分页指示器 */
+.intro-pagination {
     position: absolute;
-    top: 40%;
-    left: 80%;
-    transform: translate(-50%, -50%) rotate(-5deg);
-    width: 400px;
-    height: 250px;
-    z-index: 3;
-    transform-style: preserve-3d;
-    backface-visibility: visible;
-    display: none;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
 }
 
-.small-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
-    transform-style: preserve-3d;
-    backface-visibility: visible;
-    overflow: visible;
+.intro-pagination-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(146, 199, 207, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(146, 199, 207, 0.8);
+    pointer-events: auto;
+}
+
+.intro-pagination-dot:hover {
+    background-color: rgba(146, 199, 207, 0.8);
+    transform: scale(1.2);
+}
+
+.intro-pagination-dot.active {
+    background-color: #92C7CF;
+    width: 12px;
+    height: 12px;
+    border-color: #92C7CF;
 }
 
 /* 技能區域 */
@@ -238,7 +255,7 @@ body {
 .skills-container {
     width: 100%;
     position: relative;
-    margin-top: 50px;
+    margin-top: 0; /* 移除上边距，让skill-H2紧贴上方 */
     z-index: 2;
 }
 
@@ -294,9 +311,13 @@ body {
     width: 100%;
     text-align: center;
     margin-bottom: 30px;
+    margin-top: 0; /* 紧贴区域上方 */
     z-index: 2;
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* 改为 visible，确保内容不被裁剪 */
+    min-height: 50px; /* 确保有最小高度 */
+    display: block; /* 确保显示 */
+    visibility: visible; /* 确保可见 */
 }
 
 .skill-H2-bg {
@@ -309,6 +330,8 @@ body {
     transform: scaleX(0);
     transform-origin: center;
     z-index: -1;
+    display: block; /* 确保显示 */
+    visibility: visible; /* 确保可见 */
 }
 
 .skill-H2 h2 {
@@ -320,10 +343,24 @@ body {
     margin: 10px 0;
     opacity: 0;
     transform: translateY(20px);
+    visibility: visible; /* 确保可见 */
+    position: relative;
+    z-index: 1;
+    /* 备用方案：如果动画失败，0.5秒后显示（缩短时间） */
+    animation: fallback-show 0.1s 0.5s forwards;
+}
+
+/* 备用动画：如果 GSAP 动画没有触发，0.5秒后显示文字 */
+@keyframes fallback-show {
+    to {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 }
 
 /* PC端技能图片样式 */
-.skills img {
+.skills-images img,
+.skills-image-wrapper img {
     width: 70%;
     height: auto;
     max-width: 430px;
@@ -340,6 +377,59 @@ body {
 
 /* 移动端样式 */
 @media screen and (max-width: 540px) {
+    /* 确保 skill-H2 在手机端可见 */
+    .skill-H2 {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        margin-top: 0 !important; /* 紧贴区域上方 */
+        margin-bottom: 30px !important;
+        position: relative !important;
+        z-index: 2 !important;
+        min-height: 60px !important; /* 增加最小高度，确保可见 */
+        height: auto !important; /* 允许根据内容自动调整 */
+        padding: 10px 0 !important; /* 添加内边距 */
+    }
+    
+    .skill-H2-bg {
+        display: block !important;
+        visibility: visible !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: #005C80 !important;
+        /* 初始状态为0，等待动画触发 */
+        transform: scaleX(0) !important;
+        transform-origin: center !important;
+        z-index: -1 !important;
+    }
+    
+    .skill-H2 h2 {
+        display: inline-block !important;
+        visibility: visible !important;
+        /* 初始状态为0，等待动画触发 */
+        opacity: 0 !important;
+        position: relative !important;
+        z-index: 1 !important;
+        font-size: 16px !important;
+        padding: 10px 15px !important;
+        margin: 0 !important;
+        transform: translateY(20px) !important; /* 初始状态有位移，等待动画触发 */
+        white-space: normal !important; /* 允许换行 */
+        word-break: keep-all !important; /* 保持词语完整 */
+        /* 备用动画：如果 GSAP 动画没有触发，0.3秒后显示（缩短时间） */
+        animation: fallback-show-mobile 0.1s 0.3s forwards !important;
+    }
+    
+    @keyframes fallback-show-mobile {
+        to {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    }
+    
     .skill-box-all, .skill-box-all2 {
         width: 95% !important;
         height: 140px !important;
@@ -347,15 +437,22 @@ body {
     }
     .skill-box-all { top: -130px !important; }
     .skill-box-all2 { top:50px !important; }
-    .skills img {
+    .skills-images {
+        height: 250px !important; /* 减少高度，从400px减少到250px */
+        padding-left: 0 !important; /* 移除左边距 */
+        left: 0 !important; /* 重置左边距 */
+        justify-content: center !important; /* 使用 flexbox 居中 */
+    }
+    .skills-images img,
+    .skills-image-wrapper img {
         width: 50%;
         height: auto;
         min-width: 100px;
         max-width: 180px;
         position: absolute;
         top: 120px;
-        left: 25%;
-        transform: translateX(-50%) rotate(-5deg);
+        left: 50% !important; /* 改为居中 */
+        transform: translateX(-50%) rotate(-5deg) !important; /* 确保居中 */
         border: 2px solid rgb(255, 255, 255);
         box-shadow: 8px 8px 0px #92C7CF;
     }
@@ -391,10 +488,19 @@ body {
     .intro-text p {
         font-size: 1.05rem !important;
     }
-    .small-image {
-        width: 220px !important;
-        height: auto !important;
-        left: 55% !important;
+    .intro-pagination {
+        bottom: 20px;
+        gap: 10px;
+    }
+    
+    .intro-pagination-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .intro-pagination-dot.active {
+        width: 10px;
+        height: 10px;
     }
     .mobile-dropdown {
         max-width: 85vw !important;
@@ -539,37 +645,181 @@ body {
   width: 450px;
 }
 
-/* 电脑端核心样式 */
-.skill-boxes-floating {
-    position: relative;
-    width: 100%;
+/* 电脑端核心样式 - 文字框切换 */
+.skill-text-box-container {
+    position: absolute;
+    right: 10%; /* 再往右移 */
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 3;
+    width: auto;
+    margin-top: -60px; /* 与图片对齐 */
 }
 
-.skill-box-all, .skill-box-all2 {
+.skill-text-wrapper {
+    position: relative;
+    width: 650px;
+    max-width: 100%;
+    height: 320px; /* 增加高度，从 270px 改为 320px */
+    overflow: hidden; /* 只在文字框层面控制，防止动画超出 */
+    background: white;
+    border: 4px solid #92C7CF;
+    border-radius: 20px;
+    padding: 25px 100px 35px 50px; /* 减少上padding，文字不贴边 */
+    box-shadow: 0 4px 20px rgba(146, 199, 207, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 320px;
-    height: 160px;
+    box-sizing: border-box;
+}
+
+.skill-text-item {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
+    width: calc(100% - 50px - 100px); /* 减去左右padding，确保文字不贴边 */
+    height: calc(100% - 25px - 35px); /* 减去上下padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateX(100%); /* 默认从右边开始 */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-in-out;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible; /* 改为visible，让文字完整显示 */
+    left: 50px; /* 从左边padding开始，文字不贴边 */
+    top: 25px; /* 从顶部padding开始 */
+    box-sizing: border-box;
+    padding: 0;
 }
 
-.skill-box-all {
-    background-image: url('./assets/Group 1.png');
-    display: none;
+.skill-text-item.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
 }
 
-.skill-box-all2 {
-    background-image: url('./assets/Group 2.png');
-    display: none;
+.skill-text-item.prev {
+    transform: translateX(-100%); /* 向左滑出 */
+    opacity: 0;
+}
+
+.skill-text-item.next {
+    transform: translateX(100%); /* 向右滑出 */
+    opacity: 0;
+}
+
+/* 当从右边滑入时，初始位置应该在右边 */
+.skill-text-item.next.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* 当从左边滑入时，需要先设置到左边位置 */
+.skill-text-item.prev.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.skill-text-item p {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #005C80;
+    line-height: 1.5; /* 缩小行距 */
+    margin: 6px 0; /* 缩小段落间距 */
+    text-align: left;
+    width: 100%;
+    word-break: keep-all; /* 防止中文字符被拆分 */
+    white-space: normal; /* 允许正常换行，但保持词语完整 */
+    overflow-wrap: break-word; /* 允许长文字换行 */
+    box-sizing: border-box;
+}
+
+.skill-text-item p:nth-child(2) {
+    white-space: normal; /* 允许换行，防止被裁切 */
+}
+
+/* 技能技术项样式 - 深蓝色背景，浅蓝绿色字，荧光笔效果 */
+.skill-text-item .skill-tech-item {
+    background-color: #005c80af; /* 深蓝色背景 */
+    color: #E6F4F1 !important; /* 浅蓝绿色字 */
+    padding: 4px 8px;
+    border-radius: 0; /* 移除圆角 */
+    display: inline; /* inline元素，只包裹文字内容 */
+    margin: 0;
+    line-height: 1.6; /* 调整行高 */
+    box-decoration-break: clone; /* 确保背景在换行时也能正确显示 */
+    -webkit-box-decoration-break: clone;
+    white-space: nowrap; /* 防止文字换行，保持在一行 */
+    transform: translate(2px, 2px); /* 往右下角错位，模拟荧光笔效果 */
+    position: relative;
+}
+
+/* 箭头区域 - 在文字框右下角 */
+.skill-arrow-section {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.skill-arrow-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 11;
+    box-shadow: none; /* 确保没有阴影 */
+}
+
+.skill-arrow-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.skill-arrow-btn:active {
+    transform: scale(0.95);
+}
+
+.skill-arrow-btn img {
+    width: 120px !important; /* 放大箭头尺寸 */
+    height: auto !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+    display: block !important;
+    transform: scaleX(-1); /* 初始状态：指向右边，不使用!important以便JS可以覆盖 */
+    transition: transform 0.3s ease; /* 箭头翻转过渡效果 */
+    box-shadow: none !important; /* 确保没有阴影 */
+    filter: none !important; /* 移除所有滤镜效果 */
+    border: none !important; /* 移除边框 */
+    position: static !important; /* 移除绝对定位 */
+    object-fit: contain !important;
+}
+
+/* 分页指示器 */
+.skill-pagination {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.pagination-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #005C80;
+    transition: background 0.3s ease;
+    cursor: pointer;
+}
+
+.pagination-dot.active {
+    background: #92C7CF;
 }
 
 .skill-box, .skill-box2 {
@@ -594,25 +844,244 @@ body {
 }
 .skill-box2 h2 { color: #1b1b1b; }
 
-/* 移动端适配 */
-@media screen and (max-width: 540px) {
-    .skill-box, .skill-box2 {
-        width: 98%;
-        height: 135px;
-        padding-left: 0;
+/* 平板端适配 */
+@media screen and (min-width: 541px) and (max-width: 1024px) {
+    /* 确保 skill-H2 在平板端可见 */
+    .skill-H2 {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        margin-top: 0 !important;
+        margin-bottom: 30px !important;
+        position: relative !important;
+        z-index: 2 !important;
+        min-height: 55px !important;
+        height: auto !important;
+        padding: 10px 0 !important;
+    }
+    
+    .skill-H2-bg {
+        display: block !important;
+        visibility: visible !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: #005C80 !important;
+        transform: scaleX(0) !important;
+        transform-origin: center !important;
+        z-index: -1 !important;
+    }
+    
+    .skill-H2 h2 {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 0 !important;
+        position: relative !important;
+        z-index: 1 !important;
+        font-size: 18px !important;
+        padding: 10px 20px !important;
+        margin: 0 !important;
+        transform: translateY(20px) !important;
+        white-space: normal !important;
+        word-break: keep-all !important;
+        /* 备用动画：如果 GSAP 动画没有触发，0.4秒后显示（缩短时间） */
+        animation: fallback-show-tablet 0.1s 0.4s forwards !important;
+    }
+    
+    @keyframes fallback-show-tablet {
+        to {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    }
+    
+    .skill-text-box-container {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        padding: 0 30px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        z-index: 3;
+    }
+    
+    .skill-text-wrapper {
+        width: 90%;
+        max-width: 600px;
+        height: auto;
+        min-height: 290px; /* 增加最小高度 */
+        padding: 20px 40px 75px 40px; /* 减少上padding */
+        border-radius: 15px;
+        overflow: hidden;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding-top: 15px;
     }
-    .skill-box h2, .skill-box2 h2 {
-        font-size: 0.9rem;
-        margin: 4px auto 4px 15%;
-        transform: translateX(14%);
+    
+    .skill-text-item {
+        width: calc(100% - 40px - 40px); /* 减去左右padding */
+        height: auto; /* 改为auto，让内容决定高度 */
+        max-height: calc(100% - 20px - 75px); /* 调整底部空间计算 */
+        position: absolute;
+        left: 40px;
+        top: 20px;
+        overflow: visible; /* 改为visible，让文字完整显示不被切掉 */
+        padding: 0;
+        padding-bottom: 5px; /* 减少底部padding */
+        margin-bottom: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* 改为flex-start，从顶部开始 */
+    }
+    
+    .skill-text-item p {
+        overflow-wrap: break-word;
+        line-height: 1.5;
+        margin: 5px 0;
+        font-size: 1rem;
+        max-width: 100%; /* 确保不超出 */
+    }
+    
+    .skill-text-item p:nth-child(2) {
+        white-space: normal; /* 允许换行 */
+    }
+    
+    .skill-arrow-section {
+        right: 15px; /* 改为右下角 */
+        bottom: 20px; /* 调整底部距离 */
+        left: auto; /* 移除居中定位 */
+        transform: none; /* 移除居中transform */
+        z-index: 10;
+        position: absolute;
+        height: auto;
+    }
+    
+    .skill-arrow-btn img {
+        width: 110px !important; /* 放大箭头 */
+        min-width: 110px !important;
+        max-width: 110px !important;
+    }
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 540px) {
+    .skill-text-box-container {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        margin-top: 30px !important; /* 增加上边距，避免叠到Skill H2 */
+        margin-bottom: 20px;
+        padding: 0 20px;
         width: 100%;
-        text-align: left;
+        display: flex;
+        justify-content: center;
+        z-index: 3;
+    }
+    
+    .skill-text-wrapper {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 380px; /* 再次增加最小高度，为按钮留更多空间 */
+        padding: 20px 35px 95px 35px; /* 再次增加底部padding，避免按钮重叠 */
+        border-radius: 15px;
+        overflow: hidden;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .skill-text-item {
+        width: calc(100% - 35px - 35px);
+        height: auto; /* 改为auto */
+        max-height: calc(100% - 20px - 95px); /* 调整底部空间计算，配合新的padding */
+        position: absolute;
+        left: 35px;
+        top: 20px;
+        overflow: visible; /* 改为visible，让文字完整显示不被切掉 */
+        padding: 0;
+        padding-bottom: 5px; /* 减少底部padding */
+        margin-bottom: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* 从顶部开始 */
+    }
+    
+    .skill-text-item p {
+        overflow-wrap: break-word;
+        line-height: 1.5;
+        margin: 5px 0;
+        font-size: 0.95rem;
+        max-width: 100%;
+    }
+    
+    .skill-text-item p:nth-child(2) {
+        white-space: normal; /* 允许换行 */
+    }
+    
+    .skill-arrow-section {
+        right: 15px; /* 改为右下角 */
+        bottom: 25px; /* 增加底部距离，避免重叠 */
+        left: auto; /* 移除居中定位 */
+        transform: none; /* 移除居中transform */
+        z-index: 10;
+        position: absolute;
+        height: auto;
+    }
+    
+    .skill-arrow-btn img {
+        width: 95px !important; /* 放大箭头 */
+        min-width: 95px !important;
+        max-width: 95px !important;
+    }
+    
+    .pagination-dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* 中型尺寸特殊处理 (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .skill-text-wrapper {
+        min-height: 300px !important; /* 增加中型尺寸高度 */
+        padding-bottom: 80px !important; /* 减少底部空间 */
+    }
+    
+    .skill-text-item {
+        max-height: calc(100% - 20px - 80px) !important;
+        padding-bottom: 5px !important; /* 减少文字底部间距 */
+        overflow: visible !important; /* 确保文字不被切掉 */
+        top: 20px !important; /* 调整顶部位置 */
+    }
+    
+    .skill-arrow-section {
+        right: 15px !important; /* 确保右下角定位 */
+        bottom: 22px !important; /* 调整底部距离 */
+        left: auto !important; /* 移除居中定位 */
+        transform: none !important; /* 移除居中transform */
+    }
+    
+    .skill-arrow-btn img {
+        width: 115px !important; /* 中型尺寸进一步放大 */
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+}
+
+/* 1280px尺寸特殊处理 - 文字框往右移 */
+@media screen and (min-width: 1200px) and (max-width: 1350px) {
+    .skill-text-box-container {
+        right: 5% !important; /* 往右移动，从10%减少到5% */
     }
 }
 
@@ -797,6 +1266,20 @@ body {
   .skills {
     height: 1800px !important;
     min-height: 1800px !important;
+  }
+  .skills-images {
+    padding-left: 0 !important; /* 移除左边距 */
+    left: 0 !important; /* 重置左边距 */
+    justify-content: center !important; /* 使用 flexbox 居中 */
+  }
+  .skills-images img,
+  .skills-image-wrapper img {
+    width: 60% !important; /* 缩小图片，从默认值改为 60% */
+    max-width: 350px !important; /* 缩小最大宽度 */
+    min-width: 100px !important;
+    left: 50% !important; /* 改为居中 */
+    top: 70px !important; /* 往上移，从默认值改为 70px */
+    transform: translateX(-50%) rotate(-8deg) !important; /* 确保居中 */
   }
   .skill-box, .skill-box2 {
     padding-top: 20px;
@@ -1265,16 +1748,18 @@ h3 {
 }
 
 /* 电脑端样式 */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1025px) {
     .skills {
         height: 700px !important;
         min-height: 600px !important;
     }
-    .skills img {
+    .skills-images img,
+    .skills-image-wrapper img {
         width: 80%;
         max-width: none;
         min-width: 0;
-        left: 10%;
+        left: 13% !important; /* 往右移，从 10% 改为 13% */
+        top: 120px !important; /* 往下移，从 90px 改为 120px */
     }
     .skills .skill-box-all,
     .skills .skill-box-all2 {
@@ -1585,13 +2070,19 @@ h3 {
         transform: scale(0.8) !important;
     }
     
-    .skills img {
+    .skills-images {
+        padding-left: 0 !important; /* 移除左边距 */
+        left: 0 !important; /* 重置左边距 */
+        justify-content: center !important; /* 使用 flexbox 居中 */
+    }
+    .skills-images img,
+    .skills-image-wrapper img {
         width: 70% !important;
         max-width: 400px !important;
         min-width: 120px !important;
-        left: 10% !important;
+        left: 50% !important; /* 改为居中 */
         top: 100px !important;
-        transform: rotate(-8deg) !important;
+        transform: translateX(-50%) rotate(-8deg) !important; /* 确保居中 */
     }
     
     .skill-box-all {
@@ -1618,11 +2109,6 @@ h3 {
         font-size: 1.05rem !important;
     }
     
-    .small-image {
-        width: 300px !important;
-        height: 200px !important;
-        left: 70% !important;
-    }
 }
 
 @media screen and (min-width: 1600px) {
@@ -2484,5 +2970,51 @@ html, body, h1, h2, h3, h4, h5, h6, p, a, ul, li, span, div, button, input, text
 
 ::-webkit-scrollbar-thumb:hover {
     background: #005C80;
+}
+
+/* 手机端样式 - 移除 !important */
+@media screen and (max-width: 540px) {
+    .skill-H2 h2 {
+        display: inline-block;
+        visibility: visible;
+        opacity: 0; /* 移除 !important */
+        position: relative;
+        z-index: 1;
+        font-size: 16px;
+        padding: 10px 15px;
+        margin: 0;
+        transform: translateY(20px); /* 移除 !important */
+        white-space: normal;
+        word-break: keep-all;
+        /* 移除备用动画，让 GSAP 完全控制 */
+    }
+    
+    .skill-H2-bg {
+        transform: scaleX(0); /* 移除 !important */
+        transform-origin: center;
+    }
+}
+
+/* 平板端样式 - 移除 !important */
+@media screen and (min-width: 541px) and (max-width: 1024px) {
+    .skill-H2 h2 {
+        display: inline-block;
+        visibility: visible;
+        opacity: 0; /* 移除 !important */
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 0;
+        transform: translateY(20px); /* 移除 !important */
+        white-space: normal;
+        word-break: keep-all;
+        /* 移除备用动画 */
+    }
+    
+    .skill-H2-bg {
+        transform: scaleX(0); /* 移除 !important */
+        transform-origin: center;
+    }
 }
 

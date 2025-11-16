@@ -14,7 +14,7 @@
                 setTimeout(initLenis, 50);
             } else {
                 console.error('Lenis 加载超时，请检查网络连接或 CDN 是否可访问');
-                console.error('尝试访问的 CDN: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.38/bundled/lenis.min.js');
+                console.error('尝试访问的 CDN: https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js');
             }
             return;
         }

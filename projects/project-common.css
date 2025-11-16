@@ -7,6 +7,11 @@ html, body, * {
     max-width: 100%;
     min-width: 100%;
     margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.project-video:hover {
+    transform: scale(1.05);
 }
 
 .project-video video {
@@ -362,6 +367,28 @@ body, .project-description, .project-content, .project-container {
     box-shadow: none;
     background: transparent;
     display: block;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.peek-image img:hover {
+    transform: scale(1.05);
+}
+
+.main-image {
+    width: 100%;
+    overflow: hidden;
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.main-image img:hover {
+    transform: scale(1.05);
 }
 
 .project-gallery {
@@ -388,6 +415,12 @@ body, .project-description, .project-content, .project-container {
     max-width: 100%;
     border: none;
     box-shadow: none;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.project-gallery img:hover {
+    transform: scale(1.05);
 }
 
 .img-modal {
@@ -422,6 +455,47 @@ body, .project-description, .project-content, .project-container {
 }
 .img-modal-close:hover {
     color: #92C7CF;
+}
+
+.img-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 72px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2100;
+    transition: opacity 0.2s, color 0.2s;
+    opacity: 0.8;
+    user-select: none;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1.2;
+    width: 40px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-modal-nav:hover {
+    opacity: 1;
+    color: #fff;
+}
+
+.img-modal-nav.prev {
+    left: 32px;
+}
+
+.img-modal-nav.next {
+    right: 32px;
+}
+
+.img-modal-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .media-flex {
@@ -606,6 +680,11 @@ body, .project-description, .project-content, .project-container {
     border: none;
     border-radius: 0;
     overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.custom-video-wrapper:hover {
+    transform: scale(1.05);
 }
 
 .custom-video {

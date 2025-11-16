@@ -6,7 +6,7 @@
          url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
-    font-display: swap;
+    font-display: fallback; /* 短暂等待后使用系统字体，避免长时间空白 */
 }
 
 /* ShipporiAntique 字体引入 - 标题字体（最粗版本 B1） */
@@ -15,7 +15,7 @@
     src: url('./assets/ShipporiAntique-master/fonts/ttf/ShipporiAntiqueB1-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-    font-display: swap;
+    font-display: fallback; /* 短暂等待后使用系统字体，避免长时间空白 */
 }
 
 /* ChillDINGothic Bold 字体引入 - Intro 标题（最粗版本） */
@@ -24,7 +24,7 @@
     src: url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/otf/ChillDINGothic_Bold.otf') format('opentype');
     font-weight: bold;
     font-style: normal;
-    font-display: swap;
+    font-display: fallback; /* 短暂等待后使用系统字体，避免长时间空白 */
 }
 
 /* 基本重设 */

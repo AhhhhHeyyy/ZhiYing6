@@ -17,18 +17,18 @@
       "hasModal": true
     },
     {
-      "title": "HOLOGACHA",
-      "date": "2024",
-      "image": "assets/Installation Art/Hologacha.png",
-      "link": "projects/HOLOGACHA/HOLOGACHA.html",
+      "title": "Stamped",
+      "date": "2025-6",
+      "image": "assets/Installation Art/Stamped.png",
+      "link": "projects/Stamped/Stamped.html",
       "order": 3,
       "hasModal": true
     },
     {
-      "title": "Stamped",
-      "date": "2024",
-      "image": "assets/Installation Art/Stamped.png",
-      "link": "projects/Stamped/Stamped.html",
+      "title": "HOLOGACHA",
+      "date": "2025/9-NOW",
+      "image": "assets/Installation Art/Hologacha.png",
+      "link": "projects/HOLOGACHA/HOLOGACHA.html",
       "order": 4,
       "hasModal": true
     }

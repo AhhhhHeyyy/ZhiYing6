@@ -7,6 +7,7 @@
     let prevBtn = null;
     let nextBtn = null;
     let isInitialized = false;
+    let isKeyboardBound = false; // 跟踪键盘事件是否已绑定
 
     function initModalNavigation() {
         if (isInitialized) return;
@@ -59,17 +60,15 @@
         }
 
         // 键盘事件（只绑定一次）
-        if (!document.hasAttribute('data-modal-keyboard-bound')) {
+        if (!isKeyboardBound) {
             document.addEventListener('keydown', handleKeyDown);
-            document.setAttribute('data-modal-keyboard-bound', 'true');
+            isKeyboardBound = true;
         }
 
-        // 触摸滑动事件（移动端）- 延迟初始化确保元素已准备好
+        // 触摸滑动事件（移动端）- 立即初始化
         if (!modal.hasAttribute('data-touch-bound')) {
-            setTimeout(function() {
-                initTouchSwipe();
-                modal.setAttribute('data-touch-bound', 'true');
-            }, 100);
+            initTouchSwipe();
+            modal.setAttribute('data-touch-bound', 'true');
         }
 
         // 监听模态窗口显示事件
@@ -154,14 +153,44 @@
         currentIndex = index;
         const item = imageList[currentIndex];
         
-        if (item.type === 'image') {
-            modalImg.src = item.src;
-            modalImg.style.display = 'block';
-        } else if (item.type === 'video') {
-            // 对于视频，可以显示视频元素或缩略图
-            modalImg.src = item.src;
-            modalImg.style.display = 'block';
-        }
+        // 添加淡出效果
+        modalImg.style.opacity = '0';
+        modalImg.style.transform = 'scale(0.95)';
+        
+        // 等待淡出完成后再切换图片
+        setTimeout(function() {
+            if (item.type === 'image') {
+                // 先设置图片源
+                modalImg.src = item.src;
+                modalImg.style.display = 'block';
+                
+                // 等待图片加载完成后再淡入
+                if (modalImg.complete) {
+                    // 图片已缓存，立即淡入
+                    setTimeout(function() {
+                        modalImg.style.opacity = '1';
+                        modalImg.style.transform = 'scale(1)';
+                    }, 10);
+                } else {
+                    // 等待图片加载完成
+                    modalImg.onload = function() {
+                        modalImg.style.opacity = '1';
+                        modalImg.style.transform = 'scale(1)';
+                        modalImg.onload = null; // 清除事件监听
+                    };
+                }
+            } else if (item.type === 'video') {
+                // 对于视频，可以显示视频元素或缩略图
+                modalImg.src = item.src;
+                modalImg.style.display = 'block';
+                
+                // 视频也使用相同的淡入效果
+                setTimeout(function() {
+                    modalImg.style.opacity = '1';
+                    modalImg.style.transform = 'scale(1)';
+                }, 10);
+            }
+        }, 150); // 淡出时间的一半
 
         updateNavButtons();
     }
@@ -226,6 +255,10 @@
         // 触摸事件处理函数
         function handleTouchStart(e) {
             if (!modal.classList.contains('show')) return;
+            // 如果点击的是关闭按钮或导航按钮，不处理
+            if (e.target.closest('.img-modal-close') || e.target.closest('.img-modal-nav')) {
+                return;
+            }
             isSwiping = false;
             const touch = e.touches[0];
             touchStartX = touch.clientX;
@@ -249,6 +282,13 @@
             if (!modal.classList.contains('show')) return;
             if (touchStartX === 0) return; // 如果没有开始位置，忽略
             
+            // 如果点击的是关闭按钮或导航按钮，不处理
+            if (e.target.closest('.img-modal-close') || e.target.closest('.img-modal-nav')) {
+                touchStartX = 0;
+                touchStartY = 0;
+                return;
+            }
+            
             const touch = e.changedTouches[0];
             touchEndX = touch.clientX;
             touchEndY = touch.clientY;
@@ -262,6 +302,7 @@
             if (isSwiping && absDeltaX > absDeltaY && absDeltaX > minSwipeDistance) {
                 e.preventDefault(); // 阻止默认行为
                 e.stopPropagation(); // 阻止事件冒泡
+                e.stopImmediatePropagation(); // 立即停止传播，防止其他事件处理器
                 if (deltaX > 0) {
                     // 向右滑动，显示上一张
                     showPrevious();
@@ -269,6 +310,7 @@
                     // 向左滑动，显示下一张
                     showNext();
                 }
+                return false; // 额外确保
             }
             
             // 重置
@@ -279,16 +321,26 @@
             isSwiping = false;
         }
 
-        // 在模态框和图片上都绑定事件，使用捕获阶段确保能捕获到
-        modal.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
-        modal.addEventListener('touchmove', handleTouchMove, { passive: true, capture: true });
-        modal.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+        // 在模态框和图片上都绑定事件
+        // 使用事件委托，确保即使元素动态变化也能工作
+        modal.addEventListener('touchstart', handleTouchStart, { passive: true });
+        modal.addEventListener('touchmove', handleTouchMove, { passive: true });
+        modal.addEventListener('touchend', handleTouchEnd, { passive: false });
         
+        // 同时在图片上绑定，确保能捕获到
         if (modalImg) {
-            modalImg.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
-            modalImg.addEventListener('touchmove', handleTouchMove, { passive: true, capture: true });
-            modalImg.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+            modalImg.addEventListener('touchstart', handleTouchStart, { passive: true });
+            modalImg.addEventListener('touchmove', handleTouchMove, { passive: true });
+            modalImg.addEventListener('touchend', handleTouchEnd, { passive: false });
+            
+            // 防止图片的默认拖拽行为干扰
+            modalImg.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+            });
         }
+        
+        // 调试信息（生产环境可移除）
+        console.log('Touch swipe initialized for modal');
     }
 
     // 监听模态窗口打开事件，更新当前索引

@@ -1010,9 +1010,9 @@ body {
     }
     
     .skill-arrow-btn img {
-        width: 110px !important; /* 放大箭头 */
-        min-width: 110px !important;
-        max-width: 110px !important;
+        width: 140px !important; /* 放大箭头（从110px放大到140px） */
+        min-width: 140px !important;
+        max-width: 140px !important;
     }
 }
 
@@ -1086,9 +1086,9 @@ body {
     }
     
     .skill-arrow-btn img {
-        width: 95px !important; /* 放大箭头 */
-        min-width: 95px !important;
-        max-width: 95px !important;
+        width: 120px !important; /* 放大箭头（从95px放大到120px） */
+        min-width: 120px !important;
+        max-width: 120px !important;
     }
     
     .pagination-dot {
@@ -1112,9 +1112,9 @@ body {
     
     /* 按钮稍微缩小 */
     .skill-arrow-btn img {
-        width: 80px !important; /* 从 95px 缩小到 80px */
-        min-width: 80px !important;
-        max-width: 80px !important;
+        width: 110px !important; /* 放大箭头（从80px放大到110px） */
+        min-width: 110px !important;
+        max-width: 110px !important;
     }
     
     /* 分页指示器稍微缩小 */
@@ -1151,9 +1151,9 @@ body {
     
     /* 按钮进一步缩小 */
     .skill-arrow-btn img {
-        width: 70px !important; /* 从 80px 缩小到 70px */
-        min-width: 70px !important;
-        max-width: 70px !important;
+        width: 100px !important; /* 放大箭头（从70px放大到100px） */
+        min-width: 100px !important;
+        max-width: 100px !important;
     }
     
     /* 分页指示器进一步缩小 */
@@ -1374,6 +1374,55 @@ body {
   letter-spacing: 0.05em;
 }
 
+/* HOLOGACHA Coming Soon 样式 */
+.gallery-item.coming-soon {
+  position: relative;
+}
+
+.gallery-item.coming-soon img {
+  filter: brightness(0.5); /* 只降低亮度，不使用色相旋转 */
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-item.coming-soon:hover img {
+  filter: brightness(1); /* hover 时恢复亮度 */
+  transform: scale(1.05); /* hover 时允许缩放 */
+}
+
+.gallery-item.coming-soon .coming-soon-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+  background-color: rgba(0, 44, 64, 0.7); /* 深蓝色覆盖层，不使用滤镜 */
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item.coming-soon:hover .coming-soon-overlay {
+  opacity: 0; /* hover 时淡出覆盖层 */
+}
+
+.gallery-item.coming-soon .coming-soon-text {
+  font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #E6F4F7;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.1em;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item.coming-soon:hover .coming-soon-text {
+  opacity: 0; /* hover 时淡出文字 */
+}
+
 /* 桌面端（預設） */
 .gallery-item .play-button {
   display: none !important;
@@ -1439,6 +1488,11 @@ body {
 @media screen and (max-width: 540px) {
   .gallery-item .play-button {
     display: none !important;
+  }
+  
+  /* HOLOGACHA Coming Soon 移动端样式 */
+  .gallery-item.coming-soon .coming-soon-text {
+    font-size: 1.8rem;
   }
 }
 

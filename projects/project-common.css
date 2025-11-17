@@ -63,7 +63,8 @@ p{
 
 .project-description h2 {
     line-height: 1.2;
-    margin-bottom: 18px;
+    margin-bottom: 18px !important;
+    margin-top: 40px !important;
 }
 
 .project-description,
@@ -562,11 +563,23 @@ body, .project-description, .project-content, .project-container {
     background: rgba(0,0,0,0.85);
     justify-content: center;
     align-items: center;
-    touch-action: manipulation; /* 优化触摸响应 */
+    touch-action: pan-x pan-y; /* 允许平移，不阻止触摸事件 */
     -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 .img-modal.show {
     display: flex;
+    opacity: 1;
+    animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 .img-modal-content {
     max-width: 90vw;
@@ -579,17 +592,42 @@ body, .project-description, .project-content, .project-container {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    pointer-events: auto; /* 确保可以接收触摸事件 */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.img-modal.show .img-modal-content {
+    opacity: 1;
+    transform: scale(1);
+    animation: fadeInScale 0.3s ease-in-out;
+}
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 .img-modal-close {
     position: absolute;
     top: 32px;
     right: 48px;
     color: #fff;
-    font-size: 48px;
+    font-size: 80px !important;
     font-weight: bold;
     cursor: pointer;
     z-index: 2100;
     transition: color 0.2s;
+    width: 80px !important;
+    height: 80px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 .img-modal-close:hover {
     color: #92C7CF;
@@ -634,6 +672,35 @@ body, .project-description, .project-content, .project-container {
 .img-modal-nav:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+}
+
+/* 中等屏幕尺寸调整（1280px左右） */
+@media screen and (max-width: 1400px) and (min-width: 1025px) {
+    .img-modal-close {
+        top: 20px;
+        right: 20px;
+        font-size: 72px !important;
+        width: 70px !important;
+        height: 70px !important;
+    }
+    .img-modal-content {
+        max-width: 85vw !important;
+        max-height: 85vh !important;
+    }
+}
+
+/* 移动端隐藏导航箭头 */
+@media screen and (max-width: 1024px) {
+    .img-modal-nav {
+        display: none !important;
+    }
+    .img-modal-close {
+        font-size: 72px !important;
+        width: 70px !important;
+        height: 70px !important;
+        top: 24px;
+        right: 24px;
+    }
 }
 
 .media-flex {
@@ -745,13 +812,13 @@ body, .project-description, .project-content, .project-container {
         text-align: center;
         padding: 20px 0 0 0;
     }
-    .media-left ul li, .media-right ul li {
+    .media-left ul li:not(.compact-text), .media-right ul li:not(.compact-text) {
         white-space: nowrap;
         padding: 0;
         position: relative;
     }
-    .media-left ul li::before,
-    .media-right ul li::before {
+    .media-left ul li:not(.compact-text)::before,
+    .media-right ul li:not(.compact-text)::before {
         content: "•";
         margin-right: 8px;
         color: #000000;
@@ -768,8 +835,13 @@ body, .project-description, .project-content, .project-container {
     }
     
     .project-description h2 {
-        margin-top: 0;
-        margin-bottom: 0;
+        margin-top: 30px !important;
+        margin-bottom: 18px !important;
+    }
+    
+    .project-description p {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
     }
 }
 
@@ -784,8 +856,97 @@ body, .project-description, .project-content, .project-container {
     }
     
     .project-description h2 {
-        margin-top: 0;
-        margin-bottom: 0;
+        margin-top: 30px !important;
+        margin-bottom: 18px !important;
+    }
+    
+    .project-description p {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .media-box {
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .media-left, .media-right {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .media-left ul, .media-right ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .media-left ul li.compact-text, 
+    .media-right ul li.compact-text {
+        font-size: 0.8rem !important;
+        text-align: center !important;
+        display: inline-block !important;
+        width: auto !important;
+        margin: 0 auto !important;
+        white-space: nowrap !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+    }
+    .media-left ul li.compact-text::before,
+    .media-right ul li.compact-text::before {
+        display: inline !important;
+        position: static !important;
+        margin-right: 6px !important;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .media-box {
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .media-left, .media-right {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .media-left ul, .media-right ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .media-left ul li.compact-text, 
+    .media-right ul li.compact-text {
+        font-size: 0.85rem !important;
+        text-align: center !important;
+        display: inline-block !important;
+        width: auto !important;
+        margin: 0 auto !important;
+        white-space: nowrap !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+    }
+    .media-left ul li.compact-text::before,
+    .media-right ul li.compact-text::before {
+        display: inline !important;
+        position: static !important;
+        margin-right: 6px !important;
     }
 }
 
@@ -794,10 +955,7 @@ body, .project-description, .project-content, .project-container {
     margin-bottom: 0;
 }
 
-.project-description h2 {
-    margin-top: 0;
-    margin-bottom: 0;
-}
+/* h2和p的margin在更上面的规则中已设置，这里不再覆盖 */
 
 .project-description ul,
 .project-description ol {
@@ -807,8 +965,8 @@ body, .project-description, .project-content, .project-container {
 }
 
 .project-description p {
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
 }
 
 .custom-video-wrapper {

@@ -22,6 +22,11 @@ async function loadAndRenderProjects() {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 
+                // 如果是 HOLOGACHA 项目，添加 coming-soon 类
+                if (project.title === 'HOLOGACHA') {
+                    item.classList.add('coming-soon');
+                }
+                
                 // 如果是 installation 分类且有 hasModal 属性，添加 modal 属性
                 if (category === 'installation' && project.hasModal) {
                     item.setAttribute('data-toggle', 'modal');
@@ -35,6 +40,7 @@ async function loadAndRenderProjects() {
                             <h3>${project.title}</h3>
                             <p>${project.date}</p>
                         </div>
+                        ${project.title === 'HOLOGACHA' ? '<div class="coming-soon-overlay"><span class="coming-soon-text">Coming Soon...</span></div>' : ''}
                     </a>
                 `;
                 

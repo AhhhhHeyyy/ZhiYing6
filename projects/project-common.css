@@ -228,6 +228,10 @@ p{
     .custom-video {
         max-height: 50vh;
     }
+    /* 手机/平板版隐藏自定义播放按钮，避免与原生控件重复 */
+    .custom-play-btn {
+        display: none !important;
+    }
     .project-content {
         gap: 40px;
     }
@@ -292,6 +296,10 @@ p{
     .custom-video-wrapper,
     .custom-video {
         max-height: 45vh;
+    }
+    /* 手机版隐藏自定义播放按钮，避免与原生控件重复 */
+    .custom-play-btn {
+        display: none !important;
     }
     .project-content {
         gap: 40px;

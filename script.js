@@ -200,6 +200,16 @@ async function initIntroProjects() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // 立即初始化下拉式清单（不等待所有资源加载）
+    initDropdown();
+    
+    // 初始化显示第一个类别
+    const firstCategory = document.querySelector('.gallery-category');
+    if (firstCategory) {
+        firstCategory.style.display = 'block';
+        firstCategory.style.opacity = '1';
+    }
+    
     // 先加载作品
     await loadAndRenderProjects();
     // 初始化 intro-images 随机项目显示
@@ -783,27 +793,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         
         dropdownBtn.onclick = function(e) {
-            console.log('点击了下拉按钮');
-            e.stopPropagation();
+            e.preventDefault(); // 防止默认行为
+            e.stopPropagation(); // 阻止事件冒泡
             
-            if (dropdownList.style.display === 'block') {
-                // 关闭动画
+            // 立即切换显示状态，不等待动画
+            const isOpen = dropdownList.style.display === 'block';
+            dropdownList.style.display = isOpen ? 'none' : 'block';
+            
+            if (isOpen) {
+                // 关闭动画（缩短时间）
                 gsap.to(dropdownList, {
                     opacity: 0,
                     y: -10,
-                    duration: 0.3,
+                    duration: 0.15, // 从 0.3 缩短到 0.15
                     ease: 'power2.in',
                     onComplete: () => {
                         dropdownList.style.display = 'none';
                     }
                 });
             } else {
-                // 打开动画
-                dropdownList.style.display = 'block';
+                // 打开动画（缩短时间）
                 gsap.to(dropdownList, {
                     opacity: 1,
                     y: 0,
-                    duration: 0.3,
+                    duration: 0.15, // 从 0.3 缩短到 0.15
                     ease: 'power2.out'
                 });
             }
@@ -811,11 +824,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         // 下拉菜单项点击切换分类（優化動畫）
         dropdownItems.forEach(item => {
-            item.addEventListener('click', function() {
-                // 更新选中文本
+            item.addEventListener('click', function(e) {
+                e.preventDefault(); // 防止默认行为
+                e.stopPropagation(); // 阻止事件冒泡
+                
+                // 更新选中文本（立即更新）
                 if (selectedText) selectedText.textContent = item.textContent;
 
-                // 更新活动状态并恢复颜色
+                // 更新活动状态并恢复颜色（缩短动画时间）
                 dropdownItems.forEach(i => {
                     i.classList.remove('active');
                     // 恢复非 active 状态的颜色
@@ -823,7 +839,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         backgroundColor: "white",
                         color: "#005C80",
                         fontWeight: "600",
-                        duration: 0.2,
+                        duration: 0.1, // 从 0.2 缩短到 0.1
                         overwrite: "auto"
                     });
                 });
@@ -833,7 +849,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     backgroundColor: "#92C7CF",
                     color: "#404F63",
                     fontWeight: "700",
-                    duration: 0.2,
+                    duration: 0.1, // 从 0.2 缩短到 0.1
                     overwrite: "auto"
                 });
 
@@ -842,11 +858,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const categories = document.querySelectorAll('.gallery-category');
                 const currentVisible = Array.from(categories).find(cat => cat.style.display === 'block' || cat.style.opacity === '1');
 
-                // 先淡出舊內容
+                // 先淡出舊內容（缩短动画时间）
                 if (currentVisible && currentVisible.id !== category) {
                     gsap.to(currentVisible, {
                         opacity: 0,
-                        duration: 0.25,
+                        duration: 0.15, // 从 0.25 缩短到 0.15
                         pointerEvents: "none",
                         onComplete: () => {
                             currentVisible.style.display = 'none';
@@ -856,7 +872,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 targetElement.style.display = 'block';
                                 gsap.fromTo(targetElement, {opacity: 0}, {
                                     opacity: 1,
-                                    duration: 0.35,
+                                    duration: 0.2, // 从 0.35 缩短到 0.2
                                     pointerEvents: "auto"
                                 });
                             }
@@ -905,18 +921,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
     }
 
-    // 确保在DOM加载完成后执行
-    window.onload = function() {
-        console.log('页面加载完成');
-        initDropdown();
-        
-        // 初始化显示第一个类别
-        const firstCategory = document.querySelector('.gallery-category');
-        if (firstCategory) {
-            firstCategory.style.display = 'block';
-            firstCategory.style.opacity = '1';
-        }
-    };
+    // window.onload 已不再需要，因为下拉式清单已在 DOMContentLoaded 中初始化
+    // 这样可以避免等待所有资源（图片、字体等）加载完成，提升响应速度
 
     // 桌面版 nav-item hover 動畫
     const galleryNavItems = document.querySelectorAll('.gallery-nav .nav-item');

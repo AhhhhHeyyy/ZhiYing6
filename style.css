@@ -615,7 +615,7 @@ body {
     }
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 1025px) {
   .mobile-dropdown {
     display: none !important;
   }
@@ -1797,8 +1797,8 @@ h3 {
     filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
 }
 
-/* 移动端下拉菜单样式 */
-@media screen and (max-width: 540px) {
+/* 移动端和平板端下拉菜单样式 */
+@media screen and (max-width: 1024px) {
     .mobile-dropdown {
         position: relative;
         width: 100%;
@@ -1861,6 +1861,94 @@ h3 {
         transition: background 0.2s, color 0.2s;
         user-select: none;
         border-bottom: 1px solid rgba(0, 92, 128, 0.2);
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-item.active {
+        background-color: #92C7CF !important;
+        color: #404F63 !important;
+        font-weight: 700 !important;
+    }
+
+    .dropdown-item:active {
+        background-color: #92C7CF !important;
+        color: #404F63 !important;
+    }
+
+    /* 隐藏桌面版导航 */
+    .gallery-nav {
+        display: none;
+    }
+}
+
+/* 平板端下拉菜单样式 */
+@media screen and (min-width: 541px) and (max-width: 1024px) {
+    .mobile-dropdown {
+        position: relative;
+        width: 100%;
+        max-width: 250px;
+        margin: 20px auto;
+        z-index: 1000;
+    }
+
+    .dropdown-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        background: transparent;
+        border: 2px solid #005C80;
+        color: #005C80;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        user-select: none;
+        width: 100%;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .dropdown-btn .arrow {
+        margin-left: 10px;
+        transition: transform 0.3s;
+    }
+
+    .dropdown-btn.active .arrow {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white !important;
+        border: 2px solid #005C80;
+        border-top: none;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: none;
+        z-index: 1001;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .dropdown-list.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: 12px 18px;
+        color: #005C80;
+        background: white !important;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+        user-select: none;
+        border-bottom: 1px solid rgba(0, 92, 128, 0.2);
+        font-size: 1rem;
     }
 
     .dropdown-item:last-child {

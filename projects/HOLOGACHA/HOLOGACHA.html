@@ -55,34 +55,64 @@
 
                 <h2>開發過程Progress</h2>
                 <div class="progress-gallery">
-                    <div class="progress-image">
-                        <img src="Progress (1).jpg" alt="開發過程 1" onclick="openModal(this.src)">
-                    </div>
-                    <div class="progress-image">
-                        <img src="Progress (2).jpg" alt="開發過程 2" onclick="openModal(this.src)">
-                    </div>
-                    <div class="progress-image">
-                        <img src="Progress (3).jpg" alt="開發過程 3" onclick="openModal(this.src)">
-                    </div>
-                    <div class="progress-image">
-                        <img src="Progress (4).jpg" alt="開發過程 4" onclick="openModal(this.src)">
-                    </div>
-                    <div class="progress-video-full">
-                        <div class="custom-video-wrapper">
-                            <video class="custom-video" controls>
-                                <source src="Progress (1).mp4" type="video/mp4">
-                                您的浏览器不支持视频标签。
-                            </video>
-                            <div class="custom-play-btn"></div>
+                    <div class="progress-item progress-item-featured">
+                        <div class="progress-item-inner">
+                            <img src="Progress (1).jpg" alt="開發過程 1" onclick="openModal(this.src)">
+                            <div class="progress-overlay">
+                                <span class="progress-label">開發過程</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="progress-video-full">
-                        <div class="custom-video-wrapper">
-                            <video class="custom-video" controls>
-                                <source src="DEMO.mp4" type="video/mp4">
-                                您的浏览器不支持视频标签。
-                            </video>
-                            <div class="custom-play-btn"></div>
+                    <div class="progress-item">
+                        <div class="progress-item-inner">
+                            <img src="Progress (2).jpg" alt="開發過程 2" onclick="openModal(this.src)">
+                            <div class="progress-overlay">
+                                <span class="progress-label">開發過程</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-item-inner">
+                            <img src="Progress (3).jpg" alt="開發過程 3" onclick="openModal(this.src)">
+                            <div class="progress-overlay">
+                                <span class="progress-label">開發過程</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-item-inner">
+                            <div class="custom-video-wrapper">
+                                <video class="custom-video" controls>
+                                    <source src="Progress (1).mp4" type="video/mp4">
+                                    您的浏览器不支持视频标签。
+                                </video>
+                                <div class="custom-play-btn"></div>
+                            </div>
+                            <div class="progress-overlay">
+                                <span class="progress-label">開發影片</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-item-inner">
+                            <img src="Progress (4).jpg" alt="開發過程 4" onclick="openModal(this.src)">
+                            <div class="progress-overlay">
+                                <span class="progress-label">開發過程</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-item-inner">
+                            <div class="custom-video-wrapper">
+                                <video class="custom-video" controls>
+                                    <source src="DEMO.mp4" type="video/mp4">
+                                    您的浏览器不支持视频标签。
+                                </video>
+                                <div class="custom-play-btn"></div>
+                            </div>
+                            <div class="progress-overlay">
+                                <span class="progress-label">展示影片</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,12 +192,15 @@
       <a href="#" class="prev-btn-fixed">&#x2039;</a>
       <a href="#" class="next-btn-fixed">&#x203A;</a>
     </div>
-    <!-- 图片放大 Modal -->
+    <!-- 图片/视频放大 Modal -->
     <div id="img-modal" class="img-modal">
         <span class="img-modal-close">&times;</span>
         <button class="img-modal-nav prev">&#8249;</button>
         <button class="img-modal-nav next">&#8250;</button>
-        <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖">
+        <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖" style="display: none;">
+        <video class="img-modal-content" id="img-modal-video" controls style="display: none;">
+            您的浏览器不支持视频播放。
+        </video>
     </div>
     <script>
     // 页面加载动画
@@ -192,18 +225,119 @@
         }, 500);
     });
 
-    // 图片模态框
-    document.querySelectorAll('.project-gallery img, .peek-image img, .progress-image img').forEach(img => {
-        img.addEventListener('click', function() {
-            document.getElementById('img-modal-img').src = this.src;
+    // 图片模态框 - 支持触摸和点击事件
+    document.querySelectorAll('.project-gallery img, .peek-image img, .progress-image img, .progress-item img').forEach(img => {
+        let touchStartTime = 0;
+        let touchStartPos = { x: 0, y: 0 };
+        
+        function handleImageClick() {
+            const modalImg = document.getElementById('img-modal-img');
+            const modalVideo = document.getElementById('img-modal-video');
+            modalImg.src = this.src;
+            modalImg.style.display = 'block';
+            modalVideo.style.display = 'none';
+            modalVideo.pause();
             document.getElementById('img-modal').classList.add('show');
+        }
+        
+        // 添加点击事件
+        img.addEventListener('click', handleImageClick);
+        
+        // 添加触摸事件支持
+        img.addEventListener('touchend', function(e) {
+            const touch = e.changedTouches[0];
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            const touchDistance = Math.sqrt(
+                Math.pow(touch.clientX - touchStartPos.x, 2) + 
+                Math.pow(touch.clientY - touchStartPos.y, 2)
+            );
+            
+            // 如果是短时间、短距离的触摸，视为点击
+            if (touchDuration < 300 && touchDistance < 10) {
+                e.preventDefault();
+                handleImageClick.call(this);
+            }
+        });
+        
+        img.addEventListener('touchstart', function(e) {
+            const touch = e.touches[0];
+            touchStartTime = Date.now();
+            touchStartPos = { x: touch.clientX, y: touch.clientY };
         });
     });
+    
+    // 视频模态框 - 在整个项目容器上添加事件
+    document.querySelectorAll('.progress-item, .documentation-item').forEach(item => {
+        const video = item.querySelector('.custom-video');
+        const img = item.querySelector('img');
+        
+        if (video && !img) {
+            // 只在包含视频的项目上添加事件
+            function openVideoModal(e) {
+                // 如果点击的是播放按钮，不触发放大
+                if (e.target.classList.contains('custom-play-btn')) {
+                    return;
+                }
+                
+                // 如果点击的是视频控件，不触发放大
+                if (e.target.tagName === 'VIDEO') {
+                    const rect = e.target.getBoundingClientRect();
+                    const clickY = e.clientY || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : 0);
+                    if (clickY > rect.top + rect.height * 0.75) {
+                        return; // 点击在底部25%区域（控件区域）
+                    }
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const modalImg = document.getElementById('img-modal-img');
+                const modalVideo = document.getElementById('img-modal-video');
+                const sources = video.querySelectorAll('source');
+                
+                // 清空并重新设置视频源
+                modalVideo.innerHTML = '';
+                sources.forEach(source => {
+                    const newSource = document.createElement('source');
+                    newSource.src = source.src;
+                    newSource.type = source.type;
+                    modalVideo.appendChild(newSource);
+                });
+                
+                modalImg.style.display = 'none';
+                modalVideo.style.display = 'block';
+                document.getElementById('img-modal').classList.add('show');
+                modalVideo.load();
+            }
+            
+            // 添加点击和触摸事件
+            item.addEventListener('click', openVideoModal, true);
+            item.addEventListener('touchend', function(e) {
+                if (!e.target.classList.contains('custom-play-btn')) {
+                    openVideoModal(e);
+                }
+            }, true);
+        }
+    });
+    
     document.querySelector('.img-modal-close').onclick = function() {
+        const modalImg = document.getElementById('img-modal-img');
+        const modalVideo = document.getElementById('img-modal-video');
         document.getElementById('img-modal').classList.remove('show');
+        modalVideo.pause();
+        modalImg.style.display = 'none';
+        modalVideo.style.display = 'none';
     };
     document.getElementById('img-modal').onclick = function(e) {
-        if(e.target === this) this.classList.remove('show');
+        if(e.target === this) {
+            const modalImg = document.getElementById('img-modal-img');
+            const modalVideo = document.getElementById('img-modal-video');
+            this.classList.remove('show');
+            modalVideo.pause();
+            modalImg.style.display = 'none';
+            modalVideo.style.display = 'none';
+        }
     };
 
     // 视频播放按钮
@@ -223,7 +357,12 @@
     });
 
     function openModal(src) {
-        document.getElementById('img-modal-img').src = src;
+        const modalImg = document.getElementById('img-modal-img');
+        const modalVideo = document.getElementById('img-modal-video');
+        modalImg.src = src;
+        modalImg.style.display = 'block';
+        modalVideo.style.display = 'none';
+        modalVideo.pause();
         document.getElementById('img-modal').classList.add('show');
     }
     </script>

@@ -49,6 +49,9 @@
                 </div>
 
                 <h2>簡介Introduction</h2>
+                <p class="project-link-wrapper">
+                    <a href="https://yanting1019.github.io/stamped/" target="_blank" class="project-link">明信片展示網頁</a>
+                </p>
                 <p>《時空明信片》是一套結合 AI、物聯網與互動視覺的沉浸式體驗系統，透過使用者的外貌、生日與夢想，生成屬於「平行時空中的你」的專屬動態明信片。</p>
                 
                 <p>作品以「定義繁衍的平行時空理論」為核心敘事：每個當下的選擇，都可能延伸出無數版本的自我，而 AI 則將這些可能性具象化。</p>
@@ -56,6 +59,74 @@
                 <p>使用者在裝置中輸入資料後，ComfyUI 與 Stream Diffusion 生成個人化影像，Ollama AI 創造敘事文本，並由 Firebase 負責資料儲存與傳輸，最終由 TouchDesigner 整合為具有動態視覺、UI 與手勢互動的明信片展示。</p>
                 
                 <p>此過程同時回應心理層面的控制感、自我認同、懷舊與多重可能性，讓人得以重新回望童年的夢想、投射未來的自我想像，並在輕鬆而富情感的互動中探索屬於自己的另一個版本。</p>
+
+
+                <h2>展示影片Video</h2>
+                <div class="project-video">
+                    <div class="custom-video-wrapper">
+                        <video class="custom-video" controls>
+                            <source src="DwmoNew.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="custom-play-btn"></div>
+                    </div>
+                </div>
+
+                <h2>展場紀錄Documentation</h2>
+                <div class="documentation-grid">
+                    <div class="documentation-item documentation-item-featured">
+                        <div class="documentation-item-inner">
+                            <img src="展場.JPG" alt="展場實體照片" onclick="openModal(this.src)">
+                            <div class="documentation-overlay">
+                                <span class="documentation-label">展場照片</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="documentation-item">
+                        <div class="documentation-item-inner">
+                            <div class="custom-video-wrapper">
+                                <video class="custom-video" controls>
+                                    <source src="展場.MOV" type="video/quicktime">
+                                    <source src="展場.MOV" type="video/mp4">
+                                    您的浏览器不支持视频播放。
+                                </video>
+                                <div class="custom-play-btn"></div>
+                            </div>
+                            <div class="documentation-overlay">
+                                <span class="documentation-label">展場影片</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="documentation-item">
+                        <div class="documentation-item-inner">
+                            <div class="custom-video-wrapper">
+                                <video class="custom-video" controls>
+                                    <source src="體驗 (1).MOV" type="video/quicktime">
+                                    <source src="體驗 (1).MOV" type="video/mp4">
+                                    您的浏览器不支持视频播放。
+                                </video>
+                                <div class="custom-play-btn"></div>
+                            </div>
+                            <div class="documentation-overlay">
+                                <span class="documentation-label">體驗影片</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="documentation-item">
+                        <div class="documentation-item-inner">
+                            <div class="custom-video-wrapper">
+                                <video class="custom-video" controls>
+                                    <source src="體驗.mp4" type="video/mp4">
+                                    您的浏览器不支持视频播放。
+                                </video>
+                                <div class="custom-play-btn"></div>
+                            </div>
+                            <div class="documentation-overlay">
+                                <span class="documentation-label">體驗影片</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <h2>專案概述Presentation</h2>
                 
@@ -124,12 +195,15 @@
       <a href="#" class="prev-btn-fixed">&#x2039;</a>
       <a href="#" class="next-btn-fixed">&#x203A;</a>
     </div>
-    <!-- 图片放大 Modal -->
+    <!-- 图片/视频放大 Modal -->
     <div id="img-modal" class="img-modal">
         <span class="img-modal-close">&times;</span>
         <button class="img-modal-nav prev">&#8249;</button>
         <button class="img-modal-nav next">&#8250;</button>
-        <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖">
+        <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖" style="display: none;">
+        <video class="img-modal-content" id="img-modal-video" controls style="display: none;">
+            您的浏览器不支持视频播放。
+        </video>
     </div>
     <script>
     // 页面加载动画
@@ -154,18 +228,119 @@
         }, 500);
     });
 
-    // 图片模态框
-    document.querySelectorAll('.project-gallery img, .peek-image img').forEach(img => {
-        img.addEventListener('click', function() {
-            document.getElementById('img-modal-img').src = this.src;
+    // 图片模态框 - 支持触摸和点击事件
+    document.querySelectorAll('.project-gallery img, .peek-image img, .documentation-item img').forEach(img => {
+        let touchStartTime = 0;
+        let touchStartPos = { x: 0, y: 0 };
+        
+        function handleImageClick() {
+            const modalImg = document.getElementById('img-modal-img');
+            const modalVideo = document.getElementById('img-modal-video');
+            modalImg.src = this.src;
+            modalImg.style.display = 'block';
+            modalVideo.style.display = 'none';
+            modalVideo.pause();
             document.getElementById('img-modal').classList.add('show');
+        }
+        
+        // 添加点击事件
+        img.addEventListener('click', handleImageClick);
+        
+        // 添加触摸事件支持
+        img.addEventListener('touchend', function(e) {
+            const touch = e.changedTouches[0];
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            const touchDistance = Math.sqrt(
+                Math.pow(touch.clientX - touchStartPos.x, 2) + 
+                Math.pow(touch.clientY - touchStartPos.y, 2)
+            );
+            
+            // 如果是短时间、短距离的触摸，视为点击
+            if (touchDuration < 300 && touchDistance < 10) {
+                e.preventDefault();
+                handleImageClick.call(this);
+            }
+        });
+        
+        img.addEventListener('touchstart', function(e) {
+            const touch = e.touches[0];
+            touchStartTime = Date.now();
+            touchStartPos = { x: touch.clientX, y: touch.clientY };
         });
     });
+    
+    // 视频模态框 - 在整个项目容器上添加事件
+    document.querySelectorAll('.documentation-item').forEach(item => {
+        const video = item.querySelector('.custom-video');
+        const img = item.querySelector('img');
+        
+        if (video && !img) {
+            // 只在包含视频的项目上添加事件
+            function openVideoModal(e) {
+                // 如果点击的是播放按钮，不触发放大
+                if (e.target.classList.contains('custom-play-btn')) {
+                    return;
+                }
+                
+                // 如果点击的是视频控件，不触发放大
+                if (e.target.tagName === 'VIDEO') {
+                    const rect = e.target.getBoundingClientRect();
+                    const clickY = e.clientY || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : 0);
+                    if (clickY > rect.top + rect.height * 0.75) {
+                        return; // 点击在底部25%区域（控件区域）
+                    }
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const modalImg = document.getElementById('img-modal-img');
+                const modalVideo = document.getElementById('img-modal-video');
+                const sources = video.querySelectorAll('source');
+                
+                // 清空并重新设置视频源
+                modalVideo.innerHTML = '';
+                sources.forEach(source => {
+                    const newSource = document.createElement('source');
+                    newSource.src = source.src;
+                    newSource.type = source.type;
+                    modalVideo.appendChild(newSource);
+                });
+                
+                modalImg.style.display = 'none';
+                modalVideo.style.display = 'block';
+                document.getElementById('img-modal').classList.add('show');
+                modalVideo.load();
+            }
+            
+            // 添加点击和触摸事件，使用捕获阶段确保能捕获到事件
+            item.addEventListener('click', openVideoModal, true);
+            item.addEventListener('touchend', function(e) {
+                if (!e.target.classList.contains('custom-play-btn')) {
+                    openVideoModal(e);
+                }
+            }, true);
+        }
+    });
+    
     document.querySelector('.img-modal-close').onclick = function() {
+        const modalImg = document.getElementById('img-modal-img');
+        const modalVideo = document.getElementById('img-modal-video');
         document.getElementById('img-modal').classList.remove('show');
+        modalVideo.pause();
+        modalImg.style.display = 'none';
+        modalVideo.style.display = 'none';
     };
     document.getElementById('img-modal').onclick = function(e) {
-        if(e.target === this) this.classList.remove('show');
+        if(e.target === this) {
+            const modalImg = document.getElementById('img-modal-img');
+            const modalVideo = document.getElementById('img-modal-video');
+            this.classList.remove('show');
+            modalVideo.pause();
+            modalImg.style.display = 'none';
+            modalVideo.style.display = 'none';
+        }
     };
 
     // 视频播放按钮
@@ -185,7 +360,12 @@
     });
 
     function openModal(src) {
-        document.getElementById('img-modal-img').src = src;
+        const modalImg = document.getElementById('img-modal-img');
+        const modalVideo = document.getElementById('img-modal-video');
+        modalImg.src = src;
+        modalImg.style.display = 'block';
+        modalVideo.style.display = 'none';
+        modalVideo.pause();
         document.getElementById('img-modal').classList.add('show');
     }
     </script>

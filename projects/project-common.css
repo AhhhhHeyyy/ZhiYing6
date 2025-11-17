@@ -690,6 +690,18 @@ body, .project-description, .project-content, .project-container {
     }
 }
 
+/* 1280px尺寸列表字体缩小 */
+@media screen and (max-width: 1280px) and (min-width: 1025px) {
+    .media-left ul li,
+    .media-right ul li {
+        font-size: 1.3rem !important;
+    }
+    .media-left ul li.compact-text,
+    .media-right ul li.compact-text {
+        font-size: 1.15rem !important;
+    }
+}
+
 /* 移动端隐藏导航箭头 */
 @media screen and (max-width: 1024px) {
     .img-modal-nav {

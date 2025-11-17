@@ -15,6 +15,22 @@
       "link": "projects/tong/tong.html",
       "order": 2,
       "hasModal": true
+    },
+    {
+      "title": "HOLOGACHA",
+      "date": "2024",
+      "image": "assets/Installation Art/Hologacha.png",
+      "link": "projects/HOLOGACHA/HOLOGACHA.html",
+      "order": 3,
+      "hasModal": true
+    },
+    {
+      "title": "Stamped",
+      "date": "2024",
+      "image": "assets/Installation Art/Stamped.png",
+      "link": "projects/Stamped/Stamped.html",
+      "order": 4,
+      "hasModal": true
     }
   ],
   "animation": [

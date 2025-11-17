@@ -410,6 +410,89 @@ body, .project-description, .project-content, .project-container {
     transform: scale(1.05);
 }
 
+/* Progress Gallery Grid Layout */
+.progress-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.progress-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.progress-image img {
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    display: block;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.progress-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Progress Video Full Width */
+.progress-video-full {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-video-full .custom-video-wrapper {
+    width: 100%;
+    position: relative;
+    max-height: 60vh;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    box-shadow: none !important;
+    background-color: #ffffff;
+}
+
+.progress-video-full .custom-video-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: none !important;
+}
+
+.progress-video-full .custom-video {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    object-fit: contain;
+    display: block;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+    .progress-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .progress-gallery {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
 .main-image {
     width: 100%;
     overflow: hidden;
@@ -439,9 +522,22 @@ body, .project-description, .project-content, .project-container {
     padding-top: 20px;
     position: relative;
     z-index: 2;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     color: #005C80;
     font-weight: 600;
+}
+
+/* 桌面端和平板端放大字体 */
+@media screen and (min-width: 769px) {
+    .project-gallery > p:first-of-type {
+        font-size: 1.7rem !important;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .project-gallery > p:first-of-type {
+        font-size: 1.8rem !important;
+    }
 }
 
 .project-gallery img {
@@ -466,6 +562,8 @@ body, .project-description, .project-content, .project-container {
     background: rgba(0,0,0,0.85);
     justify-content: center;
     align-items: center;
+    touch-action: manipulation; /* 优化触摸响应 */
+    -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
 }
 .img-modal.show {
     display: flex;
@@ -476,6 +574,11 @@ body, .project-description, .project-content, .project-container {
     border: 5px solid #fff;
     background: #222;
     box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+    touch-action: pan-x pan-y; /* 允许水平和垂直平移 */
+    user-select: none; /* 防止图片被选中 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 .img-modal-close {
     position: absolute;
@@ -717,6 +820,7 @@ body, .project-description, .project-content, .project-container {
     overflow: hidden;
     transition: transform 0.3s ease;
     box-shadow: none !important;
+    background-color: #ffffff;
 }
 
 .custom-video-wrapper:hover {

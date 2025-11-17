@@ -64,6 +64,14 @@
             document.setAttribute('data-modal-keyboard-bound', 'true');
         }
 
+        // 触摸滑动事件（移动端）- 延迟初始化确保元素已准备好
+        if (!modal.hasAttribute('data-touch-bound')) {
+            setTimeout(function() {
+                initTouchSwipe();
+                modal.setAttribute('data-touch-bound', 'true');
+            }, 100);
+        }
+
         // 监听模态窗口显示事件
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
@@ -83,7 +91,7 @@
         imageList = [];
         
         // 收集所有图片
-        const images = document.querySelectorAll('.project-gallery img, .peek-image img, .main-image img');
+        const images = document.querySelectorAll('.project-gallery img, .peek-image img, .main-image img, .progress-image img');
         images.forEach(img => {
             if (img.src) {
                 imageList.push({
@@ -202,6 +210,87 @@
         }
     }
 
+    // 触摸滑动功能（移动端）
+    function initTouchSwipe() {
+        if (!modal || !modalImg) {
+            return;
+        }
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        let minSwipeDistance = 50; // 最小滑动距离
+        let isSwiping = false;
+
+        // 触摸事件处理函数
+        function handleTouchStart(e) {
+            if (!modal.classList.contains('show')) return;
+            isSwiping = false;
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        }
+
+        function handleTouchMove(e) {
+            if (!modal.classList.contains('show')) return;
+            if (touchStartX === 0) return; // 如果没有开始位置，忽略
+            
+            const touch = e.touches[0];
+            const deltaX = Math.abs(touch.clientX - touchStartX);
+            const deltaY = Math.abs(touch.clientY - touchStartY);
+            // 如果水平滑动距离大于垂直滑动距离，标记为滑动中
+            if (deltaX > deltaY && deltaX > 10) {
+                isSwiping = true;
+            }
+        }
+
+        function handleTouchEnd(e) {
+            if (!modal.classList.contains('show')) return;
+            if (touchStartX === 0) return; // 如果没有开始位置，忽略
+            
+            const touch = e.changedTouches[0];
+            touchEndX = touch.clientX;
+            touchEndY = touch.clientY;
+
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            const absDeltaX = Math.abs(deltaX);
+            const absDeltaY = Math.abs(deltaY);
+
+            // 判断是否为水平滑动（水平滑动距离大于垂直滑动距离，且超过最小距离）
+            if (isSwiping && absDeltaX > absDeltaY && absDeltaX > minSwipeDistance) {
+                e.preventDefault(); // 阻止默认行为
+                e.stopPropagation(); // 阻止事件冒泡
+                if (deltaX > 0) {
+                    // 向右滑动，显示上一张
+                    showPrevious();
+                } else {
+                    // 向左滑动，显示下一张
+                    showNext();
+                }
+            }
+            
+            // 重置
+            touchStartX = 0;
+            touchStartY = 0;
+            touchEndX = 0;
+            touchEndY = 0;
+            isSwiping = false;
+        }
+
+        // 在模态框和图片上都绑定事件，使用捕获阶段确保能捕获到
+        modal.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
+        modal.addEventListener('touchmove', handleTouchMove, { passive: true, capture: true });
+        modal.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+        
+        if (modalImg) {
+            modalImg.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
+            modalImg.addEventListener('touchmove', handleTouchMove, { passive: true, capture: true });
+            modalImg.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+        }
+    }
+
     // 监听模态窗口打开事件，更新当前索引
     function onModalOpen() {
         collectImages();
@@ -230,7 +319,7 @@
 
     // 监听所有图片点击事件
     document.addEventListener('click', function(e) {
-        const img = e.target.closest('.project-gallery img, .peek-image img, .main-image img');
+        const img = e.target.closest('.project-gallery img, .peek-image img, .main-image img, .progress-image img');
         if (img) {
             // 延迟执行，确保模态窗口已经打开
             setTimeout(onModalOpen, 150);
@@ -239,7 +328,7 @@
 
     // 重写图片点击处理，确保索引更新
     function interceptImageClicks() {
-        const images = document.querySelectorAll('.project-gallery img, .peek-image img, .main-image img');
+        const images = document.querySelectorAll('.project-gallery img, .peek-image img, .main-image img, .progress-image img');
         images.forEach((img, index) => {
             const originalClick = img.onclick;
             img.addEventListener('click', function(e) {

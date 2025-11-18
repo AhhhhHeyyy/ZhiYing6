@@ -1320,16 +1320,26 @@ body, .project-description, .project-content, .project-container {
     .media-left, .media-right {
         padding: 0 4vw;
         margin-bottom: 12px;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
     }
     .media-left ul, .media-right ul {
         flex-direction: column !important;
-        justify-content: center;
-        align-items: center;
+        justify-content: center !important;
+        align-items: center !important;
         flex-wrap: nowrap;
         gap: 10px;
         width: 100%;
-        text-align: center;
+        text-align: center !important;
         padding: 20px 0 0 0;
+        margin: 0 auto !important;
+    }
+    .media-left ul li, .media-right ul li {
+        text-align: center !important;
+        margin: 0 auto !important;
     }
     .media-left ul li:not(.compact-text), .media-right ul li:not(.compact-text) {
         white-space: nowrap;
@@ -1398,6 +1408,8 @@ body, .project-description, .project-content, .project-container {
         justify-content: center !important;
         text-align: center !important;
         width: 100% !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
     }
     .media-left ul, .media-right ul {
         display: flex !important;
@@ -1406,21 +1418,23 @@ body, .project-description, .project-content, .project-container {
         justify-content: center !important;
         text-align: center !important;
         width: 100% !important;
+        margin: 0 auto !important;
+        padding: 20px 0 0 0 !important;
     }
-    .media-left ul li.compact-text, 
-    .media-right ul li.compact-text {
+    .media-left ul li, 
+    .media-right ul li {
         font-size: 0.8rem !important;
         text-align: center !important;
-        display: inline-block !important;
-        width: auto !important;
+        display: block !important;
+        width: 100% !important;
         margin: 0 auto !important;
         white-space: nowrap !important;
         padding: 0 !important;
         box-sizing: border-box !important;
         position: relative !important;
     }
-    .media-left ul li.compact-text::before,
-    .media-right ul li.compact-text::before {
+    .media-left ul li::before,
+    .media-right ul li::before {
         display: inline !important;
         position: static !important;
         margin-right: 6px !important;
@@ -1449,8 +1463,8 @@ body, .project-description, .project-content, .project-container {
         text-align: center !important;
         width: 100% !important;
     }
-    .media-left ul li.compact-text, 
-    .media-right ul li.compact-text {
+    .media-left ul li, 
+    .media-right ul li {
         font-size: 0.85rem !important;
         text-align: center !important;
         display: inline-block !important;
@@ -1461,8 +1475,8 @@ body, .project-description, .project-content, .project-container {
         box-sizing: border-box !important;
         position: relative !important;
     }
-    .media-left ul li.compact-text::before,
-    .media-right ul li.compact-text::before {
+    .media-left ul li::before,
+    .media-right ul li::before {
         display: inline !important;
         position: static !important;
         margin-right: 6px !important;

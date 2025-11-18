@@ -456,15 +456,16 @@ body, .project-description, .project-content, .project-container {
     border-radius: 0;
     background: #f8f8f8;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    /* 确保 transform 原点在中心 */
+    transform-origin: center center;
 }
 
 .progress-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .progress-item-featured {
@@ -520,15 +521,20 @@ body, .project-description, .project-content, .project-container {
     box-shadow: none;
     background: transparent;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     object-fit: cover;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    /* 确保图片缩放中心点在中心 */
+    transform-origin: center center;
+    /* 使用硬件加速 */
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .progress-item:hover img {
-    transform: scale(1.03);
+    transform: scale(1.08);
 }
 
 .progress-item .custom-video-wrapper {
@@ -538,7 +544,7 @@ body, .project-description, .project-content, .project-container {
     border: none;
     border-radius: 0;
     overflow: hidden;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: none !important;
     background-color: #000000;
     display: flex;
@@ -547,10 +553,11 @@ body, .project-description, .project-content, .project-container {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    transform-origin: center center;
 }
 
 .progress-item:hover .custom-video-wrapper {
-    transform: scale(1.03);
+    transform: scale(1.08) !important;
 }
 
 .progress-item .custom-video {
@@ -736,10 +743,6 @@ body, .project-description, .project-content, .project-container {
         aspect-ratio: 16 / 9;
     }
     
-    .progress-item:hover {
-        transform: translateY(-4px);
-    }
-    
     .progress-overlay {
         padding: 14px 10px 10px;
     }
@@ -771,14 +774,15 @@ body, .project-description, .project-content, .project-container {
     border-radius: 0;
     background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    /* 确保 transform 原点在中心 */
+    transform-origin: center center;
 }
 
 .documentation-item:hover {
-    transform: translateY(-8px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
@@ -819,11 +823,16 @@ body, .project-description, .project-content, .project-container {
     box-shadow: none;
     background: transparent;
     display: block;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     object-fit: cover;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    /* 确保图片缩放中心点在中心 */
+    transform-origin: center center;
+    /* 使用硬件加速 */
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .documentation-item:hover img {
@@ -837,7 +846,7 @@ body, .project-description, .project-content, .project-container {
     border: none;
     border-radius: 0;
     overflow: hidden;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: none !important;
     background-color: #000000;
     display: flex;
@@ -846,10 +855,11 @@ body, .project-description, .project-content, .project-container {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    transform-origin: center center;
 }
 
 .documentation-item:hover .custom-video-wrapper {
-    transform: scale(1.08);
+    transform: scale(1.08) !important;
 }
 
 .documentation-item .custom-video {
@@ -959,10 +969,6 @@ body, .project-description, .project-content, .project-container {
         grid-row: unset;
         width: 100%;
         aspect-ratio: 16 / 9;
-    }
-    
-    .documentation-item:hover {
-        transform: translateY(-4px);
     }
     
     .documentation-overlay {
@@ -1085,11 +1091,23 @@ body, .project-description, .project-content, .project-container {
     max-width: 90vw;
     max-height: 90vh;
     object-fit: contain;
+    display: block;
+    /* 防止视频加载时的尺寸变化导致抖动 */
+    min-height: 200px;
+    background: #000;
+    /* 确保视频尺寸稳定 */
+    will-change: opacity, transform;
+    backface-visibility: hidden;
 }
 .img-modal.show .img-modal-content {
     opacity: 1;
     transform: scale(1);
     animation: fadeInScale 0.3s ease-in-out;
+}
+
+/* 视频元素的动画由 JavaScript 控制，避免与 CSS 动画冲突 */
+.img-modal.show .img-modal-content video {
+    animation: none;
 }
 @keyframes fadeInScale {
     from {

@@ -294,7 +294,19 @@
                 
                 const modalImg = document.getElementById('img-modal-img');
                 const modalVideo = document.getElementById('img-modal-video');
+                const modal = document.getElementById('img-modal');
                 const sources = video.querySelectorAll('source');
+                
+                // 隐藏图片
+                if (modalImg) {
+                    modalImg.style.display = 'none';
+                }
+                
+                // 先设置视频为不可见，准备动画
+                modalVideo.style.display = 'block';
+                modalVideo.style.opacity = '0';
+                modalVideo.style.transform = 'scale(0.95)';
+                modalVideo.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
                 
                 // 清空并重新设置视频源
                 modalVideo.innerHTML = '';
@@ -305,10 +317,54 @@
                     modalVideo.appendChild(newSource);
                 });
                 
-                modalImg.style.display = 'none';
-                modalVideo.style.display = 'block';
-                document.getElementById('img-modal').classList.add('show');
+                // 模态框中的视频应该有控制栏，不自动播放，不静音
+                modalVideo.setAttribute('controls', '');
+                modalVideo.removeAttribute('autoplay');
+                modalVideo.removeAttribute('loop');
+                modalVideo.removeAttribute('muted');
+                
+                // 暂停视频，让用户手动播放
+                modalVideo.pause();
+                
+                // 打开模态框
+                modal.classList.add('show');
+                
+                // 加载视频
                 modalVideo.load();
+                
+                // 视频加载完成后淡入动画
+                let hasAnimated = false;
+                
+                const animateVideo = function() {
+                    if (hasAnimated) return;
+                    hasAnimated = true;
+                    
+                    // 使用 requestAnimationFrame 确保平滑动画
+                    requestAnimationFrame(() => {
+                        modalVideo.style.opacity = '1';
+                        modalVideo.style.transform = 'scale(1)';
+                    });
+                };
+                
+                // 监听视频元数据加载完成
+                const onVideoReady = function() {
+                    // 等待一帧确保布局稳定
+                    requestAnimationFrame(() => {
+                        animateVideo();
+                    });
+                    modalVideo.removeEventListener('loadedmetadata', onVideoReady);
+                    modalVideo.removeEventListener('canplay', onVideoReady);
+                };
+                
+                modalVideo.addEventListener('loadedmetadata', onVideoReady);
+                modalVideo.addEventListener('canplay', onVideoReady);
+                
+                // 如果视频已经加载了元数据，立即动画
+                if (modalVideo.readyState >= 1) {
+                    requestAnimationFrame(() => {
+                        animateVideo();
+                    });
+                }
             }
             
             // 添加点击和触摸事件
@@ -340,20 +396,27 @@
         }
     };
 
-    // 视频播放按钮
+    // 视频播放按钮（只处理非 Grid 中的视频，Grid 中的视频由 modal-navigation.js 处理）
     document.querySelectorAll('.custom-video-wrapper').forEach(wrapper => {
         const video = wrapper.querySelector('.custom-video');
         const playBtn = wrapper.querySelector('.custom-play-btn');
-        playBtn.onclick = function() {
-            video.play();
-            playBtn.classList.add('hide');
-        };
-        video.onpause = function() {
-            playBtn.classList.remove('hide');
-        };
-        video.onplay = function() {
-            playBtn.classList.add('hide');
-        };
+        
+        // 检查是否在 Grid 中（progress-item 或 documentation-item）
+        const isInGrid = wrapper.closest('.progress-item') || wrapper.closest('.documentation-item');
+        
+        // 只处理非 Grid 中的视频
+        if (!isInGrid && video && playBtn) {
+            playBtn.onclick = function() {
+                video.play();
+                playBtn.classList.add('hide');
+            };
+            video.onpause = function() {
+                playBtn.classList.remove('hide');
+            };
+            video.onplay = function() {
+                playBtn.classList.add('hide');
+            };
+        }
     });
 
     function openModal(src) {

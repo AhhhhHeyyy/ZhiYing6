@@ -172,25 +172,11 @@ async function initIntroProjects() {
             });
         }
         
-        // 可选：自动轮播（每 5 秒切换一次）
+        // 自动轮播（每 5 秒切换一次，不受 hover 影响）
         let autoPlayInterval = setInterval(() => {
             const nextIndex = (currentIndex + 1) % selectedProjects.length;
             switchToProject(nextIndex);
         }, 5000);
-        
-        // 鼠标悬停时暂停自动轮播
-        const introImagesContainer = document.querySelector('.intro-images');
-        if (introImagesContainer) {
-            introImagesContainer.addEventListener('mouseenter', () => {
-                clearInterval(autoPlayInterval);
-            });
-            introImagesContainer.addEventListener('mouseleave', () => {
-                autoPlayInterval = setInterval(() => {
-                    const nextIndex = (currentIndex + 1) % selectedProjects.length;
-                    switchToProject(nextIndex);
-                }, 5000);
-            });
-        }
         
         // 点击图片可以跳转到项目页面
         introImage.style.cursor = 'pointer';

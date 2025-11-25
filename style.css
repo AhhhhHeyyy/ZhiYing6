@@ -2,11 +2,12 @@
 @font-face {
     font-family: 'ChillDINGothic';
     src: url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff2') format('woff2'),
-         url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff') format('woff'),
-         url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.otf') format('opentype');
+        url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.woff') format('woff'),
+        url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/Std/ChillDINGothic_Std.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
-    font-display: swap; /* 立即显示文字，字体加载完成后立即替换 */
+    font-display: swap;
+    /* 立即显示文字，字体加载完成后立即替换 */
 }
 
 /* ShipporiAntique 字体引入 - 标题字体（最粗版本 B1） */
@@ -15,7 +16,8 @@
     src: url('./assets/ShipporiAntique-master/fonts/ttf/ShipporiAntiqueB1-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-    font-display: swap; /* 立即显示文字，字体加载完成后立即替换 */
+    font-display: swap;
+    /* 立即显示文字，字体加载完成后立即替换 */
 }
 
 /* ChillDINGothic Bold 字体引入 - Intro 标题（最粗版本） */
@@ -24,7 +26,8 @@
     src: url('./assets/ChillDINGothic.v1.300/ChillDINGothic%20v1.300/otf/ChillDINGothic_Bold.otf') format('opentype');
     font-weight: bold;
     font-style: normal;
-    font-display: swap; /* 立即显示文字，字体加载完成后立即替换 */
+    font-display: swap;
+    /* 立即显示文字，字体加载完成后立即替换 */
 }
 
 /* 基本重设 */
@@ -35,7 +38,8 @@
     /* 移除scroll-behavior: smooth，由Lenis处理 */
 }
 
-html, body {
+html,
+body {
     width: 100%;
     overflow-x: hidden;
     position: relative;
@@ -148,7 +152,8 @@ body {
     margin-bottom: 10px;
     font-weight: bold !important;
     color: #E6F4F7;
-    will-change: transform;  /* 优化滚动性能 */
+    will-change: transform;
+    /* 优化滚动性能 */
 }
 
 .intro-text h1:nth-child(2) {
@@ -286,7 +291,8 @@ body {
 .skills-container {
     width: 100%;
     position: relative;
-    margin-top: 0; /* 移除上边距，让skill-H2紧贴上方 */
+    margin-top: 0;
+    /* 移除上边距，让skill-H2紧贴上方 */
     z-index: 2;
 }
 
@@ -329,37 +335,80 @@ body {
 
 /* 上下漂浮动画 */
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-20px);
     }
 }
 
 @keyframes blink {
-    0% { opacity: 0; }
-    25% { opacity: 0; }    /* 停顿0.5秒 */
-    26% { opacity: 1; }    /* 第一次闪烁开始 */
-    32% { opacity: 0; }    /* 延长闪烁时间 */
-    38% { opacity: 1; }    /* 第二次闪烁开始 */
-    44% { opacity: 0; }    /* 延长闪烁时间 */
-    50% { opacity: 1; }    /* 保持显示 */
-    75% { opacity: 1; }    /* 持续显示到1.5秒 */
-    100% { opacity: 0; }   /* 最后0.5秒淡出 */
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    /* 停顿0.5秒 */
+    26% {
+        opacity: 1;
+    }
+
+    /* 第一次闪烁开始 */
+    32% {
+        opacity: 0;
+    }
+
+    /* 延长闪烁时间 */
+    38% {
+        opacity: 1;
+    }
+
+    /* 第二次闪烁开始 */
+    44% {
+        opacity: 0;
+    }
+
+    /* 延长闪烁时间 */
+    50% {
+        opacity: 1;
+    }
+
+    /* 保持显示 */
+    75% {
+        opacity: 1;
+    }
+
+    /* 持续显示到1.5秒 */
+    100% {
+        opacity: 0;
+    }
+
+    /* 最后0.5秒淡出 */
 }
 
 .skill-H2 {
     width: 100%;
     text-align: center;
     margin-bottom: 30px;
-    margin-top: 0; /* 紧贴区域上方 */
+    margin-top: 0;
+    /* 紧贴区域上方 */
     z-index: 2;
     position: relative;
-    overflow: visible; /* 改为 visible，确保内容不被裁剪 */
-    min-height: 50px; /* 确保有最小高度 */
-    display: block; /* 确保显示 */
-    visibility: visible; /* 确保可见 */
+    overflow: visible;
+    /* 改为 visible，确保内容不被裁剪 */
+    min-height: 50px;
+    /* 确保有最小高度 */
+    display: block;
+    /* 确保显示 */
+    visibility: visible;
+    /* 确保可见 */
 }
 
 .skill-H2-bg {
@@ -372,8 +421,10 @@ body {
     transform: scaleX(0);
     transform-origin: center;
     z-index: -1;
-    display: block; /* 确保显示 */
-    visibility: visible; /* 确保可见 */
+    display: block;
+    /* 确保显示 */
+    visibility: visible;
+    /* 确保可见 */
 }
 
 .skill-H2 h2 {
@@ -385,7 +436,8 @@ body {
     margin: 10px 0;
     opacity: 0;
     transform: translateY(20px);
-    visibility: visible; /* 确保可见 */
+    visibility: visible;
+    /* 确保可见 */
     position: relative;
     z-index: 1;
     /* 备用方案：如果动画失败，0.5秒后显示（缩短时间） */
@@ -419,20 +471,25 @@ body {
 
 /* 移动端样式 */
 @media screen and (max-width: 540px) {
+
     /* 确保 skill-H2 在手机端可见 */
     .skill-H2 {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        margin-top: 0 !important; /* 紧贴区域上方 */
+        margin-top: 0 !important;
+        /* 紧贴区域上方 */
         margin-bottom: 30px !important;
         position: relative !important;
         z-index: 2 !important;
-        min-height: 60px !important; /* 增加最小高度，确保可见 */
-        height: auto !important; /* 允许根据内容自动调整 */
-        padding: 10px 0 !important; /* 添加内边距 */
+        min-height: 60px !important;
+        /* 增加最小高度，确保可见 */
+        height: auto !important;
+        /* 允许根据内容自动调整 */
+        padding: 10px 0 !important;
+        /* 添加内边距 */
     }
-    
+
     .skill-H2-bg {
         display: block !important;
         visibility: visible !important;
@@ -447,7 +504,7 @@ body {
         transform-origin: center !important;
         z-index: -1 !important;
     }
-    
+
     .skill-H2 h2 {
         display: inline-block !important;
         visibility: visible !important;
@@ -458,33 +515,49 @@ body {
         font-size: 16px !important;
         padding: 10px 15px !important;
         margin: 0 !important;
-        transform: translateY(20px) !important; /* 初始状态有位移，等待动画触发 */
-        white-space: normal !important; /* 允许换行 */
-        word-break: keep-all !important; /* 保持词语完整 */
+        transform: translateY(20px) !important;
+        /* 初始状态有位移，等待动画触发 */
+        white-space: normal !important;
+        /* 允许换行 */
+        word-break: keep-all !important;
+        /* 保持词语完整 */
         /* 备用动画：如果 GSAP 动画没有触发，0.3秒后显示（缩短时间） */
         animation: fallback-show-mobile 0.1s 0.3s forwards !important;
     }
-    
+
     @keyframes fallback-show-mobile {
         to {
             opacity: 1 !important;
             transform: translateY(0) !important;
         }
     }
-    
-    .skill-box-all, .skill-box-all2 {
+
+    .skill-box-all,
+    .skill-box-all2 {
         width: 95% !important;
         height: 140px !important;
         background-size: contain !important;
     }
-    .skill-box-all { top: -130px !important; }
-    .skill-box-all2 { top:50px !important; }
-    .skills-images {
-        height: 250px !important; /* 减少高度，从400px减少到250px */
-        padding-left: 0 !important; /* 移除左边距 */
-        left: 0 !important; /* 重置左边距 */
-        justify-content: center !important; /* 使用 flexbox 居中 */
+
+    .skill-box-all {
+        top: -130px !important;
     }
+
+    .skill-box-all2 {
+        top: 50px !important;
+    }
+
+    .skills-images {
+        height: 250px !important;
+        /* 减少高度，从400px减少到250px */
+        padding-left: 0 !important;
+        /* 移除左边距 */
+        left: 0 !important;
+        /* 重置左边距 */
+        justify-content: center !important;
+        /* 使用 flexbox 居中 */
+    }
+
     .skills-images img,
     .skills-image-wrapper img {
         width: 50%;
@@ -493,103 +566,124 @@ body {
         max-width: 180px;
         position: absolute;
         top: 120px;
-        left: 50% !important; /* 改为居中 */
-        transform: translateX(-50%) rotate(-5deg) !important; /* 确保居中 */
+        left: 50% !important;
+        /* 改为居中 */
+        transform: translateX(-50%) rotate(-5deg) !important;
+        /* 确保居中 */
         border: 2px solid rgb(255, 255, 255);
         box-shadow: 8px 8px 0px #92C7CF;
     }
+
     .skills {
         height: 1600px !important;
         min-height: 1600px !important;
         padding-bottom: 30px;
     }
+
     .skills-titles {
         top: 100px !important;
         left: 65%;
         gap: 15px;
     }
+
     .skills-titles h1 {
         font-size: 1.2rem;
         letter-spacing: 1px;
         transform: scale(0.6) translateY(300%);
     }
+
     .intro-text {
-        padding-top:200px !important;
+        padding-top: 200px !important;
         text-align: right !important;
         margin-left: auto !important;
         margin-right: -20px !important;
         width: calc(100% + 20px) !important;
         padding-right: 0 !important;
     }
+
     .intro-text h1 {
         font-size: 3.3rem !important;
     }
+
     .intro-text h1:nth-child(2) {
         transform-origin: right center !important;
         -webkit-text-stroke: 0.5px #005C80 !important;
         text-stroke: 0.5px #005C80 !important;
     }
+
     .intro-text p {
         font-size: 1.05rem !important;
     }
+
     .intro-pagination {
         bottom: 20px;
         gap: 10px;
     }
-    
+
     .intro-pagination-dot {
         width: 8px;
         height: 8px;
     }
-    
+
     .intro-pagination-dot.active {
         width: 10px;
         height: 10px;
     }
+
     .mobile-dropdown {
         max-width: 85vw !important;
         width: 85vw !important;
     }
+
     .dropdown-btn,
     .dropdown-list {
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
     }
+
     .main-header .logo {
         display: none !important;
     }
+
     .nav-menu {
         justify-content: center !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
+
     .nav-links {
         margin: 0 !important;
         gap: 20px !important;
         justify-content: center !important;
         width: 100vw !important;
     }
+
     .gallery-grid {
         justify-items: center !important;
         align-items: center !important;
         grid-template-columns: 1fr !important;
         padding: 0 0 20px 0 !important;
     }
+
     .gallery-item {
         margin: 0 auto !important;
         float: none !important;
     }
+
     .gallery-item .play-button {
         left: 45%;
     }
+
     .gallery-item .play-button svg {
         width: 100px;
         height: 50px;
     }
-    body > .social-icons {
+
+    body>.social-icons {
         display: none !important;
     }
+
     footer .social-icons {
         display: flex !important;
         flex-direction: row !important;
@@ -605,6 +699,7 @@ body {
         top: 0 !important;
         transform: none !important;
     }
+
     footer {
         padding: 20px 0;
         display: block !important;
@@ -616,9 +711,9 @@ body {
 }
 
 @media screen and (min-width: 1025px) {
-  .mobile-dropdown {
-    display: none !important;
-  }
+    .mobile-dropdown {
+        display: none !important;
+    }
 }
 
 .skill-content-wrapper {
@@ -662,54 +757,60 @@ body {
 }
 
 .skill-box-left {
-  /* 已无背景色，仅保留排版 */
-  padding: 20px;
-  margin-bottom: 20px;
+    /* 已无背景色，仅保留排版 */
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 .skill-box-right {
-  /* 已无背景色，仅保留排版 */
-  padding: 20px;
-  align-self: flex-end;
+    /* 已无背景色，仅保留排版 */
+    padding: 20px;
+    align-self: flex-end;
 }
 
-.skill-box, .skill-box2 {
-  text-align: center;
+.skill-box,
+.skill-box2 {
+    text-align: center;
 }
 
 .skill-box {
-  color: #92C7CF;
-  padding-left: 21%;
-  width: 450px;
+    color: #92C7CF;
+    padding-left: 21%;
+    width: 450px;
 }
 
 .skill-box2 {
-  color: #1b1b1b;
-  padding-left: 21%;
-  width: 450px;
+    color: #1b1b1b;
+    padding-left: 21%;
+    width: 450px;
 }
 
 /* 电脑端核心样式 - 文字框切换 */
 .skill-text-box-container {
     position: absolute;
-    right: 10%; /* 再往右移 */
+    right: 10%;
+    /* 再往右移 */
     top: 50%;
     transform: translateY(-50%);
     z-index: 3;
     width: auto;
-    margin-top: -60px; /* 与图片对齐 */
+    margin-top: -60px;
+    /* 与图片对齐 */
 }
 
 .skill-text-wrapper {
     position: relative;
     width: 650px;
     max-width: 100%;
-    height: 320px; /* 增加高度，从 270px 改为 320px */
-    overflow: hidden; /* 只在文字框层面控制，防止动画超出 */
+    height: 320px;
+    /* 增加高度，从 270px 改为 320px */
+    overflow: hidden;
+    /* 只在文字框层面控制，防止动画超出 */
     background: white;
     border: 4px solid #92C7CF;
     border-radius: 20px;
-    padding: 25px 100px 35px 50px; /* 减少上padding，文字不贴边 */
+    padding: 25px 100px 35px 50px;
+    /* 减少上padding，文字不贴边 */
     box-shadow: 0 4px 20px rgba(146, 199, 207, 0.3);
     display: flex;
     align-items: center;
@@ -719,20 +820,26 @@ body {
 
 .skill-text-item {
     position: absolute;
-    width: calc(100% - 50px - 100px); /* 减去左右padding，确保文字不贴边 */
-    height: calc(100% - 25px - 35px); /* 减去上下padding */
+    width: calc(100% - 50px - 100px);
+    /* 减去左右padding，确保文字不贴边 */
+    height: calc(100% - 25px - 35px);
+    /* 减去上下padding */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     opacity: 0;
-    transform: translateX(100%); /* 默认从右边开始 */
+    transform: translateX(100%);
+    /* 默认从右边开始 */
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-in-out;
     pointer-events: none;
     z-index: 1;
-    overflow: visible; /* 改为visible，让文字完整显示 */
-    left: 50px; /* 从左边padding开始，文字不贴边 */
-    top: 25px; /* 从顶部padding开始 */
+    overflow: visible;
+    /* 改为visible，让文字完整显示 */
+    left: 50px;
+    /* 从左边padding开始，文字不贴边 */
+    top: 25px;
+    /* 从顶部padding开始 */
     box-sizing: border-box;
     padding: 0;
 }
@@ -744,12 +851,14 @@ body {
 }
 
 .skill-text-item.prev {
-    transform: translateX(-100%); /* 向左滑出 */
+    transform: translateX(-100%);
+    /* 向左滑出 */
     opacity: 0;
 }
 
 .skill-text-item.next {
-    transform: translateX(100%); /* 向右滑出 */
+    transform: translateX(100%);
+    /* 向右滑出 */
     opacity: 0;
 }
 
@@ -770,34 +879,48 @@ body {
     font-size: 1.2rem;
     font-weight: 500;
     color: #005C80;
-    line-height: 1.5; /* 缩小行距 */
-    margin: 6px 0; /* 缩小段落间距 */
+    line-height: 1.5;
+    /* 缩小行距 */
+    margin: 6px 0;
+    /* 缩小段落间距 */
     text-align: left;
     width: 100%;
-    word-break: keep-all; /* 防止中文字符被拆分 */
-    white-space: normal; /* 允许正常换行，但保持词语完整 */
-    overflow-wrap: break-word; /* 允许长文字换行 */
+    word-break: keep-all;
+    /* 防止中文字符被拆分 */
+    white-space: normal;
+    /* 允许正常换行，但保持词语完整 */
+    overflow-wrap: break-word;
+    /* 允许长文字换行 */
     box-sizing: border-box;
     letter-spacing: 0.05em;
 }
 
 .skill-text-item p:nth-child(2) {
-    white-space: normal; /* 允许换行，防止被裁切 */
+    white-space: normal;
+    /* 允许换行，防止被裁切 */
 }
 
 /* 技能技术项样式 - 深蓝色背景，浅蓝绿色字，荧光笔效果 */
 .skill-text-item .skill-tech-item {
-    background-color: #005c80af; /* 深蓝色背景 */
-    color: #E6F4F1 !important; /* 浅蓝绿色字 */
+    background-color: #005c80af;
+    /* 深蓝色背景 */
+    color: #E6F4F1 !important;
+    /* 浅蓝绿色字 */
     padding: 4px 8px;
-    border-radius: 0; /* 移除圆角 */
-    display: inline; /* inline元素，只包裹文字内容 */
+    border-radius: 0;
+    /* 移除圆角 */
+    display: inline;
+    /* inline元素，只包裹文字内容 */
     margin: 0;
-    line-height: 1.6; /* 调整行高 */
-    box-decoration-break: clone; /* 确保背景在换行时也能正确显示 */
+    line-height: 1.6;
+    /* 调整行高 */
+    box-decoration-break: clone;
+    /* 确保背景在换行时也能正确显示 */
     -webkit-box-decoration-break: clone;
-    white-space: nowrap; /* 防止文字换行，保持在一行 */
-    transform: translate(2px, 2px); /* 往右下角错位，模拟荧光笔效果 */
+    white-space: nowrap;
+    /* 防止文字换行，保持在一行 */
+    transform: translate(2px, 2px);
+    /* 往右下角错位，模拟荧光笔效果 */
     position: relative;
 }
 
@@ -820,7 +943,8 @@ body {
     padding: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
     z-index: 11;
-    box-shadow: none; /* 确保没有阴影 */
+    box-shadow: none;
+    /* 确保没有阴影 */
 }
 
 .skill-arrow-btn:hover {
@@ -833,17 +957,24 @@ body {
 }
 
 .skill-arrow-btn img {
-    width: 120px !important; /* 放大箭头尺寸 */
+    width: 120px !important;
+    /* 放大箭头尺寸 */
     height: auto !important;
     min-width: 120px !important;
     max-width: 120px !important;
     display: block !important;
-    transform: scaleX(-1); /* 初始状态：指向右边，不使用!important以便JS可以覆盖 */
-    transition: transform 0.3s ease; /* 箭头翻转过渡效果 */
-    box-shadow: none !important; /* 确保没有阴影 */
-    filter: none !important; /* 移除所有滤镜效果 */
-    border: none !important; /* 移除边框 */
-    position: static !important; /* 移除绝对定位 */
+    transform: scaleX(-1);
+    /* 初始状态：指向右边，不使用!important以便JS可以覆盖 */
+    transition: transform 0.3s ease;
+    /* 箭头翻转过渡效果 */
+    box-shadow: none !important;
+    /* 确保没有阴影 */
+    filter: none !important;
+    /* 移除所有滤镜效果 */
+    border: none !important;
+    /* 移除边框 */
+    position: static !important;
+    /* 移除绝对定位 */
     object-fit: contain !important;
 }
 
@@ -867,18 +998,21 @@ body {
     background: #92C7CF;
 }
 
-.skill-box, .skill-box2 {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding-top: 30px;
- 
+.skill-box,
+.skill-box2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 30px;
+
 }
-.skill-box h2, .skill-box2 h2 {
+
+.skill-box h2,
+.skill-box2 h2 {
     font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
     font-weight: 800;
     font-size: 20px;
@@ -887,10 +1021,14 @@ body {
     letter-spacing: 1px;
     color: #92C7CF;
 }
-.skill-box2 h2 { color: #1b1b1b; }
+
+.skill-box2 h2 {
+    color: #1b1b1b;
+}
 
 /* 平板端适配 */
 @media screen and (min-width: 541px) and (max-width: 1024px) {
+
     /* 确保 skill-H2 在平板端可见 */
     .skill-H2 {
         display: block !important;
@@ -904,7 +1042,7 @@ body {
         height: auto !important;
         padding: 10px 0 !important;
     }
-    
+
     .skill-H2-bg {
         display: block !important;
         visibility: visible !important;
@@ -918,7 +1056,7 @@ body {
         transform-origin: center !important;
         z-index: -1 !important;
     }
-    
+
     .skill-H2 h2 {
         display: inline-block !important;
         visibility: visible !important;
@@ -934,14 +1072,14 @@ body {
         /* 备用动画：如果 GSAP 动画没有触发，0.4秒后显示（缩短时间） */
         animation: fallback-show-tablet 0.1s 0.4s forwards !important;
     }
-    
+
     @keyframes fallback-show-tablet {
         to {
             opacity: 1 !important;
             transform: translateY(0) !important;
         }
     }
-    
+
     .skill-text-box-container {
         position: relative;
         right: auto;
@@ -955,62 +1093,78 @@ body {
         justify-content: center;
         z-index: 3;
     }
-    
+
     .skill-text-wrapper {
         width: 90%;
         max-width: 600px;
         height: auto;
-        min-height: 350px; /* 从 290px 增加到 350px */
-        padding: 25px 40px 85px 40px; /* 增加上下 padding */
+        min-height: 350px;
+        /* 从 290px 增加到 350px */
+        padding: 25px 40px 85px 40px;
+        /* 增加上下 padding */
         border-radius: 15px;
         overflow: hidden;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
     }
-    
+
     .skill-text-item {
-        width: calc(100% - 40px - 40px); /* 减去左右padding */
-        height: auto; /* 改为auto，让内容决定高度 */
-        max-height: calc(100% - 25px - 85px); /* 配合新的 padding */
+        width: calc(100% - 40px - 40px);
+        /* 减去左右padding */
+        height: auto;
+        /* 改为auto，让内容决定高度 */
+        max-height: calc(100% - 25px - 85px);
+        /* 配合新的 padding */
         position: absolute;
         left: 40px;
-        top: 25px; /* 从 20px 增加到 25px */
-        overflow: visible; /* 改为visible，让文字完整显示不被切掉 */
+        top: 25px;
+        /* 从 20px 增加到 25px */
+        overflow: visible;
+        /* 改为visible，让文字完整显示不被切掉 */
         padding: 0;
-        padding-bottom: 5px; /* 减少底部padding */
+        padding-bottom: 5px;
+        /* 减少底部padding */
         margin-bottom: 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* 改为flex-start，从顶部开始 */
+        justify-content: flex-start;
+        /* 改为flex-start，从顶部开始 */
     }
-    
+
     .skill-text-item p {
         overflow-wrap: break-word;
         line-height: 1.5;
         margin: 5px 0;
         font-size: 1.1rem;
-        max-width: 100%; /* 确保不超出 */
+        max-width: 100%;
+        /* 确保不超出 */
         letter-spacing: 0.05em;
     }
-    
+
     .skill-text-item p:nth-child(2) {
-        white-space: normal; /* 允许换行 */
+        white-space: normal;
+        /* 允许换行 */
     }
-    
+
     .skill-arrow-section {
-        right: 15px; /* 改为右下角 */
-        bottom: 20px; /* 调整底部距离 */
-        left: auto; /* 移除居中定位 */
-        transform: none; /* 移除居中transform */
+        right: 15px;
+        /* 改为右下角 */
+        bottom: 20px;
+        /* 调整底部距离 */
+        left: auto;
+        /* 移除居中定位 */
+        transform: none;
+        /* 移除居中transform */
         z-index: 10;
         position: absolute;
         height: auto;
     }
-    
+
     .skill-arrow-btn img {
-        width: 140px !important; /* 放大箭头（从110px放大到140px） */
+        width: 140px !important;
+        /* 放大箭头（从110px放大到140px） */
         min-width: 140px !important;
         max-width: 140px !important;
     }
@@ -1023,7 +1177,8 @@ body {
         right: auto;
         top: auto;
         transform: none;
-        margin-top: -40px !important; /* 从 30px 减少到 10px，往上移 */
+        margin-top: -40px !important;
+        /* 从 30px 减少到 10px，往上移 */
         margin-bottom: 20px;
         padding: 0 20px;
         width: 100%;
@@ -1031,37 +1186,45 @@ body {
         justify-content: center;
         z-index: 3;
     }
-    
+
     .skill-text-wrapper {
         width: 100%;
         max-width: 100%;
         height: auto;
-        min-height: 450px; /* 从 380px 增加到 450px */
-        padding: 25px 35px 100px 35px; /* 增加上下 padding */
+        min-height: 450px;
+        /* 从 380px 增加到 450px */
+        padding: 25px 35px 100px 35px;
+        /* 增加上下 padding */
         border-radius: 15px;
         overflow: hidden;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
     }
-    
+
     .skill-text-item {
         width: calc(100% - 35px - 35px);
-        height: auto; /* 改为auto */
-        max-height: calc(100% - 25px - 100px); /* 配合新的 padding */
+        height: auto;
+        /* 改为auto */
+        max-height: calc(100% - 25px - 100px);
+        /* 配合新的 padding */
         position: absolute;
         left: 35px;
-        top: 25px; /* 从 20px 增加到 25px */
-        overflow: visible; /* 改为visible，让文字完整显示不被切掉 */
+        top: 25px;
+        /* 从 20px 增加到 25px */
+        overflow: visible;
+        /* 改为visible，让文字完整显示不被切掉 */
         padding: 0;
-        padding-bottom: 5px; /* 减少底部padding */
+        padding-bottom: 5px;
+        /* 减少底部padding */
         margin-bottom: 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* 从顶部开始 */
+        justify-content: flex-start;
+        /* 从顶部开始 */
     }
-    
+
     .skill-text-item p {
         overflow-wrap: break-word;
         line-height: 1.5;
@@ -1070,27 +1233,33 @@ body {
         max-width: 100%;
         letter-spacing: 0.05em;
     }
-    
+
     .skill-text-item p:nth-child(2) {
-        white-space: normal; /* 允许换行 */
+        white-space: normal;
+        /* 允许换行 */
     }
-    
+
     .skill-arrow-section {
-        right: 15px; /* 改为右下角 */
-        bottom: 25px; /* 增加底部距离，避免重叠 */
-        left: auto; /* 移除居中定位 */
-        transform: none; /* 移除居中transform */
+        right: 15px;
+        /* 改为右下角 */
+        bottom: 25px;
+        /* 增加底部距离，避免重叠 */
+        left: auto;
+        /* 移除居中定位 */
+        transform: none;
+        /* 移除居中transform */
         z-index: 10;
         position: absolute;
         height: auto;
     }
-    
+
     .skill-arrow-btn img {
-        width: 120px !important; /* 放大箭头（从95px放大到120px） */
+        width: 120px !important;
+        /* 放大箭头（从95px放大到120px） */
         min-width: 120px !important;
         max-width: 120px !important;
     }
-    
+
     .pagination-dot {
         width: 8px;
         height: 8px;
@@ -1100,36 +1269,45 @@ body {
 /* 小手机尺寸特殊处理 (300px - 400px) */
 @media screen and (max-width: 400px) {
     .skill-text-item p {
-        font-size: 0.9rem !important; /* 从 1.05rem 缩小到 0.9rem */
-        margin: 4px 0 !important; /* 从 5px 缩小到 4px */
-        line-height: 1.4 !important; /* 稍微缩小行距 */
+        font-size: 0.9rem !important;
+        /* 从 1.05rem 缩小到 0.9rem */
+        margin: 4px 0 !important;
+        /* 从 5px 缩小到 4px */
+        line-height: 1.4 !important;
+        /* 稍微缩小行距 */
     }
-    
+
     .skill-text-item .skill-tech-item {
-        font-size: 0.9rem !important; /* 跟随文字大小 */
-        padding: 3px 6px !important; /* 缩小 padding */
+        font-size: 0.9rem !important;
+        /* 跟随文字大小 */
+        padding: 3px 6px !important;
+        /* 缩小 padding */
     }
-    
+
     /* 按钮稍微缩小 */
     .skill-arrow-btn img {
-        width: 110px !important; /* 放大箭头（从80px放大到110px） */
+        width: 110px !important;
+        /* 放大箭头（从80px放大到110px） */
         min-width: 110px !important;
         max-width: 110px !important;
     }
-    
+
     /* 分页指示器稍微缩小 */
     .pagination-dot {
-        width: 7px !important; /* 从 8px 缩小到 7px */
+        width: 7px !important;
+        /* 从 8px 缩小到 7px */
         height: 7px !important;
     }
-    
+
     /* 文字框内边距稍微缩小 */
     .skill-text-wrapper {
-        padding: 20px 30px 90px 30px !important; /* 从 25px 35px 100px 35px 缩小 */
+        padding: 20px 30px 90px 30px !important;
+        /* 从 25px 35px 100px 35px 缩小 */
     }
-    
+
     .skill-text-item {
-        width: calc(100% - 30px - 30px) !important; /* 配合新的 padding */
+        width: calc(100% - 30px - 30px) !important;
+        /* 配合新的 padding */
         left: 30px !important;
         top: 20px !important;
         max-height: calc(100% - 20px - 90px) !important;
@@ -1139,37 +1317,47 @@ body {
 /* 超小手机尺寸特殊处理 (300px 及以下) */
 @media screen and (max-width: 360px) {
     .skill-text-item p {
-        font-size: 0.85rem !important; /* 从 0.9rem 进一步缩小到 0.85rem */
-        margin: 3px 0 !important; /* 从 4px 缩小到 3px */
-        line-height: 1.35 !important; /* 进一步缩小行距 */
+        font-size: 0.85rem !important;
+        /* 从 0.9rem 进一步缩小到 0.85rem */
+        margin: 3px 0 !important;
+        /* 从 4px 缩小到 3px */
+        line-height: 1.35 !important;
+        /* 进一步缩小行距 */
     }
-    
+
     .skill-text-item .skill-tech-item {
-        font-size: 0.85rem !important; /* 跟随文字大小 */
-        padding: 2px 5px !important; /* 进一步缩小 padding */
+        font-size: 0.85rem !important;
+        /* 跟随文字大小 */
+        padding: 2px 5px !important;
+        /* 进一步缩小 padding */
     }
-    
+
     /* 按钮进一步缩小 */
     .skill-arrow-btn img {
-        width: 100px !important; /* 放大箭头（从70px放大到100px） */
+        width: 100px !important;
+        /* 放大箭头（从70px放大到100px） */
         min-width: 100px !important;
         max-width: 100px !important;
     }
-    
+
     /* 分页指示器进一步缩小 */
     .pagination-dot {
-        width: 6px !important; /* 从 7px 缩小到 6px */
+        width: 6px !important;
+        /* 从 7px 缩小到 6px */
         height: 6px !important;
     }
-    
+
     /* 文字框内边距进一步缩小 */
     .skill-text-wrapper {
-        padding: 18px 25px 85px 25px !important; /* 进一步缩小 padding */
-        min-height: 420px !important; /* 稍微减少高度 */
+        padding: 18px 25px 85px 25px !important;
+        /* 进一步缩小 padding */
+        min-height: 420px !important;
+        /* 稍微减少高度 */
     }
-    
+
     .skill-text-item {
-        width: calc(100% - 25px - 25px) !important; /* 配合新的 padding */
+        width: calc(100% - 25px - 25px) !important;
+        /* 配合新的 padding */
         left: 25px !important;
         top: 18px !important;
         max-height: calc(100% - 18px - 85px) !important;
@@ -1179,26 +1367,37 @@ body {
 /* 中型尺寸特殊处理 (768px - 1024px) */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
     .skill-text-wrapper {
-        min-height: 360px !important; /* 从 300px 增加到 360px */
-        padding-bottom: 90px !important; /* 从 80px 增加到 90px */
+        min-height: 360px !important;
+        /* 从 300px 增加到 360px */
+        padding-bottom: 90px !important;
+        /* 从 80px 增加到 90px */
     }
-    
+
     .skill-text-item {
-        max-height: calc(100% - 25px - 90px) !important; /* 配合新的 padding */
-        padding-bottom: 5px !important; /* 减少文字底部间距 */
-        overflow: visible !important; /* 确保文字不被切掉 */
-        top: 25px !important; /* 从 20px 增加到 25px */
+        max-height: calc(100% - 25px - 90px) !important;
+        /* 配合新的 padding */
+        padding-bottom: 5px !important;
+        /* 减少文字底部间距 */
+        overflow: visible !important;
+        /* 确保文字不被切掉 */
+        top: 25px !important;
+        /* 从 20px 增加到 25px */
     }
-    
+
     .skill-arrow-section {
-        right: 15px !important; /* 确保右下角定位 */
-        bottom: 22px !important; /* 调整底部距离 */
-        left: auto !important; /* 移除居中定位 */
-        transform: none !important; /* 移除居中transform */
+        right: 15px !important;
+        /* 确保右下角定位 */
+        bottom: 22px !important;
+        /* 调整底部距离 */
+        left: auto !important;
+        /* 移除居中定位 */
+        transform: none !important;
+        /* 移除居中transform */
     }
-    
+
     .skill-arrow-btn img {
-        width: 115px !important; /* 中型尺寸进一步放大 */
+        width: 115px !important;
+        /* 中型尺寸进一步放大 */
         min-width: 115px !important;
         max-width: 115px !important;
     }
@@ -1253,68 +1452,70 @@ body {
 }
 
 .gallery-item {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;
-  overflow: hidden;
-  cursor: pointer;
-  background-color: #000000; /* 确保背景为黑色 */
-  border: 3px solid #92C7CF;
-  box-shadow: 0 4px 8px rgba(146, 199, 207, 0.3);
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #000000;
+    /* 确保背景为黑色 */
+    border: 3px solid #92C7CF;
+    box-shadow: 0 4px 8px rgba(146, 199, 207, 0.3);
 }
 
 .gallery-item::before,
 .gallery-item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  height: 100%;
-  background: rgb(255, 255, 255);
-  transform: skewX(-25deg);
-  z-index: 3;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    transform: skewX(-25deg);
+    z-index: 3;
 }
 
 .gallery-item::before {
-  width: 70px;
-  opacity: 1;
-  transition: left 0.7s ease;
+    width: 70px;
+    opacity: 1;
+    transition: left 0.7s ease;
 }
 
 .gallery-item::after {
-  width: 20px;
-  opacity: 0.8;
-  left: -130%;
-  transition: left 0.7s ease;
+    width: 20px;
+    opacity: 0.8;
+    left: -130%;
+    transition: left 0.7s ease;
 }
 
 .gallery-item:hover::before {
-  left: 150%;
+    left: 150%;
 }
 
 .gallery-item:hover::after {
-  left: 170%;
+    left: 170%;
 }
 
 .gallery-item img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: #000;
-  box-sizing: border-box;
-  transition: transform 0.3s ease;
-  will-change: transform;  /* 优化滚动性能 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: #000;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+    will-change: transform;
+    /* 优化滚动性能 */
 }
 
 .gallery-item:hover img {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .gallery-item .item-overlay {
@@ -1330,21 +1531,19 @@ body {
     opacity: 0;
     transition: all 0.3s ease;
     max-width: 100%;
-    background: linear-gradient(
-      to right,
-      rgba(0, 44, 64, 0.85) 0%,
-      rgba(0, 44, 64, 0.6) 50%,
-      rgba(0, 44, 64, 0.3) 75%,
-      transparent 100%
-    );
+    background: linear-gradient(to right,
+            rgba(0, 44, 64, 0.85) 0%,
+            rgba(0, 44, 64, 0.6) 50%,
+            rgba(0, 44, 64, 0.3) 75%,
+            transparent 100%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 }
 
 .gallery-item:hover .item-overlay {
-  transform: translateX(0);
-  opacity: 1;
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .gallery-item .item-overlay h3 {
@@ -1356,10 +1555,14 @@ body {
     color: #ffffff;
     margin-bottom: 8px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    white-space: nowrap; /* 禁止换行 */
-    overflow: hidden; /* 隐藏超出部分 */
-    text-overflow: ellipsis; /* 显示省略号 */
-    max-width: 80%; /* 限制最大宽度 */
+    white-space: nowrap;
+    /* 禁止换行 */
+    overflow: hidden;
+    /* 隐藏超出部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
+    max-width: 80%;
+    /* 限制最大宽度 */
 }
 
 .gallery-item .item-overlay h3::after {
@@ -1367,166 +1570,193 @@ body {
 }
 
 .item-overlay p {
-  font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
-  font-size: 1.15rem;
-  color: #92C7CF;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
+    font-size: 1.15rem;
+    color: #92C7CF;
+    font-weight: 800;
+    letter-spacing: 0.05em;
 }
 
 /* HOLOGACHA Coming Soon 样式 */
 .gallery-item.coming-soon {
-  position: relative;
+    position: relative;
 }
 
 .gallery-item.coming-soon img {
-  filter: brightness(0.5); /* 只降低亮度，不使用色相旋转 */
-  transition: filter 0.3s ease, transform 0.3s ease;
+    filter: brightness(0.5);
+    /* 只降低亮度，不使用色相旋转 */
+    transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 .gallery-item.coming-soon:hover img {
-  filter: brightness(1); /* hover 时恢复亮度 */
-  transform: scale(1.05); /* hover 时允许缩放 */
+    filter: brightness(1);
+    /* hover 时恢复亮度 */
+    transform: scale(1.05);
+    /* hover 时允许缩放 */
 }
 
 .gallery-item.coming-soon .coming-soon-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  pointer-events: none;
-  background-color: rgba(0, 44, 64, 0.7); /* 深蓝色覆盖层，不使用滤镜 */
-  opacity: 1;
-  transition: opacity 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    pointer-events: none;
+    background-color: rgba(0, 44, 64, 0.7);
+    /* 深蓝色覆盖层，不使用滤镜 */
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
 .gallery-item.coming-soon:hover .coming-soon-overlay {
-  opacity: 0; /* hover 时淡出覆盖层 */
+    opacity: 0;
+    /* hover 时淡出覆盖层 */
 }
 
 .gallery-item.coming-soon .coming-soon-text {
-  font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #E6F4F7;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-  letter-spacing: 0.1em;
-  transition: opacity 0.3s ease;
+    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #E6F4F7;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.1em;
+    transition: opacity 0.3s ease;
 }
 
 .gallery-item.coming-soon:hover .coming-soon-text {
-  opacity: 0; /* hover 时淡出文字 */
+    opacity: 0;
+    /* hover 时淡出文字 */
 }
 
 /* 桌面端（預設） */
 .gallery-item .play-button {
-  display: none !important;
+    display: none !important;
 }
 
 /* 平板端 */
 @media screen and (min-width: 541px) and (max-width: 1024px) {
-  .gallery-item .play-button {
-    display: none !important;
-  }
-  .skills {
-    height: 1800px !important;
-    min-height: 1800px !important;
-  }
-  .skills-images {
-    padding-left: 0 !important; /* 移除左边距 */
-    left: 0 !important; /* 重置左边距 */
-    justify-content: center !important; /* 使用 flexbox 居中 */
-  }
-  .skills-images img,
-  .skills-image-wrapper img {
-    width: 60% !important; /* 缩小图片，从默认值改为 60% */
-    max-width: 350px !important; /* 缩小最大宽度 */
-    min-width: 100px !important;
-    left: 50% !important; /* 改为居中 */
-    top: 70px !important; /* 往上移，从默认值改为 70px */
-    transform: translateX(-50%) rotate(-8deg) !important; /* 确保居中 */
-  }
-  .skill-box, .skill-box2 {
-    padding-top: 20px;
-    transform: translateX(14%);  /* 添加向右移动 */
-  }
-  .skill-box h2,
-  .skill-box2 h2 {
-    font-size: 1rem !important;
-  }
-  body > .social-icons {
-    display: none !important;
-  }
-  footer .social-icons-phone {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 40px !important;
-    width: 100vw !important;
-    padding: 30px 0 40px 0 !important;
-  }
-  footer .social-icons-phone img {
-    width: 40px !important;
-    height: 40px !important;
-  }
-  .skill-box-all2 {
-    margin: 40px 0 !important;
-  }
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    font-size: 1rem !important;
-  }
-  
+    .gallery-item .play-button {
+        display: none !important;
+    }
+
+    .skills {
+        height: 1800px !important;
+        min-height: 1800px !important;
+    }
+
+    .skills-images {
+        padding-left: 0 !important;
+        /* 移除左边距 */
+        left: 0 !important;
+        /* 重置左边距 */
+        justify-content: center !important;
+        /* 使用 flexbox 居中 */
+    }
+
+    .skills-images img,
+    .skills-image-wrapper img {
+        width: 60% !important;
+        /* 缩小图片，从默认值改为 60% */
+        max-width: 350px !important;
+        /* 缩小最大宽度 */
+        min-width: 100px !important;
+        left: 50% !important;
+        /* 改为居中 */
+        top: 70px !important;
+        /* 往上移，从默认值改为 70px */
+        transform: translateX(-50%) rotate(-8deg) !important;
+        /* 确保居中 */
+    }
+
+    .skill-box,
+    .skill-box2 {
+        padding-top: 20px;
+        transform: translateX(14%);
+        /* 添加向右移动 */
+    }
+
+    .skill-box h2,
+    .skill-box2 h2 {
+        font-size: 1rem !important;
+    }
+
+    body>.social-icons {
+        display: none !important;
+    }
+
+    footer .social-icons-phone {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 40px !important;
+        width: 100vw !important;
+        padding: 30px 0 40px 0 !important;
+    }
+
+    footer .social-icons-phone img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .skill-box-all2 {
+        margin: 40px 0 !important;
+    }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        font-size: 1rem !important;
+    }
+
 }
 
 /* 手機端 */
 @media screen and (max-width: 540px) {
-  .gallery-item .play-button {
-    display: none !important;
-  }
-  
-  /* HOLOGACHA Coming Soon 移动端样式 */
-  .gallery-item.coming-soon .coming-soon-text {
-    font-size: 1.8rem;
-  }
+    .gallery-item .play-button {
+        display: none !important;
+    }
+
+    /* HOLOGACHA Coming Soon 移动端样式 */
+    .gallery-item.coming-soon .coming-soon-text {
+        font-size: 1.8rem;
+    }
 }
 
 /* 360px 特例 */
 @media screen and (min-width: 320px) and (max-width: 540px) {
-  .gallery-item .play-button {
-    display: none !important;
-  }
+    .gallery-item .play-button {
+        display: none !important;
+    }
 }
 
 /* 添加标题样式 */
 .item-overlay h3 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .item-overlay p {
-  font-size: 1rem;
-  opacity: 0.8;
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
 .social-links a {
-  font-family: 'Public Sans', sans-serif;
-  color: #404F63;
-  text-decoration: none;
-  font-weight: 800;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
+    font-family: 'Public Sans', sans-serif;
+    color: #404F63;
+    text-decoration: none;
+    font-weight: 800;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
 }
 
 .social-links a:hover {
-  opacity: 1;
+    opacity: 1;
 }
 
 .gallery-item h3 {
@@ -1599,7 +1829,7 @@ h3 {
     color: transparent;
     -webkit-text-stroke: 2px white;
     text-stroke: 2px white;
-    text-shadow: 
+    text-shadow:
         -1px -1px 0 #000000,
         1px -1px 0 #000000,
         -1px 1px 0 #000000,
@@ -1610,7 +1840,7 @@ h3 {
     position: relative;
     z-index: 1;
     width: 100%;
-    transform: translate(-57%,-10%) 
+    transform: translate(-57%, -10%)
 }
 
 .work-title h1.shadow {
@@ -1621,7 +1851,7 @@ h3 {
     -webkit-text-stroke: 2px #92C7CF;
     text-stroke: 0.5px #92C7CF;
     color: #000000;
-    text-shadow: 
+    text-shadow:
         -1px -1px 0 #000000,
         1px -1px 0 #000000,
         -1px 1px 0 #000000,
@@ -1629,7 +1859,7 @@ h3 {
         0 0 8px #000000;
     text-align: right;
     width: 100%;
-    transform: translate(-56%,-8%) !important;
+    transform: translate(-56%, -8%) !important;
 }
 
 /* 删除鼠标滚轮动画相关样式 */
@@ -1642,13 +1872,17 @@ h3 {
 }
 
 @keyframes scroll {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0;
     }
 }
 
 @keyframes arrow {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0;
     }
 }
@@ -1759,7 +1993,7 @@ h3 {
     text-align: right;
 }
 
-.skills-arrows img{
+.skills-arrows img {
     width: 35px;
     height: 35px;
     filter: drop-shadow(0 0 5px rgba(146, 199, 207, 0.5));
@@ -1996,7 +2230,8 @@ h3 {
     width: 35px;
     height: 35px;
     filter: drop-shadow(0 0 5px rgba(146, 199, 207, 0.5));
-    transform: rotate(90deg); /* 朝下 */
+    transform: rotate(90deg);
+    /* 朝下 */
     margin: 0 4px;
 }
 
@@ -2021,21 +2256,26 @@ h3 {
 /* 电脑端样式 */
 @media screen and (min-width: 1025px) {
     .intro-text {
-        margin-left: 80px !important; /* 电脑端向右移动 */
+        margin-left: 80px !important;
+        /* 电脑端向右移动 */
     }
-    
+
     .skills {
         height: 700px !important;
         min-height: 600px !important;
     }
+
     .skills-images img,
     .skills-image-wrapper img {
         width: 80%;
         max-width: none;
         min-width: 0;
-        left: 13% !important; /* 往右移，从 10% 改为 13% */
-        top: 120px !important; /* 往下移，从 90px 改为 120px */
+        left: 13% !important;
+        /* 往右移，从 10% 改为 13% */
+        top: 120px !important;
+        /* 往下移，从 90px 改为 120px */
     }
+
     .skills .skill-box-all,
     .skills .skill-box-all2 {
         width: 40%;
@@ -2045,17 +2285,21 @@ h3 {
         right: auto;
         transform: translateX(-50%);
     }
+
     .skills .skill-box-all {
         top: -400px !important;
         left: 63% !important;
     }
+
     .skills .skill-box-all2 {
         top: -170px !important;
     }
+
     .skills-titles {
         left: 82% !important;
         top: 90px !important;
     }
+
     .work-title {
         left: 150px !important;
         top: 480px !important;
@@ -2065,255 +2309,306 @@ h3 {
         align-items: flex-start !important;
         margin: 0 !important;
     }
+
     .work-title h1,
     .work-title h2,
     .work-title .title-group {
         text-align: left !important;
         margin: 0 !important;
     }
+
     .work-title h1.shadow {
         left: 0 !important;
         right: auto !important;
     }
-    
+
     /* 电脑版文字框整体放大 */
     .skill-text-box-container {
-        margin-top: -30px !important; /* 从 -60px 改为 -30px，往下移 */
+        margin-top: -30px !important;
+        /* 从 -60px 改为 -30px，往下移 */
     }
-    
+
     .skill-text-wrapper {
-        width: 780px !important; /* 从 650px 放大到 780px */
-        height: 450px !important; /* 从 384px 增加到 450px */
-        padding: 35px 120px 50px 60px !important; /* 增加上下 padding */
-        border-width: 5px !important; /* 从 4px 放大到 5px */
-        border-radius: 24px !important; /* 从 20px 放大到 24px */
+        width: 780px !important;
+        /* 从 650px 放大到 780px */
+        height: 450px !important;
+        /* 从 384px 增加到 450px */
+        padding: 35px 120px 50px 60px !important;
+        /* 增加上下 padding */
+        border-width: 5px !important;
+        /* 从 4px 放大到 5px */
+        border-radius: 24px !important;
+        /* 从 20px 放大到 24px */
     }
-    
+
     .skill-text-item {
-        width: calc(100% - 60px - 120px) !important; /* 配合新的 padding */
-        height: calc(100% - 35px - 50px) !important; /* 配合新的 padding */
+        width: calc(100% - 60px - 120px) !important;
+        /* 配合新的 padding */
+        height: calc(100% - 35px - 50px) !important;
+        /* 配合新的 padding */
         left: 60px !important;
-        top: 35px !important; /* 配合新的 padding */
+        top: 35px !important;
+        /* 配合新的 padding */
     }
-    
+
     .skill-text-item p {
-        font-size: 1.44rem !important; /* 从 1.2rem 放大到 1.44rem (1.2 * 1.2) */
-        margin: 7px 0 !important; /* 从 6px 放大到 7px */
+        font-size: 1.44rem !important;
+        /* 从 1.2rem 放大到 1.44rem (1.2 * 1.2) */
+        margin: 7px 0 !important;
+        /* 从 6px 放大到 7px */
     }
-    
+
     .skill-text-item .skill-tech-item {
-        padding: 5px 10px !important; /* 从 4px 8px 放大 */
-        font-size: 1.44rem !important; /* 跟随文字大小 */
+        padding: 5px 10px !important;
+        /* 从 4px 8px 放大 */
+        font-size: 1.44rem !important;
+        /* 跟随文字大小 */
     }
-    
+
     /* 按钮放大 */
     .skill-arrow-btn img {
-        width: 144px !important; /* 从 120px 放大到 144px (1.2倍) */
+        width: 144px !important;
+        /* 从 120px 放大到 144px (1.2倍) */
         min-width: 144px !important;
         max-width: 144px !important;
     }
-    
+
     /* 分页指示器放大 */
     .pagination-dot {
-        width: 12px !important; /* 从 10px 放大到 12px */
+        width: 12px !important;
+        /* 从 10px 放大到 12px */
         height: 12px !important;
     }
-    
+
     .skill-pagination {
-        gap: 10px !important; /* 从 8px 放大到 10px */
+        gap: 10px !important;
+        /* 从 8px 放大到 10px */
     }
-    
+
     .skill-arrow-section {
-        right: 18px !important; /* 从 15px 放大到 18px */
+        right: 18px !important;
+        /* 从 15px 放大到 18px */
         bottom: 18px !important;
-        gap: 10px !important; /* 从 8px 放大到 10px */
+        gap: 10px !important;
+        /* 从 8px 放大到 10px */
     }
 }
 
 /* 1280px尺寸特殊处理 - 文字框往右移并缩小（必须在1025px之后，才能覆盖） */
 @media screen and (min-width: 1200px) and (max-width: 1350px) {
     .skill-text-box-container {
-        right: 5% !important; /* 往右移动，从10%减少到5% */
+        right: 5% !important;
+        /* 往右移动，从10%减少到5% */
     }
-    
+
     /* 缩小文字框尺寸 */
     .skill-text-wrapper {
-        width: 620px !important; /* 从 780px 缩小到 620px */
-        height: 380px !important; /* 从 450px 缩小到 380px */
-        padding: 28px 100px 42px 55px !important; /* 缩小 padding */
-        border-width: 4px !important; /* 从 5px 缩小到 4px */
-        border-radius: 20px !important; /* 从 24px 缩小到 20px */
+        width: 620px !important;
+        /* 从 780px 缩小到 620px */
+        height: 380px !important;
+        /* 从 450px 缩小到 380px */
+        padding: 28px 100px 42px 55px !important;
+        /* 缩小 padding */
+        border-width: 4px !important;
+        /* 从 5px 缩小到 4px */
+        border-radius: 20px !important;
+        /* 从 24px 缩小到 20px */
     }
-    
+
     .skill-text-item {
-        width: calc(100% - 55px - 100px) !important; /* 配合新的 padding */
+        width: calc(100% - 55px - 100px) !important;
+        /* 配合新的 padding */
         height: calc(100% - 28px - 42px) !important;
         left: 55px !important;
         top: 28px !important;
     }
-    
+
     .skill-text-item p {
-        font-size: 1.2rem !important; /* 从 1.44rem 缩小到 1.2rem */
-        margin: 6px 0 !important; /* 从 7px 缩小到 6px */
+        font-size: 1.2rem !important;
+        /* 从 1.44rem 缩小到 1.2rem */
+        margin: 6px 0 !important;
+        /* 从 7px 缩小到 6px */
     }
-    
+
     .skill-text-item .skill-tech-item {
-        padding: 4px 8px !important; /* 从 5px 10px 缩小 */
-        font-size: 1.2rem !important; /* 跟随文字大小 */
+        padding: 4px 8px !important;
+        /* 从 5px 10px 缩小 */
+        font-size: 1.2rem !important;
+        /* 跟随文字大小 */
     }
-    
+
     /* 按钮缩小 */
     .skill-arrow-btn img {
-        width: 120px !important; /* 从 144px 缩小到 120px */
+        width: 120px !important;
+        /* 从 144px 缩小到 120px */
         min-width: 120px !important;
         max-width: 120px !important;
     }
-    
+
     /* 分页指示器缩小 */
     .pagination-dot {
-        width: 10px !important; /* 从 12px 缩小到 10px */
+        width: 10px !important;
+        /* 从 12px 缩小到 10px */
         height: 10px !important;
     }
-    
+
     .skill-pagination {
-        gap: 8px !important; /* 从 10px 缩小到 8px */
+        gap: 8px !important;
+        /* 从 10px 缩小到 8px */
     }
-    
+
     .skill-arrow-section {
-        right: 15px !important; /* 从 18px 缩小到 15px */
+        right: 15px !important;
+        /* 从 18px 缩小到 15px */
         bottom: 15px !important;
-        gap: 8px !important; /* 从 10px 缩小到 8px */
+        gap: 8px !important;
+        /* 从 10px 缩小到 8px */
     }
 }
 
 @media screen and (min-width: 540px) and (max-width: 1024px) {
-  .main-header,
-  .nav-menu {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-  .container,
-  .gallery-section {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-  body {
-    overflow-x: hidden !important;
-  }
-  .skills .skill-boxes-container,
-  .skills .skill-boxes-floating {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 32px !important;
-    position: static !important;
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: auto !important;
-    transform: none !important;
-    margin: 0 auto !important;
-  }
-  .skills .skill-box-all,
-  .skills .skill-box-all2 {
-    position: static !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    margin: 0 auto !important;
-    width: 95% !important;
-    max-width: 400px !important;
-  }
-  .skills .skill-box, .skills .skill-box2 {
-    width: 100% !important;
-    height: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
-  }
-  .skills .skill-box h2, .skills .skill-box2 h2 {
-    margin: 8px auto !important;
-    padding-left: 0 !important;
-    text-align: center !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    display: block !important;
-  }
-  
+
+    .main-header,
+    .nav-menu {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    .container,
+    .gallery-section {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    body {
+        overflow-x: hidden !important;
+    }
+
+    .skills .skill-boxes-container,
+    .skills .skill-boxes-floating {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 32px !important;
+        position: static !important;
+        width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 auto !important;
+    }
+
+    .skills .skill-box-all,
+    .skills .skill-box-all2 {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        width: 95% !important;
+        max-width: 400px !important;
+    }
+
+    .skills .skill-box,
+    .skills .skill-box2 {
+        width: 100% !important;
+        height: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .skills .skill-box h2,
+    .skills .skill-box2 h2 {
+        margin: 8px auto !important;
+        padding-left: 0 !important;
+        text-align: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        display: block !important;
+    }
+
 }
 
 @media screen and (min-width: 601px) {
-  .social-icons {
-    display: flex !important;
-    position: fixed !important;
-    left: 45px;
-    top: 54%;
-    transform: translateY(-50%);
-    flex-direction: column;
-    gap: 20px;
-    z-index: 1000;
-  }
+    .social-icons {
+        display: flex !important;
+        position: fixed !important;
+        left: 45px;
+        top: 54%;
+        transform: translateY(-50%);
+        flex-direction: column;
+        gap: 20px;
+        z-index: 1000;
+    }
 }
 
 @media screen and (max-width: 540px) {
-  body > .social-icons {
-    display: none !important;
-  }
-  footer .social-icons {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 30px !important;
-    width: 100vw !important;
-    padding: 24px 0 16px 0 !important;
-    background: transparent !important;
-    margin: 0 auto !important;
-    position: static !important;
-    left: 0 !important;
-    top: 0 !important;
-    transform: none !important;
-  }
-  footer .social-icons a {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-  footer .social-icons img {
-    width: 30px !important;
-    height: 30px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
-    position: static !important;
-  }
-  footer {
-    width: 100vw !important;
-    min-height: 80px;
-    background: transparent !important;
-  }
+    body>.social-icons {
+        display: none !important;
+    }
+
+    footer .social-icons {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 30px !important;
+        width: 100vw !important;
+        padding: 24px 0 16px 0 !important;
+        background: transparent !important;
+        margin: 0 auto !important;
+        position: static !important;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+    }
+
+    footer .social-icons a {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    footer .social-icons img {
+        width: 30px !important;
+        height: 30px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        position: static !important;
+    }
+
+    footer {
+        width: 100vw !important;
+        min-height: 80px;
+        background: transparent !important;
+    }
 }
 
 @media (min-width: 601px) and (max-width: 1366px) {
-  .skill-box, .skill-box2 {
+
+    .skill-box,
+    .skill-box2 {
         width: 100%;
         height: 100%;
         padding: 0;
@@ -2323,87 +2618,98 @@ h3 {
         justify-content: center;
         align-items: center;
         text-align: center;
-    box-sizing: border-box;
-  }
+        box-sizing: border-box;
+    }
 }
 
 /* 桌面端 */
 @media screen and (min-width: 1367px) {
-  .skills-titles {
-    left: 80% !important;
-    top: 10% !important;
-  }
-  .skills-titles h1 {
-    font-size: 2.2vw !important;
-  }
-  .skill-box-all,
-  .skill-box-all2 {
-    width: 440px !important;
-    height: 220px !important;
-    background-size: contain !important;
-  }
+    .skills-titles {
+        left: 80% !important;
+        top: 10% !important;
+    }
+
+    .skills-titles h1 {
+        font-size: 2.2vw !important;
+    }
+
+    .skill-box-all,
+    .skill-box-all2 {
+        width: 440px !important;
+        height: 220px !important;
+        background-size: contain !important;
+    }
 }
 
 /* 1025~1366px 平板 */
 @media screen and (min-width: 1025px) and (max-width: 1366px) {
-  .skills-titles {
-    left: 78% !important;
-    top: 12% !important;
-  }
-  .skills-titles h1 {
-    font-size: 2.5vw !important;
-  }
+    .skills-titles {
+        left: 78% !important;
+        top: 12% !important;
+    }
+
+    .skills-titles h1 {
+        font-size: 2.5vw !important;
+    }
 }
 
 /* 541~1024px 平板 */
 @media screen and (min-width: 541px) and (max-width: 1024px) {
-  .skills-titles {
-    left: 70% !important;
-    top: 13% !important;
-  }
-  .skills-titles h1 {
-    font-size: 3vw !important;
-  }
+    .skills-titles {
+        left: 70% !important;
+        top: 13% !important;
+    }
+
+    .skills-titles h1 {
+        font-size: 3vw !important;
+    }
 }
 
 /* 手機端 */
 @media screen and (max-width: 540px) {
-  .skills-titles {
-    left: 65% !important;
-    top: 18% !important;
-  }
-  .skills-titles h1 {
-    font-size: 5vw !important;
-  }
+    .skills-titles {
+        left: 65% !important;
+        top: 18% !important;
+    }
+
+    .skills-titles h1 {
+        font-size: 5vw !important;
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 922px) {
     .skills-titles h1 {
-      font-size: 2.5rem !important;
+        font-size: 2.5rem !important;
     }
-  }
+}
 
 @media screen and (min-width: 911px) and (max-width: 922px) {
-  .skills-titles h1 {
-    font-size: 2.5rem !important;
-  }
-  .skill-box-all2 {
-    top: 15vh !important;
-  }
-  .gallery-item .play-button {
-    width: 250px;
-    height: 150px;
-    left: 85%;
-    top: 10%;
-    transform: translate(-50%, -50%);
-  }
-  .gallery-item .play-button svg {
-    width: 250px;
-    height: 150px;
-  }
+    .skills-titles h1 {
+        font-size: 2.5rem !important;
+    }
+
+    .skill-box-all2 {
+        top: 15vh !important;
+    }
+
+    .gallery-item .play-button {
+        width: 250px;
+        height: 150px;
+        left: 85%;
+        top: 10%;
+        transform: translate(-50%, -50%);
+    }
+
+    .gallery-item .play-button svg {
+        width: 250px;
+        height: 150px;
+    }
 }
+
 @media screen and (width: 1280px) and (height: 720px) {
-    .skill-box h2, .skill-box2 h2 {
+
+    .skill-box h2,
+    .skill-box2 h2 {
         font-size: 1.1rem !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -2412,123 +2718,134 @@ h3 {
         transform: translateY(35%) !important;
         line-height: 2 !important;
     }
-  }
+}
 
 @media screen and (max-width: 1024px) {
-  html, body {
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-  }
-  .container,
-  .gallery-section,
-  .skills {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
+
+    html,
+    body {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+
+    .container,
+    .gallery-section,
+    .skills {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
 }
 
 @media screen and (max-width: 540px) {
     .skills {
-      height: 800px !important;
-      min-height: 800px !important;
+        height: 800px !important;
+        min-height: 800px !important;
     }
-  }
-  
-  @media screen and (min-width: 541px) and (max-width: 1023px) {
+}
+
+@media screen and (min-width: 541px) and (max-width: 1023px) {
     .skills {
-      height: 1000px !important;
-      min-height: 1000px !important;
+        height: 1000px !important;
+        min-height: 1000px !important;
     }
-    
+
     .skills-titles {
         left: 70% !important;
         top: 13% !important;
     }
-    
+
     .skills-titles h1 {
         font-size: 1.5rem !important;
         transform: scale(0.8) !important;
     }
-    
+
     .skills-images {
-        padding-left: 0 !important; /* 移除左边距 */
-        left: 0 !important; /* 重置左边距 */
-        justify-content: center !important; /* 使用 flexbox 居中 */
+        padding-left: 0 !important;
+        /* 移除左边距 */
+        left: 0 !important;
+        /* 重置左边距 */
+        justify-content: center !important;
+        /* 使用 flexbox 居中 */
     }
+
     .skills-images img,
     .skills-image-wrapper img {
         width: 70% !important;
         max-width: 400px !important;
         min-width: 120px !important;
-        left: 50% !important; /* 改为居中 */
+        left: 50% !important;
+        /* 改为居中 */
         top: 100px !important;
-        transform: translateX(-50%) rotate(-8deg) !important; /* 确保居中 */
+        transform: translateX(-50%) rotate(-8deg) !important;
+        /* 确保居中 */
     }
-    
+
     .skill-box-all {
         left: 50% !important;
         transform: translateX(-50%) !important;
     }
-    
+
     .skill-box-all2 {
         left: 50% !important;
         transform: translateX(-50%) !important;
         top: 15vh !important;
     }
-    
+
     .intro-text {
         margin-top: 100px !important;
         top: 30% !important;
     }
-    
+
     .intro-text h1 {
         font-size: 3.3rem !important;
     }
-    
+
     .intro-text p {
         font-size: 1.05rem !important;
     }
-    
+
 }
 
 @media screen and (min-width: 1600px) {
-  .work-title {
-    position: absolute !important;
-    left: 120px !important;
-    right: auto !important;
-    bottom: 60px !important;
-    margin: 0 !important;
-    max-width: 900px !important;
-    width: 100% !important;
-    text-align: left !important;
-  }
-  .work-title h1 {
-    font-size: 5rem !important;
-    width: 100% !important;
-    text-align: left !important;
-  }
+    .work-title {
+        position: absolute !important;
+        left: 120px !important;
+        right: auto !important;
+        bottom: 60px !important;
+        margin: 0 !important;
+        max-width: 900px !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    .work-title h1 {
+        font-size: 5rem !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
 }
 
 @media screen and (min-width: 1920px) and (height: 1080px) {
-  .work-title {
-    position: absolute !important;
-    left: 160px !important;
-    bottom: 60px !important;
-    right: auto !important;
-    margin: 0 !important;
-    max-width: 1000px !important;
-    width: 100% !important;
-    text-align: left !important;
-  }
-  .work-title h1 {
-    font-size: 5rem !important;
-    width: 100% !important;
-    text-align: left !important;
-  }
+    .work-title {
+        position: absolute !important;
+        left: 160px !important;
+        bottom: 60px !important;
+        right: auto !important;
+        margin: 0 !important;
+        max-width: 1000px !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    .work-title h1 {
+        font-size: 5rem !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
 }
 
 /* 2K (QHD) */
@@ -2536,20 +2853,25 @@ h3 {
     .skills {
         height: 65vh !important;
         min-height: 65vh !important;
-  }
-  .skill-box-all, .skill-box-all2 {
+    }
+
+    .skill-box-all,
+    .skill-box-all2 {
         width: 45% !important;
         height: 280px !important;
         top: -260px !important;
     }
+
     .skill-box-all2 {
         top: 110px !important;
     }
+
     .work-title {
         bottom: 100px !important;
         right: 90px !important;
         max-width: 50% !important;
     }
+
     .work-title h1 {
         font-size: 6.5rem !important;
     }
@@ -2561,19 +2883,24 @@ h3 {
         height: 60vh !important;
         min-height: 60vh !important;
     }
-    .skill-box-all, .skill-box-all2 {
+
+    .skill-box-all,
+    .skill-box-all2 {
         width: 40% !important;
         height: 300px !important;
         top: -280px !important;
     }
+
     .skill-box-all2 {
         top: 120px !important;
     }
+
     .work-title {
         bottom: 110px !important;
         right: 100px !important;
         max-width: 45% !important;
     }
+
     .work-title h1 {
         font-size: 7rem !important;
     }
@@ -2585,19 +2912,24 @@ h3 {
         height: 55vh !important;
         min-height: 55vh !important;
     }
-    .skill-box-all, .skill-box-all2 {
+
+    .skill-box-all,
+    .skill-box-all2 {
         width: 35% !important;
         height: 320px !important;
         top: -300px !important;
     }
+
     .skill-box-all2 {
         top: 130px !important;
     }
+
     .work-title {
         bottom: 120px !important;
         right: 110px !important;
         max-width: 40% !important;
     }
+
     .work-title h1 {
         font-size: 7.5rem !important;
     }
@@ -2609,19 +2941,24 @@ h3 {
         height: 50vh !important;
         min-height: 50vh !important;
     }
-    .skill-box-all, .skill-box-all2 {
+
+    .skill-box-all,
+    .skill-box-all2 {
         width: 30% !important;
         height: 340px !important;
         top: -320px !important;
     }
+
     .skill-box-all2 {
         top: 140px !important;
     }
+
     .work-title {
         bottom: 130px !important;
         right: 120px !important;
         max-width: 35% !important;
     }
+
     .work-title h1 {
         font-size: 8rem !important;
     }
@@ -2633,97 +2970,108 @@ h3 {
         height: 45vh !important;
         min-height: 45vh !important;
     }
-    .skill-box-all, .skill-box-all2 {
+
+    .skill-box-all,
+    .skill-box-all2 {
         width: 25% !important;
         height: 360px !important;
         top: -340px !important;
     }
+
     .skill-box-all2 {
         top: 150px !important;
     }
+
     .work-title {
         bottom: 140px !important;
         right: 130px !important;
         max-width: 30% !important;
     }
+
     .work-title h1 {
         font-size: 8.5rem !important;
     }
 }
 
 .gallery-nav .nav-item h2 {
-  color: #404F63;
-  transition: color 0.2s;
+    color: #404F63;
+    transition: color 0.2s;
 }
 
 .dropdown-item {
-  transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
+
 .dropdown-item.active {
-  background-color: #92C7CF !important;
-  color: #404F63 !important;
-  font-weight: 700 !important;
+    background-color: #92C7CF !important;
+    color: #404F63 !important;
+    font-weight: 700 !important;
 }
+
 .dropdown-item:active {
-  background-color: #92C7CF !important;
-  color: #404F63 !important;
+    background-color: #92C7CF !important;
+    color: #404F63 !important;
 }
 
 .dropdown-btn {
-  transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
+
 .dropdown-btn:active {
-  background-color: #92C7CF !important;
-  color: #000 !important;
+    background-color: #92C7CF !important;
+    color: #000 !important;
 }
 
 .gallery-nav .nav-item.active {
-  background: #92C7CF;
-  color: #000;
-  box-shadow: 0 4px 16px rgba(146,199,207,0.15);
-  border-radius: 0;
-  transition: background 0.2s, color 0.2s;
+    background: #92C7CF;
+    color: #000;
+    box-shadow: 0 4px 16px rgba(146, 199, 207, 0.15);
+    border-radius: 0;
+    transition: background 0.2s, color 0.2s;
 }
+
 .gallery-nav .nav-item.active h2 {
-  color: #000;
-  font-weight: 900;
-  text-decoration: underline;
-  transition: color 0.2s;
+    color: #000;
+    font-weight: 900;
+    text-decoration: underline;
+    transition: color 0.2s;
 }
 
 footer .social-icons-phone {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  width: 100vw;
-  padding: 24px 0 16px 0;
-  background: transparent;
-  margin: 0 auto;
-  position: static;
-  left: 0;
-  top: 0;
-  transform: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100vw;
+    padding: 24px 0 16px 0;
+    background: transparent;
+    margin: 0 auto;
+    position: static;
+    left: 0;
+    top: 0;
+    transform: none;
 }
+
 footer .social-icons-phone a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 footer .social-icons-phone img {
-  width: 30px;
-  height: 30px;
-  margin: 0;
-  padding: 0;
-  display: block;
-  position: static;
-  filter: brightness(0) saturate(100%) invert(70%) sepia(30%) saturate(500%) hue-rotate(150deg) brightness(95%) contrast(85%);
-  transition: filter 0.3s ease;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: static;
+    filter: brightness(0) saturate(100%) invert(70%) sepia(30%) saturate(500%) hue-rotate(150deg) brightness(95%) contrast(85%);
+    transition: filter 0.3s ease;
 }
 
 footer .social-icons-phone a:hover img {
-  filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
+    filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
 }
 
 /* 项目详情页面样式 */
@@ -2812,7 +3160,7 @@ footer .social-icons-phone a:hover img {
     z-index: 2;
 }
 
-.project-gallery > p:first-of-type {
+.project-gallery>p:first-of-type {
     text-align: center;
     margin-top: 0;
     margin-bottom: 0;
@@ -2887,7 +3235,8 @@ footer .social-icons-phone a:hover img {
 }
 
 .project-description p {
-    font-size: 1.3rem; /* 默认字体大小 */
+    font-size: 1.3rem;
+    /* 默认字体大小 */
     line-height: 1.6;
     margin-bottom: 0;
     color: #404F63;
@@ -2904,7 +3253,8 @@ footer .social-icons-phone a:hover img {
 }
 
 .project-description li {
-    font-size: 1.3rem; /* 默认字体大小 */
+    font-size: 1.3rem;
+    /* 默认字体大小 */
     padding-left: 20px;
     position: relative;
     color: #404F63;
@@ -2932,32 +3282,32 @@ footer .social-icons-phone a:hover img {
     .main-image {
         height: 450px;
     }
-    
+
     .project-header h1 {
         font-size: 2.5rem;
     }
-    
+
     .image-grid img {
         width: calc(50% - 15px);
     }
-    
+
     .project-container {
         padding: calc(400px + 20px) 40px 40px 40px;
     }
-    
+
     .project-content {
         gap: 40px;
     }
-    
-    .project-gallery > p:first-of-type {
+
+    .project-gallery>p:first-of-type {
         padding-top: 40px;
         text-align: center;
     }
-    
+
     .project-description {
         gap: 30px;
     }
-    
+
     .project-description h2 {
         margin-top: 0;
         margin-bottom: 0;
@@ -2968,40 +3318,40 @@ footer .social-icons-phone a:hover img {
     .main-image {
         height: 350px;
     }
-    
+
     .project-container {
         padding: calc(350px + 20px) 20px 20px 20px;
     }
-    
+
     .project-content {
         gap: 40px;
     }
-    
-    .project-gallery > p:first-of-type {
+
+    .project-gallery>p:first-of-type {
         padding-top: 40px;
         text-align: center;
     }
-    
+
     .project-header h1 {
         font-size: 2rem;
     }
-    
+
     .project-description {
         gap: 30px;
         padding: 20px;
     }
-    
+
     .project-description h2 {
         font-size: 1.5rem;
         margin-top: 0;
         margin-bottom: 0;
     }
-    
+
     .project-description p,
     .project-description li {
         font-size: 1rem;
     }
-    
+
     .image-grid img {
         width: 100%;
     }
@@ -3011,38 +3361,38 @@ footer .social-icons-phone a:hover img {
     .main-image {
         height: 300px;
     }
-    
+
     .project-header h1 {
         font-size: 1.8rem;
     }
-    
+
     .back-button {
         width: 30px;
         height: 30px;
     }
-    
+
     .project-content {
         gap: 40px;
     }
-    
+
     .project-gallery {
         gap: 20px;
     }
-    
+
     .project-container {
         padding: calc(300px + 20px) 20px 20px 20px;
     }
-    
-    .project-gallery > p:first-of-type {
+
+    .project-gallery>p:first-of-type {
         padding-top: 40px;
         text-align: center;
     }
-    
+
     .project-description {
         gap: 30px;
         padding: 20px;
     }
-    
+
     .project-description h2 {
         margin-top: 0;
         margin-bottom: 0;
@@ -3087,18 +3437,23 @@ footer .social-icons-phone a:hover img {
     .video-background {
         height: 50vh;
     }
-    
+
     .main-image {
         height: 350px;
     }
-    
+
     .project-container {
         padding: calc(350px + 20px) 20px 20px 20px;
     }
 }
 
 /* 标题使用 Public Sans */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'ShipporiAntique', 'Public Sans', sans-serif !important;
 }
 
@@ -3109,117 +3464,153 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* 内文使用 ChillDINGothic */
-html, body, p, a, ul, li, span, div, button, input, textarea {
+html,
+body,
+p,
+a,
+ul,
+li,
+span,
+div,
+button,
+input,
+textarea {
     font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif !important;
     letter-spacing: 0.05em !important;
 }
 
 /* 内文段落字体放大 - 但项目页面的段落由下面的规则单独处理 */
-p, li, span {
+p,
+li,
+span {
     font-size: 1.15em !important;
 }
 
 /* 项目页面内文特殊处理 - 电脑版字体放大、行距和字距增加 - 仅针对段落（必须在最后，确保优先级最高） */
 /* 使用最高优先级选择器，确保覆盖所有其他规则（包括上面的全局 p 规则） */
 @media screen and (min-width: 1024px) {
+
     html body .project-container .project-content .project-description p,
     html body .project-container main .project-description p,
     body .project-container .project-content .project-description p,
     .project-container .project-content .project-description p,
     .project-description p {
-        font-size: 1.5rem !important; /* 电脑版段落字体 1.5rem (约24px) */
-        line-height: 2.2 !important; /* 行距增加到 2.2 */
-        letter-spacing: 0.1em !important; /* 字距增加到 0.1em */
+        font-size: 1.5rem !important;
+        /* 电脑版段落字体 1.5rem (约24px) */
+        line-height: 2.2 !important;
+        /* 行距增加到 2.2 */
+        letter-spacing: 0.1em !important;
+        /* 字距增加到 0.1em */
     }
 }
 
 @media screen and (min-width: 1025px) {
-  body.index .social-icons-phone {
-    display: none !important;
-  }
-  .project-container .social-icons-phone,
-  body .project-container + footer .social-icons-phone {
-    padding-bottom: 48px !important;
-  }
+    body.index .social-icons-phone {
+        display: none !important;
+    }
+
+    .project-container .social-icons-phone,
+    body .project-container+footer .social-icons-phone {
+        padding-bottom: 48px !important;
+    }
 }
 
-.skill-box-all ul, .skill-box-all2 ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  margin-top: 22px;
+.skill-box-all ul,
+.skill-box-all2 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 22px;
 }
+
 .skill-box-all ul li {
-  color: #92C7CF !important;
-}
-.skill-box-all2 ul li {
-  color: #1b1b1b !important;
+    color: #92C7CF !important;
 }
 
-.skill-box-all ul li, .skill-box-all2 ul li {
-  font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif !important;
-  font-size: 1.8vw !important;
-  font-weight: 800;
-  text-align: center;
-  letter-spacing: 1px;
-  line-height: 1.3;
+.skill-box-all2 ul li {
+    color: #1b1b1b !important;
+}
+
+.skill-box-all ul li,
+.skill-box-all2 ul li {
+    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif !important;
+    font-size: 1.8vw !important;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.3;
 }
 
 @media screen and (min-width: 1367px) {
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    font-size: 1.2rem !important;
-  }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        font-size: 1.2rem !important;
+    }
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1366px) {
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    font-size: 1.1rem !important;
-  }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        font-size: 1.1rem !important;
+    }
 }
 
 @media screen and (max-width: 1024px) {
-  .skill-box-all ul, .skill-box-all2 ul {
-    gap: 10px !important;
-  }
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    line-height: 1.1 !important;
-  }
+
+    .skill-box-all ul,
+    .skill-box-all2 ul {
+        gap: 10px !important;
+    }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        line-height: 1.1 !important;
+    }
 }
 
 @media screen and (max-width: 540px) {
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    font-size: 1rem !important;
-  }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        font-size: 1rem !important;
+    }
 }
 
 /* 平板字體最終強制縮小 */
 @media screen and (min-width: 541px) and (max-width: 1366px) and (orientation: portrait) {
-  .skills-titles h1 {
-    font-size: 4vw !important;
-  }
+    .skills-titles h1 {
+        font-size: 4vw !important;
+    }
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1366px) {
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    font-size: 1.1rem !important;
-  }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        font-size: 1.1rem !important;
+    }
 }
+
 @media screen and (min-width: 1025px) and (max-width: 1366px) and (orientation: landscape) {
-  .skill-box-all ul li, .skill-box-all2 ul li {
-    font-size: 1rem !important;
-  }
+
+    .skill-box-all ul li,
+    .skill-box-all2 ul li {
+        font-size: 1rem !important;
+    }
 }
 
 @media screen and (max-width: 1366px) {
-  .work-title {
-    display: none !important;
-  }
+    .work-title {
+        display: none !important;
+    }
 }
 
 /* 项目导航按钮样式 */
@@ -3315,14 +3706,14 @@ p, li, span {
     .project-nav-fixed {
         padding: 0 10px;
     }
-    
+
     .prev-btn-fixed,
     .next-btn-fixed {
         width: 40px;
         height: 40px;
         font-size: 20px;
     }
-    
+
     .home-button-fixed {
         top: 15px;
         right: 15px;
@@ -3334,13 +3725,14 @@ p, li, span {
 }
 
 @media screen and (max-width: 480px) {
+
     .prev-btn-fixed,
     .next-btn-fixed {
         width: 35px;
         height: 35px;
         font-size: 18px;
     }
-    
+
     .home-button-fixed {
         top: 10px;
         right: 10px;
@@ -3401,20 +3793,23 @@ p, li, span {
     .skill-H2 h2 {
         display: inline-block;
         visibility: visible;
-        opacity: 0; /* 移除 !important */
+        opacity: 0;
+        /* 移除 !important */
         position: relative;
         z-index: 1;
         font-size: 16px;
         padding: 10px 15px;
         margin: 0;
-        transform: translateY(20px); /* 移除 !important */
+        transform: translateY(20px);
+        /* 移除 !important */
         white-space: normal;
         word-break: keep-all;
         /* 移除备用动画，让 GSAP 完全控制 */
     }
-    
+
     .skill-H2-bg {
-        transform: scaleX(0); /* 移除 !important */
+        transform: scaleX(0);
+        /* 移除 !important */
         transform-origin: center;
     }
 }
@@ -3424,21 +3819,23 @@ p, li, span {
     .skill-H2 h2 {
         display: inline-block;
         visibility: visible;
-        opacity: 0; /* 移除 !important */
+        opacity: 0;
+        /* 移除 !important */
         position: relative;
         z-index: 1;
         font-size: 18px;
         padding: 10px 20px;
         margin: 0;
-        transform: translateY(20px); /* 移除 !important */
+        transform: translateY(20px);
+        /* 移除 !important */
         white-space: normal;
         word-break: keep-all;
         /* 移除备用动画 */
     }
-    
+
     .skill-H2-bg {
-        transform: scaleX(0); /* 移除 !important */
+        transform: scaleX(0);
+        /* 移除 !important */
         transform-origin: center;
     }
 }
-

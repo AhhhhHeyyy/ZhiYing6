@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — 作品集管理後台</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2e2e2e;
+      --accent: #e0ff4f;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --danger: #ff5555;
+      --success: #55ff88;
+      --radius: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Login ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .login-box h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .login-box p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 32px;
+    }
+
+    /* ── Form elements ── */
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 14px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      transition: border-color .15s;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── Buttons ── */
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 20px;
+      transition: opacity .15s, transform .1s;
+    }
+
+    button:active { transform: scale(.97); }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #000;
+      font-weight: 600;
+    }
+
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+
+    /* ── Admin layout ── */
+    #admin-screen { display: none; }
+
+    .admin-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .header-actions { display: flex; gap: 10px; align-items: center; }
+
+    .main-content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      background: none;
+      color: var(--text-muted);
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: -1px;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── Project cards ── */
+    .project-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .project-card img {
+      width: 64px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 4px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .project-card img.no-img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .project-info { flex: 1; min-width: 0; }
+    .project-info strong { display: block; font-size: 14px; margin-bottom: 2px; }
+    .project-info span { font-size: 12px; color: var(--text-muted); }
+
+    .project-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    .drag-handle {
+      color: var(--text-muted);
+      cursor: grab;
+      font-size: 18px;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 { font-size: 18px; margin-bottom: 24px; }
+
+    /* ── Image preview ── */
+    .image-preview {
+      width: 100%;
+      height: 140px;
+      background: var(--bg);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color .15s;
+    }
+
+    .image-preview:hover { border-color: var(--accent); }
+    .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .image-preview span { color: var(--text-muted); font-size: 13px; }
+
+    input[type="file"] { display: none; }
+
+    .or-divider {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      margin: 4px 0 4px;
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .25s, transform .25s;
+      z-index: 200;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #toast.success { background: var(--success); color: #000; }
+    #toast.error { background: var(--danger); color: #fff; }
+
+    /* ── Error msg ── */
+    .error-msg {
+      background: rgba(255,85,85,.1);
+      border: 1px solid var(--danger);
+      border-radius: var(--radius);
+      color: var(--danger);
+      font-size: 13px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .save-bar {
+      position: sticky;
+      bottom: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .save-bar p { font-size: 13px; color: var(--text-muted); }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-size: 14px;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>作品集後台</h1>
+    <p>請登入以管理作品</p>
+
+    <div id="login-error" class="error-msg"></div>
+
+    <label>帳號</label>
+    <input type="text" id="username" placeholder="username" autocomplete="username">
+
+    <label>密碼</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+
+    <button class="btn-primary" id="login-btn">登入</button>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMIN ═══════════════ -->
+<div id="admin-screen">
+  <div class="admin-header">
+    <h1>作品集管理後台</h1>
+    <div class="header-actions">
+      <span id="unsaved-badge" style="font-size:12px;color:var(--text-muted);display:none">● 有未儲存的變更</span>
+      <button class="btn-secondary btn-sm" id="logout-btn">登出</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="tabs">
+      <button class="tab-btn active" data-cat="installation">裝置藝術</button>
+      <button class="tab-btn" data-cat="animation">動畫</button>
+      <button class="tab-btn" data-cat="painting">繪畫</button>
+    </div>
+
+    <div id="project-list" class="project-list"></div>
+
+    <button class="btn-secondary" id="add-btn">＋ 新增作品</button>
+  </div>
+
+  <div class="save-bar">
+    <p id="save-status">所有變更已儲存</p>
+    <button class="btn-success" id="save-btn">儲存並發佈</button>
+  </div>
+</div>
+
+<!-- ═══════════════ EDIT MODAL ═══════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2 id="modal-title">新增作品</h2>
+
+    <label>作品名稱</label>
+    <input type="text" id="f-title" placeholder="例：孔外狂徒">
+
+    <label>日期</label>
+    <input type="text" id="f-date" placeholder="例：2025-1">
+
+    <label>封面圖片</label>
+    <div class="image-preview" id="img-preview" onclick="document.getElementById('f-image-file').click()">
+      <span>點擊上傳圖片</span>
+    </div>
+    <input type="file" id="f-image-file" accept="image/*">
+    <div class="or-divider">— 或直接輸入圖片路徑 —</div>
+    <input type="text" id="f-image-url" placeholder="assets/Installation Art/xxx.png">
+
+    <label>作品頁面路徑</label>
+    <input type="text" id="f-link" placeholder="projects/outofhole/outofhole.html">
+
+    <div id="has-modal-row" class="checkbox-row">
+      <input type="checkbox" id="f-has-modal">
+      <label for="f-has-modal">啟用 Modal 展示</label>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="f-coming-soon">
+      <label for="f-coming-soon">標記為 Coming Soon</label>
+    </div>
+
+    <div id="modal-error" class="error-msg"></div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-secondary" id="modal-cancel-btn">取消</button>
+      <button class="btn-primary" style="width:auto;padding:10px 28px" id="modal-save-btn">儲存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+//  State
+// ══════════════════════════════════════════
+let token = sessionStorage.getItem('admin_token') || null;
+let projects = null;   // { installation:[], animation:[], painting:[] }
+let currentCat = 'installation';
+let editingIndex = null; // null = new, number = editing existing
+let pendingImageFile = null;
+let hasUnsaved = false;
+
+const CATEGORIES = {
+  installation: '裝置藝術',
+  animation: '動畫',
+  painting: '繪畫',
+};
+
+// ══════════════════════════════════════════
+//  Init
+// ══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', async () => {
+  if (token) {
+    await initAdmin();
+  }
+
+  document.getElementById('login-btn').addEventListener('click', handleLogin);
+  document.getElementById('password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleLogin();
+  });
+  document.getElementById('logout-btn').addEventListener('click', handleLogout);
+  document.getElementById('add-btn').addEventListener('click', () => openModal(null));
+  document.getElementById('save-btn').addEventListener('click', saveAndPublish);
+  document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+  document.getElementById('modal-save-btn').addEventListener('click', handleModalSave);
+  document.getElementById('f-image-file').addEventListener('change', handleFileSelect);
+  document.getElementById('f-image-url').addEventListener('input', () => {
+    const url = document.getElementById('f-image-url').value.trim();
+    if (url) updatePreviewUrl(url);
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCat = btn.dataset.cat;
+      renderList();
+    });
+  });
+});
+
+// ══════════════════════════════════════════
+//  Auth
+// ══════════════════════════════════════════
+async function handleLogin() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = '登入中...';
+
+  try {
+    const res = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      errEl.textContent = data.error || '登入失敗';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    token = data.token;
+    sessionStorage.setItem('admin_token', token);
+    await initAdmin();
+
+  } catch (err) {
+    errEl.textContent = '網路錯誤，請稍後再試';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '登入';
+  }
+}
+
+function handleLogout() {
+  if (hasUnsaved && !confirm('有未儲存的變更，確定要登出嗎？')) return;
+  token = null;
+  sessionStorage.removeItem('admin_token');
+  projects = null;
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ══════════════════════════════════════════
+//  Admin init
+// ══════════════════════════════════════════
+async function initAdmin() {
+  try {
+    const res = await fetch('projects.json?nocache=' + Date.now());
+    projects = await res.json();
+
+    // Ensure all categories exist
+    ['installation', 'animation', 'painting'].forEach(cat => {
+      if (!projects[cat]) projects[cat] = [];
+    });
+
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    renderList();
+  } catch (err) {
+    alert('無法載入作品資料：' + err.message);
+  }
+}
+
+// ══════════════════════════════════════════
+//  Render project list
+// ══════════════════════════════════════════
+function renderList() {
+  const list = document.getElementById('project-list');
+  const items = projects[currentCat] || [];
+  list.innerHTML = '';
+
+  if (items.length === 0) {
+    list.innerHTML = '<p style="color:var(--text-muted);font-size:14px;padding:12px 0">尚無作品，點擊「新增作品」開始</p>';
+    return;
+  }
+
+  items.forEach((p, idx) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.dataset.idx = idx;
+
+    card.innerHTML = `
+      <span class="drag-handle" draggable="false">⠿</span>
+      <img src="${p.image || ''}" alt="${p.title}"
+           onerror="this.src='';this.alt='📷'"
+           style="${p.image ? '' : 'background:var(--border);font-size:20px;display:flex;align-items:center;justify-content:center'}">
+      <div class="project-info">
+        <strong>${p.title}</strong>
+        <span>${p.date}${p.title === 'HOLOGACHA' ? '　🔒 Coming Soon' : ''}</span>
+      </div>
+      <div class="project-actions">
+        <button class="btn-secondary btn-sm" onclick="openModal(${idx})">編輯</button>
+        <button class="btn-danger" onclick="deleteProject(${idx})">刪除</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  initDragSort(list);
+}
+
+// ══════════════════════════════════════════
+//  Drag-to-reorder
+// ══════════════════════════════════════════
+function initDragSort(list) {
+  let dragging = null;
+
+  list.querySelectorAll('.project-card').forEach(card => {
+    card.setAttribute('draggable', true);
+
+    card.addEventListener('dragstart', e => {
+      dragging = card;
+      setTimeout(() => card.style.opacity = '.4', 0);
+    });
+
+    card.addEventListener('dragend', () => {
+      dragging.style.opacity = '';
+      dragging = null;
+      syncOrderFromDOM(list);
+    });
+
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (dragging && dragging !== card) {
+        const rect = card.getBoundingClientRect();
+        const mid = rect.top + rect.height / 2;
+        list.insertBefore(dragging, e.clientY < mid ? card : card.nextSibling);
+      }
+    });
+  });
+}
+
+function syncOrderFromDOM(list) {
+  const cards = list.querySelectorAll('.project-card');
+  const reordered = Array.from(cards).map(c => projects[currentCat][parseInt(c.dataset.idx)]);
+  reordered.forEach((p, i) => p.order = i + 1);
+  projects[currentCat] = reordered;
+  markUnsaved();
+  renderList();
+}
+
+// ══════════════════════════════════════════
+//  Modal
+// ══════════════════════════════════════════
+function openModal(idx) {
+  editingIndex = idx;
+  pendingImageFile = null;
+
+  const overlay = document.getElementById('modal');
+  const isInstallation = currentCat === 'installation';
+  document.getElementById('has-modal-row').style.display = isInstallation ? 'flex' : 'none';
+  document.getElementById('modal-error').style.display = 'none';
+
+  if (idx === null) {
+    // New project
+    document.getElementById('modal-title').textContent = '新增作品';
+    document.getElementById('f-title').value = '';
+    document.getElementById('f-date').value = '';
+    document.getElementById('f-image-url').value = '';
+    document.getElementById('f-link').value = '';
+    document.getElementById('f-has-modal').checked = isInstallation;
+    document.getElementById('f-coming-soon').checked = false;
+    resetPreview();
+  } else {
+    // Edit existing
+    const p = projects[currentCat][idx];
+    document.getElementById('modal-title').textContent = '編輯作品';
+    document.getElementById('f-title').value = p.title || '';
+    document.getElementById('f-date').value = p.date || '';
+    document.getElementById('f-image-url').value = p.image || '';
+    document.getElementById('f-link').value = p.link || '';
+    document.getElementById('f-has-modal').checked = !!p.hasModal;
+    document.getElementById('f-coming-soon').checked = p.title === 'HOLOGACHA';
+
+    if (p.image) {
+      updatePreviewUrl(p.image);
+    } else {
+      resetPreview();
+    }
+  }
+
+  overlay.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  pendingImageFile = null;
+}
+
+async function handleModalSave() {
+  const title = document.getElementById('f-title').value.trim();
+  const date = document.getElementById('f-date').value.trim();
+  const link = document.getElementById('f-link').value.trim();
+  const hasModal = document.getElementById('f-has-modal').checked;
+  const comingSoon = document.getElementById('f-coming-soon').checked;
+  const imageUrl = document.getElementById('f-image-url').value.trim();
+  const errEl = document.getElementById('modal-error');
+  const saveBtn = document.getElementById('modal-save-btn');
+
+  errEl.style.display = 'none';
+
+  if (!title || !date || !link) {
+    errEl.textContent = '請填寫作品名稱、日期和頁面路徑';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = '儲存中...';
+
+  let finalImagePath = imageUrl;
+
+  // If user selected a file, upload it first
+  if (pendingImageFile) {
+    try {
+      finalImagePath = await uploadImage(pendingImageFile);
+    } catch (err) {
+      errEl.textContent = '圖片上傳失敗：' + err.message;
+      errEl.style.display = 'block';
+      saveBtn.disabled = false;
+      saveBtn.textContent = '儲存';
+      return;
+    }
+  }
+
+  const project = {
+    title: comingSoon ? 'HOLOGACHA' : title,
+    date,
+    image: finalImagePath,
+    link,
+    order: editingIndex === null
+      ? (projects[currentCat].length + 1)
+      : projects[currentCat][editingIndex].order,
+  };
+
+  if (currentCat === 'installation') project.hasModal = hasModal;
+
+  if (editingIndex === null) {
+    projects[currentCat].push(project);
+  } else {
+    projects[currentCat][editingIndex] = project;
+  }
+
+  markUnsaved();
+  closeModal();
+  renderList();
+
+  saveBtn.disabled = false;
+  saveBtn.textContent = '儲存';
+}
+
+// ══════════════════════════════════════════
+//  Delete
+// ══════════════════════════════════════════
+function deleteProject(idx) {
+  const p = projects[currentCat][idx];
+  if (!confirm(`確定要刪除「${p.title}」嗎？`)) return;
+  projects[currentCat].splice(idx, 1);
+  // Re-assign order
+  projects[currentCat].forEach((item, i) => item.order = i + 1);
+  markUnsaved();
+  renderList();
+}
+
+// ══════════════════════════════════════════
+//  Image upload
+// ══════════════════════════════════════════
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  pendingImageFile = file;
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const preview = document.getElementById('img-preview');
+    preview.innerHTML = `<img src="${ev.target.result}" alt="preview">`;
+    document.getElementById('f-image-url').value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async ev => {
+      try {
+        const res = await fetch('/.netlify/functions/upload-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            filename: file.name,
+            base64Data: ev.target.result,
+            category: currentCat,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) reject(new Error(data.error || '上傳失敗'));
+        else resolve(data.path);
+      } catch (err) {
+        reject(err);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function updatePreviewUrl(url) {
+  const preview = document.getElementById('img-preview');
+  preview.innerHTML = `<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span>無法載入圖片</span>'">`;
+}
+
+function resetPreview() {
+  const preview = document.getElementById('img-preview');
+  preview.innerHTML = '<span>點擊上傳圖片</span>';
+}
+
+// ══════════════════════════════════════════
+//  Save & Publish
+// ══════════════════════════════════════════
+async function saveAndPublish() {
+  const btn = document.getElementById('save-btn');
+  const status = document.getElementById('save-status');
+
+  btn.disabled = true;
+  btn.textContent = '發佈中...';
+  status.textContent = '正在儲存到 GitHub...';
+
+  try {
+    const res = await fetch('/.netlify/functions/update-projects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ projects }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        showToast('登入已過期，請重新登入', 'error');
+        handleLogout();
+        return;
+      }
+      throw new Error(data.error || '儲存失敗');
+    }
+
+    hasUnsaved = false;
+    document.getElementById('unsaved-badge').style.display = 'none';
+    status.textContent = '✓ 已發佈！Netlify 正在重新部署（約 1 分鐘）';
+    showToast('✓ 已成功發佈！', 'success');
+
+  } catch (err) {
+    status.textContent = '儲存失敗：' + err.message;
+    showToast('儲存失敗：' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '儲存並發佈';
+  }
+}
+
+// ══════════════════════════════════════════
+//  Helpers
+// ══════════════════════════════════════════
+function markUnsaved() {
+  hasUnsaved = true;
+  document.getElementById('unsaved-badge').style.display = 'inline';
+  document.getElementById('save-status').textContent = '有未儲存的變更，記得點「儲存並發佈」';
+}
+
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `show ${type}`;
+  setTimeout(() => toast.className = '', 3000);
+}
+
+window.addEventListener('beforeunload', e => {
+  if (hasUnsaved) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+</script>
+</body>
+</html>

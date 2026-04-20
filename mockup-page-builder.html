@@ -3,547 +3,421 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mockup — 頁面編輯器</title>
+  <title>頁面編輯器</title>
+  <!-- 直接用真實頁面的 CSS -->
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./projects/project-common.css">
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── 字型（模擬實際頁面）── */
-    @font-face {
-      font-family: 'ShipporiAntique';
-      src: url('./assets/ShipporiAntique-master/fonts/ttf/ShipporiAntiqueB1-Regular.ttf') format('truetype');
-      font-weight: normal; font-style: normal;
-    }
-    @font-face {
-      font-family: 'ChillDINGothic';
-      src: url('./assets/ChillDINGothic.v1.300/ChillDINGothic v1.300/Std/ChillDINGothic_Std.woff2') format('woff2');
-      font-weight: normal; font-style: normal;
-    }
+  <style>
+    /* ══════════════════════════════════
+       EDITOR-ONLY STYLES
+       （不影響真實頁面的樣式）
+    ══════════════════════════════════ */
 
     :root {
-      --admin-bg:      rgba(0,44,64,0.97);
-      --admin-surface: rgba(0,92,128,0.85);
-      --admin-border:  rgba(146,199,207,0.35);
-      --accent:        #92C7CF;
-      --admin-text:    #E6F4F7;
-      --admin-muted:   rgba(230,244,247,0.6);
-      --danger:        #ff6b6b;
-      --radius:        8px;
-
-      /* 真實頁面色彩 */
-      --page-h1:   #92C7CF;
-      --page-h2:   #92C7CF;
-      --page-text: #404F63;
-      --page-year: #404F63;
+      --eb-bg:     rgba(0,44,64,0.97);
+      --eb-border: rgba(146,199,207,.35);
+      --eb-accent: #92C7CF;
+      --eb-text:   #E6F4F7;
+      --eb-muted:  rgba(230,244,247,0.6);
+      --eb-danger: #ff6b6b;
+      --eb-r:      7px;
+      --tb-h:      50px;
     }
 
-    html, body {
-      height: 100%;
-      font-family: 'ChillDINGothic','Public Sans',system-ui,sans-serif;
-    }
+    /* 讓 body 預留 toolbar 高度 */
+    body { padding-top: var(--tb-h) !important; }
 
-    /* ── MOCKUP BANNER ── */
-    .mockup-banner {
-      background: #f59e0b; color: #1c1000;
-      text-align: center; padding: 7px 16px;
-      font-size: 12px; font-weight: 600; letter-spacing: .3px;
-      position: sticky; top: 0; z-index: 900;
-    }
-
-    /* ════════════════════════════════
-       SHELL LAYOUT
-    ════════════════════════════════ */
-    .shell {
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 30px); /* minus banner */
-    }
-
-    /* ── Top toolbar ── */
-    .toolbar {
-      background: var(--admin-bg);
-      border-bottom: 1px solid var(--admin-border);
+    /* ── 編輯器 Toolbar（固定在頂部）── */
+    .eb-toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--tb-h);
+      z-index: 9900;
+      background: var(--eb-bg);
+      border-bottom: 1px solid var(--eb-border);
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 18px;
-      flex-shrink: 0;
-      z-index: 100;
+      gap: 8px;
+      padding: 0 16px;
+      font-family: 'Public Sans', system-ui, sans-serif;
     }
 
-    .toolbar-title {
-      font-size: 13px;
-      color: var(--admin-muted);
-      margin-right: 4px;
+    .eb-toolbar-label {
+      font-size: 12px;
+      color: var(--eb-muted);
+      white-space: nowrap;
     }
 
-    .work-name-input {
+    .eb-name-input {
       background: rgba(0,0,0,.3);
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius);
-      color: var(--admin-text);
+      border: 1px solid var(--eb-border);
+      border-radius: var(--eb-r);
+      color: var(--eb-text);
       font-size: 14px;
       font-weight: 600;
       padding: 5px 12px;
       outline: none;
-      width: 160px;
+      width: 150px;
+    }
+    .eb-name-input:focus { border-color: var(--eb-accent); }
+
+    .eb-sep {
+      width: 1px; height: 22px;
+      background: var(--eb-border);
+      flex-shrink: 0;
     }
 
-    .work-name-input:focus { border-color: var(--accent); }
-
-    .toolbar-sep {
-      width: 1px; height: 24px;
-      background: var(--admin-border);
-      margin: 0 6px;
-    }
-
-    /* Block-add buttons */
-    .add-block-btn {
-      background: var(--admin-surface);
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius);
-      color: var(--admin-text);
+    .eb-add-btn {
+      background: rgba(0,92,128,0.7);
+      border: 1px solid var(--eb-border);
+      border-radius: var(--eb-r);
+      color: var(--eb-text);
       font-size: 12px;
-      padding: 5px 12px;
+      padding: 5px 11px;
       cursor: pointer;
-      display: flex; align-items: center; gap: 5px;
+      white-space: nowrap;
       transition: border-color .15s, background .15s;
-      white-space: nowrap;
+      font-family: inherit;
     }
+    .eb-add-btn:hover { border-color: var(--eb-accent); background: rgba(146,199,207,.15); }
 
-    .add-block-btn:hover { border-color: var(--accent); background: rgba(146,199,207,.15); }
-    .add-block-btn .icon { font-size: 14px; }
+    .eb-toolbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 
-    .toolbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-
-    /* Page nav chips */
-    .page-chips { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
-
-    .page-chip {
-      background: rgba(0,0,0,.25);
-      border: 1px solid var(--admin-border);
-      border-radius: 20px;
-      padding: 4px 12px;
+    .eb-btn {
+      border-radius: var(--eb-r);
       font-size: 12px;
-      color: var(--admin-muted);
+      font-weight: 600;
+      padding: 6px 14px;
       cursor: pointer;
-      transition: border-color .15s;
-      white-space: nowrap;
-    }
-
-    .page-chip.active { border-color: var(--accent); color: var(--accent); }
-    .page-chip:hover  { border-color: var(--accent); }
-
-    .page-chip-add {
-      background: none; border: 1px dashed var(--admin-border);
-      border-radius: 20px; padding: 4px 12px; font-size: 12px;
-      color: var(--admin-muted); cursor: pointer;
-      transition: border-color .15s;
-    }
-
-    .page-chip-add:hover { border-color: var(--accent); color: var(--accent); }
-
-    button {
-      cursor: pointer; border: none;
-      border-radius: var(--radius);
-      font-size: 13px; font-weight: 500;
-      padding: 7px 16px;
+      font-family: inherit;
       transition: opacity .15s;
     }
-
-    .btn-save {
-      background: var(--accent); color: #005C80; font-weight: 700;
+    .eb-btn-secondary {
+      background: rgba(0,92,128,0.7);
+      border: 1px solid var(--eb-border);
+      color: var(--eb-text);
     }
-
-    .btn-secondary {
-      background: var(--admin-surface);
-      color: var(--admin-text);
-      border: 1px solid var(--admin-border);
+    .eb-btn-preview {
+      background: transparent;
+      border: 1px solid var(--eb-accent);
+      color: var(--eb-accent);
     }
-
-    /* ── Main area ── */
-    .main-area {
-      display: flex;
-      flex: 1;
-      min-height: 0;
+    .eb-btn-save {
+      background: var(--eb-accent);
+      border: none;
+      color: #004a62;
     }
+    .eb-btn:hover { opacity: .85; }
 
-    /* ════════════════════════════════
-       PAGE CANVAS  (looks like the real page)
-    ════════════════════════════════ */
-    .page-canvas {
-      flex: 1;
-      overflow-y: auto;
-      background-image: url('./assets/BackGround.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: local;
+    /* ── 編輯區塊通用 ── */
+    .eb-block {
       position: relative;
     }
 
-    /* fake header bar on top (like the real page fixed header image) */
-    .canvas-header-img {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(180deg, rgba(0,44,64,.6) 0%, rgba(0,44,64,.05) 100%);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 12px;
-    }
+    /* hover / selected 框線 */
+    .eb-block:hover  { outline: 2px dashed rgba(146,199,207,.45); outline-offset: 4px; }
+    .eb-block.eb-selected { outline: 2px solid var(--eb-accent); outline-offset: 4px; }
 
-    .canvas-header-img span {
-      font-size: 11px;
-      color: rgba(255,255,255,.4);
-      letter-spacing: 1px;
-    }
-
-    /* inner content matches .project-container */
-    .canvas-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 32px 40px 80px;
-    }
-
-    /* ── Project header (read-only display) ── */
-    .page-header-display {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .page-header-display h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: var(--page-h1);
-      font-family: 'ShipporiAntique','ChillDINGothic',sans-serif;
-      margin-bottom: 8px;
-    }
-
-    .page-header-display .year {
-      font-size: 1.1rem;
-      color: var(--page-year);
-      opacity: .8;
-    }
-
-    /* ════════════════════════════════
-       EDITABLE BLOCKS
-    ════════════════════════════════ */
-    .block-wrapper {
-      position: relative;
-      margin-bottom: 36px;
-      border-radius: 4px;
-      transition: outline .1s;
-    }
-
-    .block-wrapper:hover { outline: 2px dashed rgba(146,199,207,.5); }
-    .block-wrapper.selected { outline: 2px solid var(--accent); }
-
-    /* floating controls */
-    .block-controls {
+    /* 浮動控制列 */
+    .eb-ctrl {
       display: none;
       position: absolute;
-      top: -32px;
+      top: -36px;
       right: 0;
-      background: var(--admin-bg);
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius);
+      z-index: 800;
+      background: var(--eb-bg);
+      border: 1px solid var(--eb-border);
+      border-radius: var(--eb-r);
       padding: 3px 6px;
       gap: 4px;
       align-items: center;
-      z-index: 50;
       white-space: nowrap;
+      font-family: 'Public Sans', sans-serif;
     }
+    .eb-block:hover .eb-ctrl,
+    .eb-block.eb-selected .eb-ctrl { display: flex; }
 
-    .block-wrapper:hover .block-controls,
-    .block-wrapper.selected .block-controls { display: flex; }
-
-    .block-ctrl-btn {
-      background: none; border: none;
-      color: var(--admin-muted); font-size: 13px;
-      cursor: pointer; padding: 2px 6px; border-radius: 4px;
-      transition: color .1s, background .1s;
-    }
-
-    .block-ctrl-btn:hover { color: var(--admin-text); background: rgba(255,255,255,.1); }
-    .block-ctrl-btn.del:hover { color: var(--danger); }
-
-    .block-type-label {
-      font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .6px;
-      color: var(--accent);
+    .eb-ctrl-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--eb-accent);
       padding: 2px 8px;
       background: rgba(146,199,207,.12);
       border-radius: 3px;
-      margin-right: 4px;
+      margin-right: 2px;
     }
-
-    /* ── HEADING block ── */
-    .block-heading {
-      font-family: 'ShipporiAntique','ChillDINGothic',sans-serif;
-      font-size: 1.6rem;
-      color: var(--page-h2);
-      line-height: 1.3;
-      margin-bottom: 4px;
-      outline: none;
-      border-bottom: 1px dashed rgba(146,199,207,.3);
-      padding-bottom: 4px;
-    }
-
-    .block-heading[contenteditable]:focus {
-      border-bottom-color: var(--accent);
-      outline: none;
-    }
-
-    /* ── TEXT block ── */
-    .block-text {
-      font-size: 1.2rem;
-      color: var(--page-text);
-      line-height: 1.9;
-      letter-spacing: .05em;
-      outline: none;
-      border: 1px dashed transparent;
-      padding: 6px 8px;
-      border-radius: 4px;
-      min-height: 40px;
-    }
-
-    .block-text[contenteditable]:focus {
-      border-color: rgba(146,199,207,.4);
-      outline: none;
-    }
-
-    /* ── SINGLE IMAGE block ── */
-    .block-single-img {
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .block-single-img img {
-      width: 100%; height: auto; display: block;
-      transition: transform .3s ease;
-    }
-
-    .block-single-img:hover img { transform: scale(1.03); }
-
-    .img-upload-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,44,64,.7);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 8px;
-      opacity: 0; transition: opacity .2s;
+    .eb-ctrl-btn {
+      background: none;
+      border: none;
+      color: var(--eb-muted);
+      font-size: 13px;
       cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color .1s, background .1s;
+      font-family: inherit;
     }
+    .eb-ctrl-btn:hover { color: var(--eb-text); background: rgba(255,255,255,.1); }
+    .eb-ctrl-btn.del:hover { color: var(--eb-danger); }
 
-    .block-single-img:hover .img-upload-overlay { opacity: 1; }
-
-    .img-upload-overlay span { font-size: 28px; }
-    .img-upload-overlay p { font-size: 13px; color: var(--admin-text); }
-
-    .img-placeholder-box {
-      width: 100%; height: 240px;
-      background: rgba(146,199,207,.08);
-      border: 2px dashed rgba(146,199,207,.3);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 8px; cursor: pointer;
-      transition: border-color .15s, background .15s;
+    /* ── contenteditable 視覺提示 ── */
+    [contenteditable]:focus {
+      outline: none;
+      border-bottom: 1px dashed rgba(146,199,207,.5) !important;
     }
-
-    .img-placeholder-box:hover {
-      border-color: var(--accent);
-      background: rgba(146,199,207,.13);
-    }
-
-    .img-placeholder-box span { font-size: 32px; }
-    .img-placeholder-box p { font-size: 13px; color: rgba(64,79,99,.7); }
-
-    /* ── GRID block ── */
-    .grid-toolbar {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 10px;
-      padding: 6px 10px;
-      background: var(--admin-bg);
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius);
-    }
-
-    .grid-toolbar label {
-      font-size: 11px; color: var(--admin-muted); white-space: nowrap;
-    }
-
-    .grid-toolbar input[type="range"] {
-      width: 80px; accent-color: var(--accent);
-    }
-
-    .grid-toolbar .cols-val {
-      font-size: 13px; font-weight: 700; color: var(--accent);
-      min-width: 16px;
-    }
-
-    .grid-toolbar .add-img-btn {
-      margin-left: auto;
-      background: rgba(146,199,207,.12);
-      border: 1px solid var(--admin-border);
-      border-radius: 6px;
-      color: var(--accent);
-      font-size: 12px; padding: 4px 10px; cursor: pointer;
-      transition: background .15s;
-    }
-
-    .grid-toolbar .add-img-btn:hover { background: rgba(146,199,207,.25); }
-
-    .block-grid {
-      display: grid;
-      gap: 8px;
-    }
-
-    .grid-cell {
-      position: relative; overflow: hidden;
-      background: rgba(146,199,207,.07);
-      border: 1px dashed rgba(146,199,207,.25);
-      aspect-ratio: 4/3;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: border-color .15s;
-    }
-
-    .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
-
-    .grid-cell:hover { border-color: var(--accent); }
-
-    .grid-cell .cell-label {
-      font-size: 11px; color: rgba(64,79,99,.5);
+    [contenteditable]:empty::before {
+      content: attr(data-placeholder);
+      opacity: .4;
       pointer-events: none;
     }
 
-    .grid-cell .remove-cell {
+    /* ── 封面圖佔位 ── */
+    .eb-cover-placeholder {
+      width: 100%;
+      min-height: 320px;
+      background: rgba(146,199,207,.08);
+      border: 2px dashed rgba(146,199,207,.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      color: rgba(64,79,99,.5);
+      font-family: 'Public Sans', sans-serif;
+      font-size: 14px;
+    }
+    .eb-cover-placeholder:hover {
+      border-color: var(--eb-accent);
+      background: rgba(146,199,207,.13);
+    }
+    .eb-cover-placeholder .ph-icon { font-size: 36px; }
+
+    /* 封面圖已有圖片時的替換 overlay */
+    .main-image { position: relative; }
+    .eb-cover-replace {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,44,64,.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .2s;
+      cursor: pointer;
+      color: var(--eb-text);
+      font-size: 14px;
+      font-family: 'Public Sans', sans-serif;
+    }
+    .main-image:hover .eb-cover-replace { opacity: 1; }
+
+    /* ── Peek Gallery 每張圖的控制 ── */
+    .peek-image {
+      position: relative;
+    }
+    .eb-img-del {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 28px; height: 28px;
+      background: rgba(0,44,64,.8);
+      border: 1px solid var(--eb-border);
+      border-radius: 50%;
+      color: var(--eb-danger);
+      font-size: 13px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-family: inherit;
+    }
+    .peek-image:hover .eb-img-del { display: flex; }
+
+    /* peek-gallery 的佔位格 */
+    .eb-peek-placeholder {
+      width: 100%;
+      min-height: 220px;
+      background: rgba(146,199,207,.06);
+      border: 2px dashed rgba(146,199,207,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: rgba(64,79,99,.4);
+      cursor: pointer;
+      font-family: 'Public Sans', sans-serif;
+      transition: border-color .15s;
+    }
+    .eb-peek-placeholder:hover { border-color: var(--eb-accent); }
+
+    /* 加圖按鈕（gallery block 底部） */
+    .eb-gallery-add {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      background: rgba(146,199,207,.06);
+      border: 1px dashed rgba(146,199,207,.3);
+      border-radius: var(--eb-r);
+      color: rgba(146,199,207,.8);
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+      font-family: 'Public Sans', sans-serif;
+      transition: background .15s, border-color .15s;
+    }
+    .eb-gallery-add:hover { background: rgba(146,199,207,.13); border-color: var(--eb-accent); }
+
+    /* ── Media-flex 的 li 可編輯 ── */
+    .media-left li[contenteditable],
+    .media-right li[contenteditable] {
+      cursor: text;
+    }
+
+    /* 媒材 block：加 item 按鈕 */
+    .eb-tools-add-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+    .eb-tools-add-btn {
+      background: rgba(146,199,207,.07);
+      border: 1px dashed rgba(146,199,207,.3);
+      border-radius: 5px;
+      color: rgba(146,199,207,.7);
+      font-size: 11px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: 'Public Sans', sans-serif;
+      transition: background .15s;
+    }
+    .eb-tools-add-btn:hover { background: rgba(146,199,207,.15); }
+
+    /* li 刪除按鈕 */
+    .eb-li-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .eb-li-del {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--eb-danger);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 0 2px;
+      font-family: inherit;
+    }
+    li:hover .eb-li-del { display: inline; }
+
+    /* ── Grid block toolbar（嵌在 canvas 內） ── */
+    .eb-grid-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      background: var(--eb-bg);
+      border: 1px solid var(--eb-border);
+      border-radius: var(--eb-r);
+      font-family: 'Public Sans', sans-serif;
+    }
+    .eb-grid-toolbar label { font-size: 11px; color: var(--eb-muted); }
+    .eb-grid-toolbar input[type="range"] { width: 70px; accent-color: var(--eb-accent); }
+    .eb-grid-toolbar .cols-val { font-size: 13px; font-weight: 700; color: var(--eb-accent); min-width: 14px; }
+    .eb-grid-toolbar .add-img-btn {
+      margin-left: auto;
+      background: rgba(146,199,207,.1);
+      border: 1px solid var(--eb-border);
+      border-radius: 5px;
+      color: var(--eb-accent);
+      font-size: 11px; padding: 3px 9px; cursor: pointer;
+      font-family: inherit;
+    }
+    .eb-grid-toolbar .add-img-btn:hover { background: rgba(146,199,207,.22); }
+
+    /* Grid cells */
+    .eb-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .eb-grid-cell {
+      position: relative;
+      aspect-ratio: 4/3;
+      background: rgba(146,199,207,.07);
+      border: 1px dashed rgba(146,199,207,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: rgba(64,79,99,.45);
+      overflow: hidden;
+      cursor: pointer;
+      font-family: 'Public Sans', sans-serif;
+    }
+    .eb-grid-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .eb-grid-cell:hover { border-color: var(--eb-accent); }
+    .eb-grid-cell .cell-del {
       position: absolute; top: 4px; right: 6px;
-      font-size: 14px; color: var(--danger);
+      font-size: 13px; color: var(--eb-danger);
       display: none; cursor: pointer; z-index: 2;
       background: rgba(0,0,0,.4); border-radius: 50%;
       width: 20px; height: 20px; line-height: 20px; text-align: center;
     }
+    .eb-grid-cell:hover .cell-del { display: block; }
 
-    .grid-cell:hover .remove-cell { display: block; }
-
-    /* ── VIDEO block ── */
-    .block-video {
+    /* ── 影片 placeholder ── */
+    .eb-video-ph {
       width: 100%;
-      background: #000;
-      border-radius: 2px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .block-video .video-inner {
-      width: 100%; aspect-ratio: 16/9;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,.7);
-      flex-direction: column; gap: 10px;
-      color: rgba(255,255,255,.5); font-size: 13px;
+      aspect-ratio: 16/9;
+      background: rgba(0,0,0,.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: rgba(255,255,255,.45);
+      font-size: 14px;
       cursor: pointer;
+      font-family: 'Public Sans', sans-serif;
     }
-
-    .block-video .video-inner .play-icon {
-      width: 56px; height: 56px;
-      background: var(--accent);
+    .eb-video-ph .play-circle {
+      width: 52px; height: 52px;
+      background: var(--eb-accent);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-
-    .block-video .video-inner .play-icon::before {
+    .eb-video-ph .play-circle::before {
       content: '';
       width: 0; height: 0;
       border-style: solid;
-      border-width: 12px 0 12px 20px;
-      border-color: transparent transparent transparent #005C80;
+      border-width: 11px 0 11px 19px;
+      border-color: transparent transparent transparent #004a62;
       margin-left: 4px;
     }
 
-    /* ── DIVIDER (after block) ── */
-    .drop-zone {
-      height: 24px; display: flex; align-items: center;
-      justify-content: center; margin: -8px 0;
-      opacity: 0; transition: opacity .15s;
-    }
+    /* ── Preview mode ── */
+    body.eb-preview .eb-toolbar { display: none; }
+    body.eb-preview { padding-top: 0 !important; }
+    body.eb-preview .eb-block:hover,
+    body.eb-preview .eb-block { outline: none !important; }
+    body.eb-preview .eb-ctrl { display: none !important; }
+    body.eb-preview .eb-gallery-add { display: none !important; }
+    body.eb-preview .eb-grid-toolbar { display: none !important; }
+    body.eb-preview .eb-tools-add-row { display: none !important; }
+    body.eb-preview .eb-li-del { display: none !important; }
+    body.eb-preview .eb-img-del { display: none !important; }
+    body.eb-preview .eb-cover-replace { display: none !important; }
+    body.eb-preview .eb-cover-placeholder { min-height: 0; border: none; background: transparent; }
+    body.eb-preview [contenteditable] { border-bottom: none !important; cursor: default; }
 
-    .drop-zone:hover { opacity: 1; }
-
-    .drop-zone::before {
-      content: '＋ 在此插入區塊';
-      font-size: 11px; color: var(--accent);
-      background: var(--admin-bg);
-      border: 1px dashed var(--admin-border);
-      border-radius: 20px; padding: 2px 14px;
-      cursor: pointer;
-    }
-
-    /* ── Page prev/next nav (real page style) ── */
-    .page-nav-bottom {
-      display: flex; justify-content: space-between;
-      align-items: center;
-      margin-top: 60px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(64,79,99,.3);
-    }
-
-    .page-nav-link {
-      display: flex; flex-direction: column;
-      color: var(--page-text); text-decoration: none;
-      font-size: 14px; transition: opacity .2s;
-    }
-
-    .page-nav-link:hover { opacity: .7; }
-
-    .page-nav-link .nav-arrow {
-      font-size: 28px; color: var(--accent);
-      line-height: 1; margin-bottom: 2px;
-    }
-
-    .page-nav-link .nav-title { font-size: 13px; color: var(--page-text); opacity: .8; }
-
-    /* ── Right panel (selected block props) ── */
-    .right-panel {
-      width: 220px;
-      flex-shrink: 0;
-      background: var(--admin-bg);
-      border-left: 1px solid var(--admin-border);
-      padding: 18px 14px;
-      overflow-y: auto;
-    }
-
-    .right-panel h4 {
-      font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .7px; color: var(--admin-muted); margin-bottom: 12px;
-    }
-
-    .right-panel label {
-      display: block; font-size: 11px;
-      color: var(--admin-muted); margin-bottom: 4px;
-      text-transform: uppercase; letter-spacing: .4px;
-    }
-
-    .right-panel select, .right-panel input[type="text"] {
-      width: 100%;
-      background: rgba(0,0,0,.3);
-      border: 1px solid var(--admin-border);
-      border-radius: var(--radius);
-      color: var(--admin-text);
-      font-size: 12px; padding: 6px 10px;
-      margin-bottom: 12px; outline: none;
-    }
-
-    .right-panel select:focus, .right-panel input:focus { border-color: var(--accent); }
-
-    .panel-empty {
-      font-size: 12px; color: var(--admin-muted);
-      text-align: center; margin-top: 32px; line-height: 1.8;
-    }
-
-    .panel-section { margin-bottom: 18px; }
-
-    /* scrollbar */
+    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(146,199,207,.25); border-radius: 3px; }
@@ -551,363 +425,225 @@
 </head>
 <body>
 
-<div class="mockup-banner">
-  ⚠️ MOCKUP — 介面示意，contenteditable 可直接在頁面上打字，按鈕可新增/刪除區塊
+<!-- ══════════════════════════════
+     EDITOR TOOLBAR
+══════════════════════════════ -->
+<div class="eb-toolbar">
+  <span class="eb-toolbar-label">作品名稱</span>
+  <input class="eb-name-input" type="text" id="work-name" value="孔外狂徒">
+
+  <div class="eb-sep"></div>
+
+  <span class="eb-toolbar-label">新增區塊</span>
+  <button class="eb-add-btn" onclick="addBlock('tools')">⊟ 媒材/負責</button>
+  <button class="eb-add-btn" onclick="addBlock('heading')">T 標題</button>
+  <button class="eb-add-btn" onclick="addBlock('text')">¶ 文字</button>
+  <button class="eb-add-btn" onclick="addBlock('gallery')">🖼 圖片堆疊</button>
+  <button class="eb-add-btn" onclick="addBlock('grid')">⊞ 圖片格</button>
+  <button class="eb-add-btn" onclick="addBlock('video')">▶ 影片</button>
+
+  <div class="eb-toolbar-right">
+    <button class="eb-btn eb-btn-secondary" onclick="goBack()">← 返回清單</button>
+    <button class="eb-btn eb-btn-preview" onclick="togglePreview()">👁 預覽</button>
+    <button class="eb-btn eb-btn-save">儲存並發佈</button>
+  </div>
 </div>
 
-<div class="shell">
 
-  <!-- ══ TOP TOOLBAR ══ -->
-  <div class="toolbar">
-    <span class="toolbar-title">作品</span>
-    <input class="work-name-input" type="text" value="孔外狂徒" id="work-name">
+<!-- ══════════════════════════════
+     真實頁面結構（直接使用真實 CSS class）
+══════════════════════════════ -->
+<div class="project-container">
 
-    <div class="toolbar-sep"></div>
+  <header class="project-header">
+    <h1 id="display-title" contenteditable="true" spellcheck="false" data-placeholder="作品名稱">孔外狂徒</h1>
+    <p class="project-year" contenteditable="true" spellcheck="false" data-placeholder="年份－編號">2025-1</p>
+  </header>
 
-    <span style="font-size:11px;color:var(--admin-muted);white-space:nowrap">新增區塊</span>
-    <button class="add-block-btn" onclick="addBlock('heading')"><span class="icon">T</span>標題</button>
-    <button class="add-block-btn" onclick="addBlock('text')"><span class="icon">¶</span>文字</button>
-    <button class="add-block-btn" onclick="addBlock('image')"><span class="icon">🖼</span>單圖</button>
-    <button class="add-block-btn" onclick="addBlock('grid')"><span class="icon">⊞</span>多圖Grid</button>
-    <button class="add-block-btn" onclick="addBlock('video')"><span class="icon">▶</span>影片</button>
+  <main class="project-content">
 
-    <div class="toolbar-sep"></div>
-
-    <!-- Page nav chips -->
-    <span style="font-size:11px;color:var(--admin-muted);white-space:nowrap">頁面</span>
-    <div class="page-chips" id="page-chips"></div>
-    <div class="page-chip-add" onclick="addPage()">＋ 新增頁面</div>
-
-    <div class="toolbar-right">
-      <button class="btn-secondary" style="font-size:12px;padding:5px 12px" onclick="goBack()">← 返回作品清單</button>
-      <button class="btn-save" style="font-size:12px;padding:5px 14px">儲存並發佈</button>
+    <!-- 封面圖區域（固定，不是 block） -->
+    <div class="project-gallery">
+      <div class="main-image" id="cover-zone">
+        <!-- 有圖片時顯示 img，無圖時顯示佔位 -->
+        <div class="eb-cover-placeholder">
+          <div class="ph-icon">🖼</div>
+          <span>點擊上傳封面圖</span>
+        </div>
+        <!-- <img src="" alt="封面圖"> -->
+        <div class="eb-cover-replace">🖼 替換封面圖</div>
+      </div>
+      <p contenteditable="true" spellcheck="false" data-placeholder="作品類別（如：互動裝置）" style="padding-top:12px">互動裝置</p>
     </div>
+
+    <!-- ── 可編輯 Blocks ── -->
+    <div class="project-description" id="blocks-root">
+
+      <!-- 預設：使用媒材/負責項目 -->
+      <div class="eb-block" id="eb-0">
+        <div class="eb-ctrl">
+          <span class="eb-ctrl-tag">媒材/負責</span>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-0',-1,event)">↑</button>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-0',1,event)">↓</button>
+          <button class="eb-ctrl-btn del" onclick="deleteBlock('eb-0',event)">✕</button>
+        </div>
+        <div class="media-flex">
+          <div class="media-box">
+            <div class="media-left">
+              <h2>使用媒材<br>Tools</h2>
+              <ul id="tools-list-0">
+                <li><span contenteditable="true" spellcheck="false">TouchDesigner</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+                <li><span contenteditable="true" spellcheck="false">Mediapipe</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+                <li><span contenteditable="true" spellcheck="false">Webcam</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+              </ul>
+            </div>
+          </div>
+          <div class="media-divider"></div>
+          <div class="media-box">
+            <div class="media-right">
+              <h2>負責項目<br>Responsible</h2>
+              <ul id="resp-list-0">
+                <li><span contenteditable="true" spellcheck="false">概念與企劃發想</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+                <li><span contenteditable="true" spellcheck="false">TouchDesigner互動邏輯</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+                <li><span contenteditable="true" spellcheck="false">UIUX流程與視覺</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="eb-tools-add-row">
+          <button class="eb-tools-add-btn" onclick="addToolsItem('tools-list-0')">＋ 加媒材</button>
+          <button class="eb-tools-add-btn" onclick="addToolsItem('resp-list-0')">＋ 加負責項目</button>
+        </div>
+      </div>
+
+      <!-- 預設：標題 -->
+      <div class="eb-block" id="eb-1">
+        <div class="eb-ctrl">
+          <span class="eb-ctrl-tag">標題</span>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-1',-1,event)">↑</button>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-1',1,event)">↓</button>
+          <button class="eb-ctrl-btn del" onclick="deleteBlock('eb-1',event)">✕</button>
+        </div>
+        <h2 contenteditable="true" spellcheck="false" data-placeholder="標題文字">簡介 Introduction</h2>
+      </div>
+
+      <!-- 預設：文字 -->
+      <div class="eb-block" id="eb-2">
+        <div class="eb-ctrl">
+          <span class="eb-ctrl-tag">文字</span>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-2',-1,event)">↑</button>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-2',1,event)">↓</button>
+          <button class="eb-ctrl-btn del" onclick="deleteBlock('eb-2',event)">✕</button>
+        </div>
+        <p contenteditable="true" spellcheck="false" data-placeholder="輸入段落文字…">當面對他人隱私，你會選擇壓抑窺探慾望，還是繼續探索？以現代人對「隱私」和「慾望」的矛盾作為切入點，深入探討偷窺背後的心理。</p>
+      </div>
+
+      <!-- 預設：影片 -->
+      <div class="eb-block" id="eb-3">
+        <div class="eb-ctrl">
+          <span class="eb-ctrl-tag">影片</span>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-3',-1,event)">↑</button>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-3',1,event)">↓</button>
+          <button class="eb-ctrl-btn del" onclick="deleteBlock('eb-3',event)">✕</button>
+        </div>
+        <div class="project-video">
+          <div class="custom-video-wrapper">
+            <div class="eb-video-ph">
+              <div class="play-circle"></div>
+              <span>video1.mp4　　點擊替換影片</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 預設：標題 -->
+      <div class="eb-block" id="eb-4">
+        <div class="eb-ctrl">
+          <span class="eb-ctrl-tag">標題</span>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-4',-1,event)">↑</button>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-4',1,event)">↓</button>
+          <button class="eb-ctrl-btn del" onclick="deleteBlock('eb-4',event)">✕</button>
+        </div>
+        <h2 contenteditable="true" spellcheck="false" data-placeholder="標題文字">漸進式的偷窺體驗</h2>
+      </div>
+
+      <!-- 預設：圖片堆疊 (peek-gallery) -->
+      <div class="eb-block" id="eb-5">
+        <div class="eb-ctrl">
+          <span class="eb-ctrl-tag">圖片堆疊</span>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-5',-1,event)">↑</button>
+          <button class="eb-ctrl-btn" onclick="moveBlock('eb-5',1,event)">↓</button>
+          <button class="eb-ctrl-btn del" onclick="deleteBlock('eb-5',event)">✕</button>
+        </div>
+        <div class="peek-gallery" id="gallery-5">
+          <div class="peek-image">
+            <div class="eb-peek-placeholder">🖼 點擊上傳圖片 1</div>
+            <button class="eb-img-del" onclick="delGalleryImg(this)">✕</button>
+          </div>
+          <div class="peek-image">
+            <div class="eb-peek-placeholder">🖼 點擊上傳圖片 2</div>
+            <button class="eb-img-del" onclick="delGalleryImg(this)">✕</button>
+          </div>
+          <div class="peek-image">
+            <div class="eb-peek-placeholder">🖼 點擊上傳圖片 3</div>
+            <button class="eb-img-del" onclick="delGalleryImg(this)">✕</button>
+          </div>
+        </div>
+        <button class="eb-gallery-add" onclick="addGalleryImg('gallery-5')">＋ 加圖片</button>
+      </div>
+
+    </div><!-- /blocks-root -->
+  </main>
+</div><!-- /project-container -->
+
+<footer class="project-footer">
+  <div class="social-icons-phone">
+    <a href="#"><img src="./assets/icon _instagram_.png" alt="Instagram"></a>
+    <a href="#"><img src="./assets/icon _medium_.png" alt="Medium"></a>
+    <a href="#"><img src="./assets/icon _Youtube_.png" alt="Youtube"></a>
+    <a href="#"><img src="./assets/icon_inktree_.png" alt="LinkTree"></a>
   </div>
+</footer>
 
-  <!-- ══ MAIN AREA ══ -->
-  <div class="main-area">
+<a href="./index.html" class="home-button-fixed">HOME</a>
+<div class="project-nav-fixed">
+  <a href="#" class="prev-btn-fixed">&#x2039;</a>
+  <a href="#" class="next-btn-fixed">&#x203A;</a>
+</div>
 
-    <!-- ── PAGE CANVAS ── -->
-    <div class="page-canvas" id="page-canvas">
-      <!-- Fake top image bar -->
-      <div class="canvas-header-img">
-        <span>封面圖片區域（點此替換）</span>
-      </div>
-
-      <div class="canvas-inner" id="canvas-inner">
-
-        <!-- Project title display -->
-        <div class="page-header-display">
-          <h1 id="display-title">孔外狂徒</h1>
-          <div class="year" id="display-year">2025-1　　裝置藝術</div>
-        </div>
-
-        <!-- ─── Pre-loaded blocks ─── -->
-        <div id="blocks-root">
-
-          <!-- HEADING -->
-          <div class="block-wrapper" id="bw-0" onclick="selectBlock(0)">
-            <div class="block-controls">
-              <span class="block-type-label">標題</span>
-              <button class="block-ctrl-btn" onclick="moveBlock(0,-1,event)">↑</button>
-              <button class="block-ctrl-btn" onclick="moveBlock(0,1,event)">↓</button>
-              <button class="block-ctrl-btn del" onclick="deleteBlock(0,event)">✕</button>
-            </div>
-            <div class="block-heading" contenteditable="true" spellcheck="false">使用媒材 Tools</div>
-          </div>
-
-          <!-- TEXT -->
-          <div class="block-wrapper" id="bw-1" onclick="selectBlock(1)">
-            <div class="block-controls">
-              <span class="block-type-label">文字</span>
-              <button class="block-ctrl-btn" onclick="moveBlock(1,-1,event)">↑</button>
-              <button class="block-ctrl-btn" onclick="moveBlock(1,1,event)">↓</button>
-              <button class="block-ctrl-btn del" onclick="deleteBlock(1,event)">✕</button>
-            </div>
-            <div class="block-text" contenteditable="true" spellcheck="false">當面對他人隱私，你會選擇壓抑窺探慾望，還是繼續探索？以現代人對「隱私」和「慾望」的矛盾作為切入點，深入探討偷窺背後的心理。</div>
-          </div>
-
-          <!-- VIDEO -->
-          <div class="block-wrapper" id="bw-2" onclick="selectBlock(2)">
-            <div class="block-controls">
-              <span class="block-type-label">影片</span>
-              <button class="block-ctrl-btn" onclick="moveBlock(2,-1,event)">↑</button>
-              <button class="block-ctrl-btn" onclick="moveBlock(2,1,event)">↓</button>
-              <button class="block-ctrl-btn del" onclick="deleteBlock(2,event)">✕</button>
-            </div>
-            <div class="block-video">
-              <div class="video-inner">
-                <div class="play-icon"></div>
-                <span>video1.mp4　　點擊替換影片</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- GRID -->
-          <div class="block-wrapper" id="bw-3" onclick="selectBlock(3)">
-            <div class="block-controls">
-              <span class="block-type-label">多圖 Grid</span>
-              <button class="block-ctrl-btn" onclick="moveBlock(3,-1,event)">↑</button>
-              <button class="block-ctrl-btn" onclick="moveBlock(3,1,event)">↓</button>
-              <button class="block-ctrl-btn del" onclick="deleteBlock(3,event)">✕</button>
-            </div>
-            <div class="block-grid-wrap">
-              <div class="grid-toolbar">
-                <label>欄數</label>
-                <input type="range" min="1" max="5" value="2" id="gc-3" oninput="updateGridCols(3)">
-                <span class="cols-val" id="gcv-3">2</span>
-                <button class="add-img-btn" onclick="addGridCell(3,event)">＋ 加圖</button>
-              </div>
-              <div class="block-grid" id="grid-3" style="grid-template-columns:repeat(2,1fr)">
-                <div class="grid-cell"><span class="cell-label">peek1.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span></div>
-                <div class="grid-cell"><span class="cell-label">peek2.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span></div>
-                <div class="grid-cell"><span class="cell-label">peek3.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span></div>
-                <div class="grid-cell"><span class="cell-label">peek4.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SINGLE IMAGE (example) -->
-          <div class="block-wrapper" id="bw-4" onclick="selectBlock(4)">
-            <div class="block-controls">
-              <span class="block-type-label">單張圖片</span>
-              <button class="block-ctrl-btn" onclick="moveBlock(4,-1,event)">↑</button>
-              <button class="block-ctrl-btn" onclick="moveBlock(4,1,event)">↓</button>
-              <button class="block-ctrl-btn del" onclick="deleteBlock(4,event)">✕</button>
-            </div>
-            <div class="block-single-img" style="cursor:pointer">
-              <div class="img-placeholder-box">
-                <span>🖼</span>
-                <p>點擊上傳圖片</p>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /blocks-root -->
-
-        <!-- Prev / Next (real page style) -->
-        <div class="page-nav-bottom">
-          <a class="page-nav-link" href="#">
-            <span class="nav-arrow">‹</span>
-            <span class="nav-title">上一件作品</span>
-          </a>
-          <a class="page-nav-link" href="#" style="align-items:flex-end">
-            <span class="nav-arrow">›</span>
-            <span class="nav-title">下一件作品</span>
-          </a>
-        </div>
-
-      </div><!-- /canvas-inner -->
-    </div><!-- /page-canvas -->
-
-    <!-- ── RIGHT PANEL ── -->
-    <div class="right-panel" id="right-panel">
-      <h4>屬性</h4>
-      <div id="panel-content">
-        <p class="panel-empty">點擊左側任意區塊<br>查看可調整屬性</p>
-      </div>
-    </div>
-
-  </div><!-- /main-area -->
-</div><!-- /shell -->
 
 <script>
-// ── Page state ──
-const pages = [
-  { title: '孔外狂徒', year: '2025-1', cat: '裝置藝術' },
-  { title: 'Kiss',     year: '2024-3', cat: '繪畫' },
-  { title: '艟Tong',  year: '2024-6', cat: '裝置藝術' },
-];
-let currentPage = 0;
-let selectedBw  = null;
-let blockSeq    = 5;
-
-// ── Sync title ──
+/* ══ 同步標題 ══ */
 document.getElementById('work-name').addEventListener('input', function() {
   document.getElementById('display-title').textContent = this.value;
 });
 
-// ── Page chips ──
-function renderChips() {
-  const c = document.getElementById('page-chips');
-  c.innerHTML = '';
-  pages.forEach((p, i) => {
-    const d = document.createElement('div');
-    d.className = 'page-chip' + (i === currentPage ? ' active' : '');
-    d.textContent = p.title;
-    d.onclick = () => {
-      currentPage = i;
-      document.getElementById('work-name').value = p.title;
-      document.getElementById('display-title').textContent = p.title;
-      document.getElementById('display-year').textContent = p.year + '　　' + p.cat;
-      renderChips();
-    };
-    c.appendChild(d);
-  });
+/* ══ 預覽切換 ══ */
+let inPreview = false;
+function togglePreview() {
+  inPreview = !inPreview;
+  document.body.classList.toggle('eb-preview', inPreview);
+  const btn = document.querySelector('.eb-btn-preview');
+  btn.textContent = inPreview ? '✕ 離開預覽' : '👁 預覽';
 }
-renderChips();
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && inPreview) togglePreview(); });
 
-function addPage() {
-  const name = prompt('新頁面名稱：');
-  if (!name) return;
-  pages.push({ title: name, year: '', cat: '裝置藝術' });
-  currentPage = pages.length - 1;
-  document.getElementById('work-name').value = name;
-  document.getElementById('display-title').textContent = name;
-  document.getElementById('display-year').textContent = '';
-  renderChips();
-}
+/* ══ 返回 ══ */
+function goBack() { alert('（實際會回到作品清單頁）'); }
 
-function goBack() {
-  alert('（實際會回到作品清單頁）');
-}
+/* ══ 選取 block ══ */
+document.getElementById('blocks-root').addEventListener('click', function(e) {
+  const block = e.target.closest('.eb-block');
+  if (!block) return;
+  document.querySelectorAll('.eb-block').forEach(b => b.classList.remove('eb-selected'));
+  block.classList.add('eb-selected');
+});
 
-// ── Select block ──
-function selectBlock(id) {
-  document.querySelectorAll('.block-wrapper').forEach(b => b.classList.remove('selected'));
-  const bw = document.getElementById('bw-' + id);
-  if (!bw) return;
-  bw.classList.add('selected');
-  selectedBw = id;
-  renderPanel(id, bw);
-}
-
-function renderPanel(id, bw) {
-  const pc = document.getElementById('panel-content');
-  const label = bw.querySelector('.block-type-label')?.textContent.trim() || '';
-
-  let html = '';
-
-  if (label === '標題') {
-    html = `
-      <div class="panel-section">
-        <label>字體大小</label>
-        <select><option>H1 大標 (2.8rem)</option><option selected>H2 中標 (1.6rem)</option><option>H3 小標 (1.2rem)</option></select>
-        <label>對齊方式</label>
-        <select><option selected>靠左</option><option>置中</option><option>靠右</option></select>
-      </div>`;
-  } else if (label === '文字') {
-    html = `
-      <div class="panel-section">
-        <label>字體大小</label>
-        <select><option>小 (1rem)</option><option selected>中 (1.2rem)</option><option>大 (1.5rem)</option></select>
-        <label>行距</label>
-        <select><option>緊 1.4</option><option selected>中 1.9</option><option>寬 2.4</option></select>
-      </div>`;
-  } else if (label === '影片') {
-    html = `
-      <div class="panel-section">
-        <label>影片類型</label>
-        <select><option selected>本地 mp4</option><option>YouTube 嵌入</option></select>
-        <label>檔案路徑</label>
-        <input type="text" value="assets/video1.mp4">
-        <label>自動播放（靜音）</label>
-        <select><option selected>否</option><option>是</option></select>
-      </div>`;
-  } else if (label.includes('Grid')) {
-    html = `
-      <div class="panel-section">
-        <label>圖片比例</label>
-        <select><option selected>自由 (auto)</option><option>正方形 1:1</option><option>橫幅 4:3</option><option>直幅 3:4</option></select>
-        <label>圖片間距</label>
-        <select><option>無 (0)</option><option selected>小 (8px)</option><option>中 (16px)</option><option>大 (24px)</option></select>
-      </div>`;
-  } else if (label === '單張圖片') {
-    html = `
-      <div class="panel-section">
-        <label>圖片路徑</label>
-        <input type="text" placeholder="assets/xxx.png">
-        <label>圖片說明文字</label>
-        <input type="text" placeholder="（選填）">
-        <label>hover 縮放效果</label>
-        <select><option selected>有</option><option>無</option></select>
-      </div>`;
-  }
-
-  pc.innerHTML = html || '<p class="panel-empty">（此區塊無額外屬性）</p>';
-}
-
-// ── Grid helpers ──
-function updateGridCols(id) {
-  const slider = document.getElementById('gc-' + id);
-  const val    = document.getElementById('gcv-' + id);
-  const grid   = document.getElementById('grid-' + id);
-  if (!slider || !grid) return;
-  const cols = slider.value;
-  val.textContent = cols;
-  grid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
-}
-
-function addGridCell(id, e) {
-  e.stopPropagation();
-  const grid = document.getElementById('grid-' + id);
-  const n = grid.querySelectorAll('.grid-cell').length + 1;
-  const cell = document.createElement('div');
-  cell.className = 'grid-cell';
-  cell.innerHTML = `<span class="cell-label">image${n}.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span>`;
-  grid.appendChild(cell);
-}
-
-function removeCell(btn) {
-  btn.parentElement.remove();
-}
-
-// ── Add block ──
-function addBlock(type) {
-  const root = document.getElementById('blocks-root');
-  const id   = blockSeq++;
-  const el   = document.createElement('div');
-  el.className = 'block-wrapper';
-  el.id = 'bw-' + id;
-  el.onclick = () => selectBlock(id);
-
-  const typeNames = { heading:'標題', text:'文字', image:'單張圖片', grid:'多圖 Grid', video:'影片' };
-  const name = typeNames[type];
-
-  const controls = `
-    <div class="block-controls">
-      <span class="block-type-label">${name}</span>
-      <button class="block-ctrl-btn" onclick="moveBlock(${id},-1,event)">↑</button>
-      <button class="block-ctrl-btn" onclick="moveBlock(${id},1,event)">↓</button>
-      <button class="block-ctrl-btn del" onclick="deleteBlock(${id},event)">✕</button>
-    </div>`;
-
-  let body = '';
-  if (type === 'heading') {
-    body = `<div class="block-heading" contenteditable="true" spellcheck="false">在此輸入標題</div>`;
-  } else if (type === 'text') {
-    body = `<div class="block-text" contenteditable="true" spellcheck="false">在此輸入文字內容...</div>`;
-  } else if (type === 'image') {
-    body = `<div class="block-single-img"><div class="img-placeholder-box"><span>🖼</span><p>點擊上傳圖片</p></div></div>`;
-  } else if (type === 'video') {
-    body = `<div class="block-video"><div class="video-inner"><div class="play-icon"></div><span>點擊上傳影片</span></div></div>`;
-  } else if (type === 'grid') {
-    body = `
-      <div class="block-grid-wrap">
-        <div class="grid-toolbar">
-          <label>欄數</label>
-          <input type="range" min="1" max="5" value="2" id="gc-${id}" oninput="updateGridCols(${id})">
-          <span class="cols-val" id="gcv-${id}">2</span>
-          <button class="add-img-btn" onclick="addGridCell(${id},event)">＋ 加圖</button>
-        </div>
-        <div class="block-grid" id="grid-${id}" style="grid-template-columns:repeat(2,1fr)">
-          <div class="grid-cell"><span class="cell-label">image1.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span></div>
-          <div class="grid-cell"><span class="cell-label">image2.png</span><span class="remove-cell" onclick="removeCell(this)">✕</span></div>
-        </div>
-      </div>`;
-  }
-
-  el.innerHTML = controls + body;
-  root.appendChild(el);
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  selectBlock(id);
-}
-
-// ── Move / delete ──
+/* ══ 移動 block ══ */
 function moveBlock(id, dir, e) {
   e.stopPropagation();
   const root = document.getElementById('blocks-root');
-  const el   = document.getElementById('bw-' + id);
+  const el = document.getElementById(id);
   if (!el) return;
   if (dir === -1 && el.previousElementSibling) {
     root.insertBefore(el, el.previousElementSibling);
@@ -916,12 +652,163 @@ function moveBlock(id, dir, e) {
   }
 }
 
+/* ══ 刪除 block ══ */
 function deleteBlock(id, e) {
   e.stopPropagation();
-  const el = document.getElementById('bw-' + id);
+  const el = document.getElementById(id);
   if (el) el.remove();
-  document.getElementById('panel-content').innerHTML = '<p class="panel-empty">點擊區塊查看屬性</p>';
+}
+
+/* ══ 新增 block ══ */
+let seq = 10;
+function addBlock(type) {
+  const root = document.getElementById('blocks-root');
+  const id = 'eb-' + seq++;
+  const el = document.createElement('div');
+  el.className = 'eb-block';
+  el.id = id;
+
+  const typeLabel = {
+    tools: '媒材/負責', heading: '標題', text: '文字',
+    gallery: '圖片堆疊', grid: '圖片格', video: '影片'
+  };
+
+  const ctrl = `
+    <div class="eb-ctrl">
+      <span class="eb-ctrl-tag">${typeLabel[type]}</span>
+      <button class="eb-ctrl-btn" onclick="moveBlock('${id}',-1,event)">↑</button>
+      <button class="eb-ctrl-btn" onclick="moveBlock('${id}',1,event)">↓</button>
+      <button class="eb-ctrl-btn del" onclick="deleteBlock('${id}',event)">✕</button>
+    </div>`;
+
+  let body = '';
+
+  if (type === 'heading') {
+    body = `<h2 contenteditable="true" spellcheck="false" data-placeholder="標題文字">新標題</h2>`;
+
+  } else if (type === 'text') {
+    body = `<p contenteditable="true" spellcheck="false" data-placeholder="輸入段落文字…">在此輸入段落文字…</p>`;
+
+  } else if (type === 'tools') {
+    body = `
+      <div class="media-flex">
+        <div class="media-box">
+          <div class="media-left">
+            <h2>使用媒材<br>Tools</h2>
+            <ul id="tools-list-${seq}">
+              <li><span contenteditable="true" spellcheck="false">工具一</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="media-divider"></div>
+        <div class="media-box">
+          <div class="media-right">
+            <h2>負責項目<br>Responsible</h2>
+            <ul id="resp-list-${seq}">
+              <li><span contenteditable="true" spellcheck="false">負責項目一</span><button class="eb-li-del" onclick="delLi(this)">✕</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="eb-tools-add-row">
+        <button class="eb-tools-add-btn" onclick="addToolsItem('tools-list-${seq}')">＋ 加媒材</button>
+        <button class="eb-tools-add-btn" onclick="addToolsItem('resp-list-${seq}')">＋ 加負責項目</button>
+      </div>`;
+
+  } else if (type === 'gallery') {
+    body = `
+      <div class="peek-gallery" id="gallery-${seq}">
+        <div class="peek-image">
+          <div class="eb-peek-placeholder">🖼 點擊上傳圖片</div>
+          <button class="eb-img-del" onclick="delGalleryImg(this)">✕</button>
+        </div>
+      </div>
+      <button class="eb-gallery-add" onclick="addGalleryImg('gallery-${seq}')">＋ 加圖片</button>`;
+
+  } else if (type === 'grid') {
+    body = `
+      <div class="eb-grid-toolbar">
+        <label>欄數</label>
+        <input type="range" min="1" max="5" value="2" id="gc-${seq}" oninput="updateGridCols('${seq}')">
+        <span class="cols-val" id="gcv-${seq}">2</span>
+        <button class="add-img-btn" onclick="addGridCell('${seq}',event)">＋ 加圖</button>
+      </div>
+      <div class="eb-grid" id="grid-${seq}" style="grid-template-columns:repeat(2,1fr)">
+        <div class="eb-grid-cell"><span>image1.png</span><span class="cell-del" onclick="this.parentElement.remove()">✕</span></div>
+        <div class="eb-grid-cell"><span>image2.png</span><span class="cell-del" onclick="this.parentElement.remove()">✕</span></div>
+      </div>`;
+
+  } else if (type === 'video') {
+    body = `
+      <div class="project-video">
+        <div class="custom-video-wrapper">
+          <div class="eb-video-ph">
+            <div class="play-circle"></div>
+            <span>點擊上傳影片</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  el.innerHTML = ctrl + body;
+  root.appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ══ 媒材列表：加 li ══ */
+function addToolsItem(listId) {
+  const ul = document.getElementById(listId);
+  if (!ul) return;
+  const li = document.createElement('li');
+  li.innerHTML = `<span contenteditable="true" spellcheck="false">新項目</span><button class="eb-li-del" onclick="delLi(this)">✕</button>`;
+  ul.appendChild(li);
+  li.querySelector('[contenteditable]').focus();
+}
+
+function delLi(btn) {
+  btn.closest('li').remove();
+}
+
+/* ══ 圖片堆疊：加 / 刪 ══ */
+function addGalleryImg(galleryId) {
+  const gallery = document.getElementById(galleryId);
+  if (!gallery) return;
+  const n = gallery.querySelectorAll('.peek-image').length + 1;
+  const div = document.createElement('div');
+  div.className = 'peek-image';
+  div.innerHTML = `<div class="eb-peek-placeholder">🖼 點擊上傳圖片 ${n}</div><button class="eb-img-del" onclick="delGalleryImg(this)">✕</button>`;
+  gallery.appendChild(div);
+}
+
+function delGalleryImg(btn) {
+  btn.closest('.peek-image').remove();
+}
+
+/* ══ Grid：欄數 / 加 / 刪 ══ */
+function updateGridCols(seqId) {
+  const slider = document.getElementById('gc-' + seqId);
+  const val    = document.getElementById('gcv-' + seqId);
+  const grid   = document.getElementById('grid-' + seqId);
+  if (!slider || !grid) return;
+  val.textContent = slider.value;
+  grid.style.gridTemplateColumns = `repeat(${slider.value},1fr)`;
+}
+
+function addGridCell(seqId, e) {
+  e.stopPropagation();
+  const grid = document.getElementById('grid-' + seqId);
+  const n = grid.querySelectorAll('.eb-grid-cell').length + 1;
+  const cell = document.createElement('div');
+  cell.className = 'eb-grid-cell';
+  cell.innerHTML = `<span>image${n}.png</span><span class="cell-del" onclick="this.parentElement.remove()">✕</span>`;
+  grid.appendChild(cell);
 }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+<script src="./projects/project-script.js"></script>
+
 </body>
 </html>

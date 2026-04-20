@@ -569,9 +569,14 @@ async function initAdmin() {
     const res = await fetch('projects.json?nocache=' + Date.now());
     projects = await res.json();
 
-    // Ensure all categories exist
+    // Ensure all categories exist, migrate old comingSoon format
     ['installation', 'animation', 'painting'].forEach(cat => {
       if (!projects[cat]) projects[cat] = [];
+      projects[cat].forEach(p => {
+        if (p.comingSoon === undefined && p.title === 'HOLOGACHA') {
+          p.comingSoon = true;
+        }
+      });
     });
 
     document.getElementById('login-screen').style.display = 'none';
@@ -607,7 +612,7 @@ function renderList() {
            style="${p.image ? '' : 'background:var(--border);font-size:20px;display:flex;align-items:center;justify-content:center'}">
       <div class="project-info">
         <strong>${p.title}</strong>
-        <span>${p.date}${(p.comingSoon || p.title === 'HOLOGACHA') ? '　🔒 Coming Soon' : ''}</span>
+        <span>${p.date}${p.comingSoon ? '　🔒 Coming Soon' : ''}</span>
       </div>
       <div class="project-actions">
         <button class="btn-secondary btn-sm" onclick="openModal(${idx})">編輯</button>

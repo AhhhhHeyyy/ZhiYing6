@@ -607,7 +607,7 @@ function renderList() {
            style="${p.image ? '' : 'background:var(--border);font-size:20px;display:flex;align-items:center;justify-content:center'}">
       <div class="project-info">
         <strong>${p.title}</strong>
-        <span>${p.date}${p.title === 'HOLOGACHA' ? '　🔒 Coming Soon' : ''}</span>
+        <span>${p.date}${(p.comingSoon || p.title === 'HOLOGACHA') ? '　🔒 Coming Soon' : ''}</span>
       </div>
       <div class="project-actions">
         <button class="btn-secondary btn-sm" onclick="openModal(${idx})">編輯</button>
@@ -691,7 +691,7 @@ function openModal(idx) {
     document.getElementById('f-image-url').value = p.image || '';
     document.getElementById('f-link').value = p.link || '';
     document.getElementById('f-has-modal').checked = !!p.hasModal;
-    document.getElementById('f-coming-soon').checked = p.title === 'HOLOGACHA';
+    document.getElementById('f-coming-soon').checked = !!p.comingSoon || p.title === 'HOLOGACHA';
 
     if (p.image) {
       updatePreviewUrl(p.image);
@@ -745,10 +745,11 @@ async function handleModalSave() {
   }
 
   const project = {
-    title: comingSoon ? 'HOLOGACHA' : title,
+    title,
     date,
     image: finalImagePath,
     link,
+    comingSoon: comingSoon || false,
     order: editingIndex === null
       ? (projects[currentCat].length + 1)
       : projects[currentCat][editingIndex].order,

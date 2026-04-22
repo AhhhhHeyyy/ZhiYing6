@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>範本 C — 社群嵌入文字區塊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #0a1a22;
+      color: #E6F4F7;
+      min-height: 100vh;
+    }
+
+    .intro {
+      position: relative;
+      height: 100vh;
+      background: linear-gradient(120deg, #001824 0%, #002e42 50%, #005C8022 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* 斜線裝飾 */
+    .intro::after {
+      content: '';
+      position: absolute;
+      right: -10%;
+      top: 0;
+      width: 55%;
+      height: 100%;
+      background: rgba(146,199,207,0.04);
+      clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    /* ── Intro text + 嵌入社群 ── */
+    .intro-text {
+      position: relative;
+      z-index: 2;
+      width: clamp(280px, 60%, 700px);
+      margin-left: clamp(16px, 5vw, 80px);
+      padding-bottom: 10vh;
+    }
+
+    .intro-text h1 {
+      font-size: clamp(2.6rem, 8vw, 9rem);
+      font-weight: 900;
+      line-height: 1;
+      color: #E6F4F7;
+    }
+
+    .intro-text h1:nth-child(2) {
+      -webkit-text-stroke: clamp(0.5px, 0.2vw, 2px) #92C7CF;
+      color: transparent;
+      transform: scale(clamp(1.1, 0.8 + 1.5vw, 1.5));
+      transform-origin: left center;
+      display: inline-block;
+    }
+
+    /* 嵌入版社群：桌機隱藏 */
+    .intro-social {
+      display: none;
+      flex-direction: row;
+      gap: 18px;
+      margin-top: 20px;
+      align-items: center;
+    }
+
+    .intro-social::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: rgba(146,199,207,0.4);
+      display: block;
+    }
+
+    .intro-social a {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(146,199,207,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92C7CF;
+      font-size: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .intro-social a:hover {
+      background: rgba(146,199,207,0.15);
+      transform: scale(1.1);
+    }
+
+    /* ── 桌機：左側固定欄 ── */
+    .social-side {
+      position: fixed;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .social-side a {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(146,199,207,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92C7CF;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .social-side a:hover {
+      background: rgba(146,199,207,0.15);
+      transform: translateX(4px);
+    }
+
+    /* ── RWD ── */
+    @media (max-width: 1024px) {
+      .social-side  { display: none; }
+      .intro-social { display: flex; }
+
+      .intro-text {
+        width: 85%;
+        margin-left: 24px;
+        padding-bottom: 8vh;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .intro-text {
+        width: 88%;
+        margin-left: 16px;
+        padding-bottom: 6vh;
+      }
+
+      .intro-social {
+        gap: 14px;
+        margin-top: 16px;
+      }
+
+      .intro-social a {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+      }
+    }
+
+    /* ── Label ── */
+    .tag {
+      position: fixed;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      background: #92C7CF22;
+      border: 1px solid #92C7CF55;
+      color: #92C7CF;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      z-index: 200;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      color: rgba(146,199,207,0.5);
+      font-size: 11px;
+      text-align: right;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tag">範本 C — 社群嵌入文字區塊 ｜ 拖動視窗縮放看效果</div>
+
+  <!-- 桌機專用側欄 -->
+  <nav class="social-side">
+    <a title="Instagram">IG</a>
+    <a title="Medium">M</a>
+    <a title="Youtube">YT</a>
+    <a title="Linktree">LT</a>
+  </nav>
+
+  <section class="intro">
+    <div class="intro-text">
+      <h1>梁芷穎</h1>
+      <h1>Profolio</h1>
+
+      <!-- 手機/平板版社群：跟著文字走 -->
+      <div class="intro-social">
+        <a title="Instagram">IG</a>
+        <a title="Medium">M</a>
+        <a title="Youtube">YT</a>
+        <a title="Linktree">LT</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="hint">
+    桌機：左側固定欄<br>
+    手機/平板：圖示嵌入文字下方<br>
+    結構最乾淨，無 fixed 定位
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>近期動態編輯器</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:   #92C7CF;
+      --navy:     #002C40;
+      --mid:      #005C80;
+      --surface:  #C8E0E4;
+      --text:     #002C40;
+      --muted:    rgba(0,44,64,0.55);
+      --border:   rgba(146,199,207,0.4);
+    }
+
+    body {
+      background: #f0f7f9;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 32px 16px;
+      gap: 40px;
+    }
+
+    /* ────── SECTION LABEL ────── */
+    .label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* ════════════════════════════
+       1. COMPACT (collapsed) card
+       ════════════════════════════ */
+    .demo-compact {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .vb-compact-row {
+      display: grid;
+      grid-template-columns: 48px 20px 1fr;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 8px 0;
+      position: relative;
+    }
+    /* timeline bar */
+    .vb-compact-row::before {
+      content: '';
+      position: absolute;
+      left: 54px; top: 0; bottom: 0;
+      width: 1px;
+      background: repeating-linear-gradient(to bottom,
+        var(--accent) 0 4px, transparent 4px 10px);
+      opacity: 0.55;
+    }
+
+    .vb-date { text-align: right; padding-top: 8px; }
+    .vb-date .d { font-size: 1.2rem; font-weight: 600; color: var(--mid); line-height: 1; }
+    .vb-date .m { display: block; font-size: 0.56rem; letter-spacing: 0.2em; color: var(--muted); margin-top: 3px; text-transform: uppercase; }
+
+    .vb-dot-wrap { display: flex; justify-content: center; padding-top: 14px; }
+    .vb-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #fff; border: 2px solid var(--accent);
+      box-shadow: 0 0 0 3px rgba(146,199,207,0.25);
+      position: relative; z-index: 2;
+    }
+
+    /* the card itself */
+    .vb-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px 10px 10px;
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+      box-shadow: 0 2px 6px rgba(0,44,64,0.05);
+      user-select: none;
+    }
+    .vb-card:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: 6px 6px 0 var(--accent);
+    }
+
+    .vb-thumb {
+      width: 56px; height: 56px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface);
+      position: relative; flex-shrink: 0;
+    }
+    .vb-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .vb-thumb::after {
+      content: ''; position: absolute; top: -3px; left: 6px;
+      width: 20px; height: 7px;
+      background: var(--accent); opacity: .9;
+      transform: rotate(-6deg); border-radius: 2px;
+    }
+
+    .vb-body { min-width: 0; }
+    .top-row { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .vb-title { font-size: 0.9rem; font-weight: 600; color: var(--navy); letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ps-chip {
+      display: inline-flex; align-items: center;
+      font-size: 0.62rem; letter-spacing: 0.05em;
+      padding: 2px 8px; border-radius: 999px;
+      color: var(--mid); background: var(--surface); line-height: 1; flex-shrink: 0;
+    }
+    .vb-cap {
+      font-size: 0.72rem; line-height: 1.4; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .vb-arrow {
+      color: var(--mid); font-size: 1.2rem;
+      opacity: 0.4; transition: transform .2s, opacity .2s; line-height: 1;
+    }
+    .vb-card:hover .vb-arrow { opacity: 1; transform: translateX(3px); }
+
+
+    /* ════════════════════════════
+       2. EXPANDED (opened) card
+       ════════════════════════════ */
+    .demo-open {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .vb-open-card {
+      background: #fff;
+      border: 1.5px solid var(--accent);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 8px 8px 0 var(--accent);
+    }
+
+    /* ── header strip ── */
+    .vb-open-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .vb-open-head .thumb {
+      width: 64px; height: 64px;
+      border-radius: 10px; overflow: hidden;
+      background: var(--surface); flex-shrink: 0; position: relative;
+    }
+    .vb-open-head .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .vb-open-head .thumb::after {
+      content: ''; position: absolute; top: -3px; left: 8px;
+      width: 24px; height: 8px;
+      background: var(--accent); opacity: .9;
+      transform: rotate(-6deg); border-radius: 2px;
+    }
+    .vb-open-meta { flex: 1; min-width: 0; }
+    .vb-open-meta .row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .vb-open-meta .title { font-size: 1rem; font-weight: 700; color: var(--navy); letter-spacing: 0.03em; }
+    .vb-open-meta .date-str {
+      font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase;
+    }
+    .vb-open-close {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; border: 1px solid var(--border);
+      background: none; cursor: pointer; flex-shrink: 0;
+      transition: background .15s, transform .2s;
+      color: var(--mid);
+    }
+    .vb-open-close:hover { background: var(--accent); color: #fff; transform: rotate(90deg); }
+
+    /* ── hero image ── */
+    .vb-open-hero {
+      width: 100%; aspect-ratio: 16/7;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .vb-open-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .vb-open-hero .hero-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase;
+    }
+
+    /* ── body text ── */
+    .vb-open-body {
+      padding: 18px 20px;
+    }
+    .vb-open-body p {
+      font-size: 0.85rem; line-height: 1.75;
+      color: rgba(0,44,64,0.75);
+      margin-bottom: 14px;
+    }
+    .vb-open-body p:last-of-type { margin-bottom: 0; }
+
+    /* ── tags row ── */
+    .vb-open-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 0 20px 18px;
+    }
+
+    /* ── footer ── */
+    .vb-open-foot {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .vb-open-foot .timestamp {
+      font-size: 0.63rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase;
+    }
+    .vb-links {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .vb-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--mid); text-decoration: none;
+      padding: 6px 14px; border: 1.5px solid var(--accent);
+      border-radius: 999px;
+      transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+    .vb-link:hover { background: var(--accent); color: #fff; }
+    .vb-link svg { transition: transform .2s; flex-shrink: 0; }
+    .vb-link:hover svg { transform: translateX(3px); }
+    /* secondary (ghost) variant */
+    .vb-link.ghost {
+      background: none; border-color: rgba(146,199,207,0.5); color: var(--muted);
+    }
+    .vb-link.ghost:hover { background: var(--surface); color: var(--mid); border-color: var(--accent); }
+
+
+    /* ════════════════════════════
+       3. INTERACTIVE DEMO
+       ════════════════════════════ */
+    .demo-interactive {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* overlay */
+    #card-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,44,64,0.45);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center; justify-content: center;
+      padding: 24px 16px;
+    }
+    #card-overlay.is-open { display: flex; }
+    #card-overlay .vb-open-card {
+      width: 100%; max-width: 520px;
+      animation: slideUp .28s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══ EDITOR TOOLBAR ═══ */
+    .vb-editor-toolbar {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: #002d3f;
+      border-bottom: 2px solid #92C7CF;
+      z-index: 9900;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    body.edit-mode .vb-editor-toolbar { display: flex; }
+    body.edit-mode { padding-top: 56px; }
+
+    .vb-editor-toolbar .tb-label {
+      font-size: 13px; color: rgba(230,244,247,0.7);
+    }
+    .vb-editor-toolbar h1 {
+      font-size: 15px; font-weight: 700; color: #92C7CF; margin: 0;
+    }
+    .tb-right { margin-left: auto; display: flex; gap: 10px; }
+    .tb-btn {
+      border-radius: 7px; font-size: 13px; font-weight: 600;
+      padding: 7px 18px; cursor: pointer; border: none;
+      font-family: inherit;
+    }
+    .tb-btn-back {
+      background: rgba(0,92,128,0.5);
+      border: 1.5px solid rgba(146,199,207,.4);
+      color: rgba(230,244,247,0.8);
+    }
+    .tb-btn-save {
+      background: #92C7CF; color: #003a4d; font-weight: 700;
+    }
+
+    /* Editor form fields */
+    .vb-edit-form {
+      display: none;
+      max-width: 520px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    body.edit-mode .vb-edit-form { display: block; }
+    body.edit-mode .demo-compact,
+    body.edit-mode .demo-open,
+    body.edit-mode .demo-interactive { display: none; }
+
+    .vb-edit-form label {
+      display: block; font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .5px;
+      color: rgba(0,44,64,.55); margin-bottom: 5px; margin-top: 16px;
+    }
+    .vb-edit-form input[type="text"],
+    .vb-edit-form textarea,
+    .vb-edit-form select {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid rgba(146,199,207,.5);
+      border-radius: 8px; font-size: 14px;
+      font-family: inherit; outline: none;
+      background: #fff; color: #002C40;
+    }
+    .vb-edit-form input:focus,
+    .vb-edit-form textarea:focus,
+    .vb-edit-form select:focus { border-color: #92C7CF; }
+    .vb-edit-form textarea { min-height: 90px; resize: vertical; }
+
+    .vb-edit-form .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .vb-preview-card {
+      margin-top: 24px;
+      border-top: 1px dashed rgba(146,199,207,.4);
+      padding-top: 20px;
+    }
+    .vb-preview-label {
+      font-size: 11px; letter-spacing: .15em; color: rgba(0,44,64,.45);
+      text-transform: uppercase; margin-bottom: 12px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .link-editor-row {
+      display: grid; grid-template-columns: 1fr 2fr auto;
+      gap: 8px; align-items: center; margin-bottom: 8px;
+    }
+    .link-editor-row input { margin-bottom: 0; }
+    .link-del-btn {
+      background: none; border: 1px solid rgba(255,107,107,.5);
+      color: #ff6b6b; border-radius: 6px; padding: 6px 10px;
+      cursor: pointer; font-size: 12px;
+    }
+    .add-link-btn {
+      background: rgba(146,199,207,.1); border: 1px dashed rgba(146,199,207,.5);
+      color: #005C80; border-radius: 6px; padding: 7px 14px;
+      cursor: pointer; font-size: 13px; font-weight: 600;
+      font-family: inherit; width: 100%; margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ EDITOR TOOLBAR (edit-mode only) ═══ -->
+<div class="vb-editor-toolbar">
+  <h1>近期動態編輯器</h1>
+  <div class="tb-right">
+    <button class="tb-btn tb-btn-back" onclick="goBackToAdmin()">← 返回清單</button>
+    <button class="tb-btn tb-btn-save" onclick="savePost()">儲存並返回</button>
+  </div>
+</div>
+
+<!-- ═══ EDITOR FORM (edit-mode only) ═══ -->
+<div class="vb-edit-form">
+  <label>標題</label>
+  <input type="text" id="ef-title" placeholder="例：HOLOGACHA 開發日誌">
+
+  <label>內容 / 說明</label>
+  <textarea id="ef-caption" placeholder="簡短描述這次的進度或紀錄..."></textarea>
+
+  <label>封面圖片（選填）</label>
+  <div id="ef-image-preview" onclick="document.getElementById('ef-image-file').click()" style="
+    width:100%; height:140px; border:2px dashed rgba(146,199,207,.6);
+    border-radius:8px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; overflow:hidden; margin-bottom:8px; background:#f0f8fa;">
+    <span id="ef-image-preview-hint" style="color:rgba(0,44,64,.45);font-size:13px;">點擊選擇圖片</span>
+  </div>
+  <input type="file" id="ef-image-file" accept="image/*" style="display:none">
+  <div style="text-align:center;color:rgba(0,44,64,.4);font-size:12px;margin-bottom:6px;">— 或直接輸入圖片路徑 —</div>
+  <input type="text" id="ef-image" placeholder="assets/xxx.png">
+
+  <div class="form-row">
+    <div>
+      <label>日期</label>
+      <input type="text" id="ef-date" placeholder="2026-04-22">
+    </div>
+    <div>
+      <label>標籤</label>
+      <select id="ef-tag">
+        <option value="">— 無 —</option>
+        <option value="#互動裝置">#互動裝置</option>
+        <option value="#動畫">#動畫</option>
+        <option value="#手繪">#手繪</option>
+        <option value="#開發日誌">#開發日誌</option>
+        <option value="#其他">#其他</option>
+      </select>
+    </div>
+  </div>
+
+  <label>連結（選填）</label>
+  <div id="ef-links-container"></div>
+  <button class="add-link-btn" onclick="addLinkRow()">＋ 新增連結</button>
+
+  <div class="vb-preview-card">
+    <p class="vb-preview-label">預覽</p>
+    <div class="vb-open-card" id="ef-preview-card" style="max-width:520px">
+      <div class="vb-open-head">
+        <div class="thumb">
+          <img id="ef-preview-img" src="https://placehold.co/64x64/C8E0E4/005C80?text=img" alt="">
+        </div>
+        <div class="vb-open-meta">
+          <div class="row1">
+            <span class="title" id="ef-preview-title">標題</span>
+            <span class="ps-chip" id="ef-preview-tag" style="display:none"></span>
+          </div>
+          <span class="date-str" id="ef-preview-date"></span>
+        </div>
+      </div>
+      <div class="vb-open-body">
+        <p id="ef-preview-caption" style="white-space:pre-wrap"></p>
+      </div>
+      <div class="vb-open-foot">
+        <div class="vb-links" id="ef-preview-links"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- ① Collapsed state -->
+  <div class="demo-compact">
+    <p class="label">① 折疊狀態（時間軸中）</p>
+    <div class="vb-compact-row">
+      <div class="vb-date">
+        <span class="d">22</span>
+        <span class="m">APR</span>
+      </div>
+      <div class="vb-dot-wrap">
+        <div class="vb-dot"></div>
+      </div>
+      <a class="vb-card" href="#" onclick="openCard(event)">
+        <div class="vb-thumb">
+          <img src="https://placehold.co/56x56/C8E0E4/005C80?text=img" alt="">
+        </div>
+        <div class="vb-body">
+          <div class="top-row">
+            <span class="vb-title">Walker 街頭攝影展</span>
+            <span class="ps-chip">展覽</span>
+          </div>
+          <p class="vb-cap">首次個人街頭攝影作品展，展期三週，地點 ...</p>
+        </div>
+        <span class="vb-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ② Expanded state (static mockup) -->
+  <div class="demo-open">
+    <p class="label">② 展開狀態（靜態範本）</p>
+    <div class="vb-open-card">
+      <div class="vb-open-head">
+        <div class="thumb">
+          <img src="https://placehold.co/64x64/C8E0E4/005C80?text=img" alt="">
+        </div>
+        <div class="vb-open-meta">
+          <div class="row1">
+            <span class="title">Walker 街頭攝影展</span>
+            <span class="ps-chip">展覽</span>
+          </div>
+          <span class="date-str">APR 22 · 2026</span>
+        </div>
+        <button class="vb-open-close" aria-label="關閉">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="vb-open-hero">
+        <img src="https://placehold.co/520x228/C8E0E4/005C80?text=Hero+Image" alt="Walker 攝影展封面">
+      </div>
+
+      <div class="vb-open-body">
+        <p>首次個人街頭攝影展「Walker」於四月正式開幕，展出過去一年在城市各角落拍攝的 30 幅作品，記錄光影與人的瞬間交會。</p>
+        <p>展覽空間特別以走廊動線設計，引導觀者在移動中感受攝影的節奏感，歡迎預約參觀。</p>
+      </div>
+
+      <div class="vb-open-tags">
+        <span class="ps-chip">攝影</span>
+        <span class="ps-chip">展覽</span>
+        <span class="ps-chip">個人作品</span>
+        <span class="ps-chip">2026</span>
+      </div>
+
+      <div class="vb-open-foot">
+        <span class="timestamp">Updated · APR 22, 2026</span>
+        <div class="vb-links">
+          <a href="#" class="vb-link">
+            作品頁面
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" y1="7" x2="12" y2="7"/><polyline points="8 3 12 7 8 11"/>
+            </svg>
+          </a>
+          <a href="#" class="vb-link ghost">
+            Instagram
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 1h3v3"/><line x1="13" y1="1" x2="7" y2="7"/><path d="M6 3H3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3"/>
+            </svg>
+          </a>
+          <a href="#" class="vb-link ghost">
+            Behance
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 1h3v3"/><line x1="13" y1="1" x2="7" y2="7"/><path d="M6 3H3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ Interactive: click the card above to open overlay -->
+  <div class="demo-interactive">
+    <p class="label">③ 點擊上方卡片 → 展開互動示範</p>
+  </div>
+
+  <!-- Overlay (interactive) -->
+  <div id="card-overlay">
+    <div class="vb-open-card">
+      <div class="vb-open-head">
+        <div class="thumb">
+          <img src="https://placehold.co/64x64/C8E0E4/005C80?text=img" alt="">
+        </div>
+        <div class="vb-open-meta">
+          <div class="row1">
+            <span class="title">Walker 街頭攝影展</span>
+            <span class="ps-chip">展覽</span>
+          </div>
+          <span class="date-str">APR 22 · 2026</span>
+        </div>
+        <button class="vb-open-close" onclick="closeCard()" aria-label="關閉">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="vb-open-hero">
+        <img src="https://placehold.co/520x228/C8E0E4/005C80?text=Hero+Image" alt="">
+      </div>
+
+      <div class="vb-open-body">
+        <p>首次個人街頭攝影展「Walker」於四月正式開幕，展出過去一年在城市各角落拍攝的 30 幅作品，記錄光影與人的瞬間交會。</p>
+        <p>展覽空間特別以走廊動線設計，引導觀者在移動中感受攝影的節奏感，歡迎預約參觀。</p>
+      </div>
+
+      <div class="vb-open-tags">
+        <span class="ps-chip">攝影</span>
+        <span class="ps-chip">展覽</span>
+        <span class="ps-chip">個人作品</span>
+        <span class="ps-chip">2026</span>
+      </div>
+
+      <div class="vb-open-foot">
+        <span class="timestamp">Updated · APR 22, 2026</span>
+        <div class="vb-links">
+          <a href="#" class="vb-link">
+            作品頁面
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" y1="7" x2="12" y2="7"/><polyline points="8 3 12 7 8 11"/>
+            </svg>
+          </a>
+          <a href="#" class="vb-link ghost">
+            Instagram
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 1h3v3"/><line x1="13" y1="1" x2="7" y2="7"/><path d="M6 3H3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3"/>
+            </svg>
+          </a>
+          <a href="#" class="vb-link ghost">
+            Behance
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 1h3v3"/><line x1="13" y1="1" x2="7" y2="7"/><path d="M6 3H3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ══ Static demo interaction ══ */
+    function openCard(e) {
+      e.preventDefault();
+      document.getElementById('card-overlay').classList.add('is-open');
+    }
+    function closeCard() {
+      document.getElementById('card-overlay').classList.remove('is-open');
+    }
+    document.getElementById('card-overlay').addEventListener('click', function(e) {
+      if (e.target === this) closeCard();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeCard();
+    });
+
+    /* ══ Editor mode ══ */
+    let _vbCtx = null;
+
+    (function initEditor() {
+      const raw = sessionStorage.getItem('vb_context');
+      if (!raw) return;
+      try {
+        _vbCtx = JSON.parse(raw);
+      } catch(e) { return; }
+
+      document.body.classList.add('edit-mode');
+
+      const p = _vbCtx.post;
+      if (p) {
+        document.getElementById('ef-title').value = p.title || '';
+        document.getElementById('ef-caption').value = p.caption || '';
+        document.getElementById('ef-image').value = p.image || '';
+        if (p.image) setImagePreview(p.image);
+        document.getElementById('ef-date').value = p.date || '';
+        document.getElementById('ef-tag').value = p.tag || '';
+        const links = p.links || (p.link ? [{ label: '連結', url: p.link }] : []);
+        links.forEach(lk => addLinkRow(lk.label, lk.url));
+      } else {
+        document.getElementById('ef-date').value = new Date().toISOString().slice(0, 10);
+      }
+
+      updatePreview();
+
+      ['ef-title','ef-caption','ef-image','ef-date'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updatePreview);
+      });
+
+      document.getElementById('ef-image-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        _pendingImageFile = file;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          setImagePreview(ev.target.result);
+          document.getElementById('ef-image').value = '';
+          updatePreview();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('ef-image').addEventListener('input', function() {
+        _pendingImageFile = null;
+        setImagePreview(this.value.trim());
+      });
+      document.getElementById('ef-tag').addEventListener('change', updatePreview);
+    })();
+
+    function updatePreview() {
+      const title = document.getElementById('ef-title').value || '標題';
+      const caption = document.getElementById('ef-caption').value || '';
+      const image = document.getElementById('ef-image').value.trim();
+      const date = document.getElementById('ef-date').value || '';
+      const tag = document.getElementById('ef-tag').value;
+
+      document.getElementById('ef-preview-title').textContent = title;
+      document.getElementById('ef-preview-caption').textContent = caption;
+
+      const imgEl = document.getElementById('ef-preview-img');
+      imgEl.src = image || 'https://placehold.co/64x64/C8E0E4/005C80?text=img';
+
+      const dateEl = document.getElementById('ef-preview-date');
+      dateEl.textContent = date;
+
+      const tagEl = document.getElementById('ef-preview-tag');
+      if (tag) {
+        tagEl.textContent = tag;
+        tagEl.style.display = '';
+      } else {
+        tagEl.style.display = 'none';
+      }
+
+      const linksContainer = document.getElementById('ef-preview-links');
+      linksContainer.innerHTML = '';
+      document.querySelectorAll('#ef-links-container .link-editor-row').forEach(row => {
+        const label = row.querySelector('.lr-label').value.trim();
+        const url = row.querySelector('.lr-url').value.trim();
+        if (url) {
+          const a = document.createElement('a');
+          a.href = url;
+          a.className = 'vb-link';
+          a.textContent = label || url;
+          linksContainer.appendChild(a);
+        }
+      });
+    }
+
+    function addLinkRow(label = '', url = '') {
+      const container = document.getElementById('ef-links-container');
+      const row = document.createElement('div');
+      row.className = 'link-editor-row';
+      row.innerHTML = `
+        <input type="text" class="lr-label" placeholder="名稱" value="${label.replace(/"/g,'&quot;')}">
+        <input type="text" class="lr-url"   placeholder="網址或路徑" value="${url.replace(/"/g,'&quot;')}">
+        <button class="link-del-btn" onclick="this.closest('.link-editor-row').remove();updatePreview()">✕</button>`;
+      row.querySelectorAll('input').forEach(i => i.addEventListener('input', updatePreview));
+      container.appendChild(row);
+    }
+
+    let _pendingImageFile = null;
+
+    function setImagePreview(src) {
+      const box = document.getElementById('ef-image-preview');
+      const hint = document.getElementById('ef-image-preview-hint');
+      if (src) {
+        box.innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover">`;
+      } else {
+        box.innerHTML = '<span id="ef-image-preview-hint" style="color:rgba(0,44,64,.45);font-size:13px;">點擊選擇圖片</span>';
+      }
+    }
+
+    function goBackToAdmin() {
+      window.location.href = './admin.html';
+    }
+
+    async function savePost() {
+      if (!_vbCtx) { goBackToAdmin(); return; }
+
+      const title   = document.getElementById('ef-title').value.trim();
+      const caption = document.getElementById('ef-caption').value.trim();
+      let   image   = document.getElementById('ef-image').value.trim();
+      const date    = document.getElementById('ef-date').value.trim();
+      const tag     = document.getElementById('ef-tag').value;
+      const links   = Array.from(document.querySelectorAll('#ef-links-container .link-editor-row'))
+        .map(row => ({ label: row.querySelector('.lr-label').value.trim(), url: row.querySelector('.lr-url').value.trim() }))
+        .filter(lk => lk.url);
+
+      if (!title) { alert('請填寫標題'); return; }
+
+      if (_pendingImageFile) {
+        try {
+          image = await uploadImage(_pendingImageFile);
+        } catch (err) {
+          alert('圖片上傳失敗：' + err.message);
+          return;
+        }
+      }
+
+      _vbCtx.saved_post = { title, caption, image, date, tag, links };
+      _vbCtx.vb_saved = true;
+      sessionStorage.setItem('vb_context', JSON.stringify(_vbCtx));
+      goBackToAdmin();
+    }
+
+    async function uploadImage(file) {
+      const token = sessionStorage.getItem('admin_token') || '';
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async ev => {
+          try {
+            const res = await fetch('/.netlify/functions/upload-image', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+              body: JSON.stringify({ filename: file.name, base64Data: ev.target.result, category: 'posts' }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || '上傳失敗');
+            resolve(data.path);
+          } catch (e) { reject(e); }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>

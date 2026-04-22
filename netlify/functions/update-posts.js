@@ -41,33 +41,18 @@ exports.handler = async (event) => {
     return { statusCode: 401, headers: HEADERS, body: JSON.stringify({ error: '未授權，請重新登入' }) };
   }
 
-  let filename, base64Data, category;
+  let posts;
   try {
-    ({ filename, base64Data, category } = JSON.parse(event.body));
+    ({ posts } = JSON.parse(event.body));
   } catch {
     return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  if (!filename || !base64Data || !category) {
-    return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: '缺少必要參數' }) };
-  }
-
-  // Strip data URL prefix if present (e.g. "data:image/png;base64,")
-  const pureBase64 = base64Data.replace(/^data:[^;]+;base64,/, '');
-
   const owner = process.env.GITHUB_OWNER;
   const repo = process.env.GITHUB_REPO;
   const ghToken = process.env.GITHUB_TOKEN;
-
-  const categoryFolderMap = {
-    installation: 'Installation Art',
-    animation: 'Animation',
-    painting: 'Painting',
-    posts: 'Posts',
-  };
-  const folder = categoryFolderMap[category] || category;
-  const filePath = `assets/${folder}/${filename}`;
-  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+  const filePath = 'posts.json';
+  const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
   const ghHeaders = {
     Authorization: `token ${ghToken}`,
@@ -75,36 +60,32 @@ exports.handler = async (event) => {
     'Content-Type': 'application/json',
   };
 
-  // Check if file already exists (to get SHA for update)
-  let sha;
-  const checkRes = await fetch(apiUrl, { headers: ghHeaders });
-  if (checkRes.ok) {
-    const existing = await checkRes.json();
-    sha = existing.sha;
+  const getRes = await fetch(apiBase, { headers: ghHeaders });
+  if (!getRes.ok) {
+    return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: '無法讀取 GitHub 上的檔案' }) };
   }
+  const { sha } = await getRes.json();
 
-  const body = {
-    message: `chore: upload image ${filename} via admin panel`,
-    content: pureBase64,
-  };
-  if (sha) body.sha = sha;
+  const content = Buffer.from(JSON.stringify({ posts }, null, 2) + '\n').toString('base64');
 
-  const putRes = await fetch(apiUrl, {
+  const putRes = await fetch(apiBase, {
     method: 'PUT',
     headers: ghHeaders,
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      message: 'chore: update posts via admin panel',
+      content,
+      sha,
+    }),
   });
 
   if (!putRes.ok) {
     const err = await putRes.json();
-    return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: '圖片上傳失敗', detail: err }) };
+    return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: '更新失敗', detail: err }) };
   }
-
-  const imagePath = `assets/${folder}/${filename}`;
 
   return {
     statusCode: 200,
     headers: HEADERS,
-    body: JSON.stringify({ success: true, path: imagePath }),
+    body: JSON.stringify({ success: true, message: '已更新！Netlify 正在重新部署...' }),
   };
 };

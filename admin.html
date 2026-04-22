@@ -180,11 +180,14 @@
       gap: 4px;
       margin-bottom: 28px;
       border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 0 4px;
     }
 
     .tab-btn {
       background: none;
-      color: var(--text-muted);
+      color: var(--text);
       border: none;
       border-bottom: 2px solid transparent;
       border-radius: 0;
@@ -192,12 +195,16 @@
       font-size: 14px;
       font-weight: 500;
       margin-bottom: -1px;
+      opacity: 1;
     }
 
     .tab-btn.active {
       color: var(--accent);
       border-bottom-color: var(--accent);
+      opacity: 1;
     }
+
+    .tab-btn:hover:not(.active) { opacity: 0.85; }
 
     /* ── Project cards ── */
     .project-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
@@ -297,6 +304,28 @@
       font-size: 12px;
       margin: 4px 0 4px;
     }
+
+    /* ── Link rows ── */
+    .link-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .link-row input { margin-bottom: 0; }
+    .link-row-remove {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .link-row-remove:hover { background: var(--danger); color: #fff; }
 
     /* ── Toast ── */
     #toast {
@@ -405,11 +434,18 @@
       <button class="tab-btn active" data-cat="installation">裝置藝術</button>
       <button class="tab-btn" data-cat="animation">動畫</button>
       <button class="tab-btn" data-cat="painting">繪畫</button>
+      <button class="tab-btn" data-cat="posts" style="margin-left:auto;border-left:1px solid var(--border);padding-left:18px">📌 近期動態</button>
     </div>
 
-    <div id="project-list" class="project-list"></div>
+    <div id="projects-view">
+      <div id="project-list" class="project-list"></div>
+      <button class="btn-secondary" id="add-btn">＋ 新增作品</button>
+    </div>
 
-    <button class="btn-secondary" id="add-btn">＋ 新增作品</button>
+    <div id="posts-view" style="display:none">
+      <div id="posts-admin-list" class="project-list"></div>
+      <button class="btn-secondary" id="add-post-btn">＋ 新增動態</button>
+    </div>
   </div>
 
   <div class="save-bar">
@@ -459,6 +495,56 @@
   </div>
 </div>
 
+<!-- ═══════════════ POST MODAL ═══════════════ -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <h2 id="post-modal-title">新增動態</h2>
+
+    <label>標題</label>
+    <input type="text" id="pf-title" placeholder="例：HOLOGACHA 開發日誌">
+
+    <label>內容 / 說明</label>
+    <textarea id="pf-caption" placeholder="簡短描述這次的進度或紀錄..." style="min-height:90px"></textarea>
+
+    <label>封面圖片（選填）</label>
+    <div class="image-preview" id="post-img-preview" onclick="document.getElementById('pf-image-file').click()">
+      <span>點擊上傳圖片</span>
+    </div>
+    <input type="file" id="pf-image-file" accept="image/*">
+    <div class="or-divider">— 或直接輸入圖片路徑 —</div>
+    <input type="text" id="pf-image-url" placeholder="assets/Installation Art/xxx.png">
+
+    <div class="form-row">
+      <div>
+        <label>日期</label>
+        <input type="text" id="pf-date" placeholder="例：2026-04-21">
+      </div>
+      <div>
+        <label>標籤</label>
+        <select id="pf-tag">
+          <option value="">— 無 —</option>
+          <option value="#互動裝置">#互動裝置</option>
+          <option value="#動畫">#動畫</option>
+          <option value="#手繪">#手繪</option>
+          <option value="#開發日誌">#開發日誌</option>
+          <option value="#其他">#其他</option>
+        </select>
+      </div>
+    </div>
+
+    <label>連結（選填，可新增多個）</label>
+    <div id="pf-links-container"></div>
+    <button type="button" class="btn-secondary btn-sm" id="pf-links-add" style="margin-bottom:18px">＋ 新增連結</button>
+
+    <div id="post-modal-error" class="error-msg"></div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-secondary" id="post-modal-cancel-btn">取消</button>
+      <button class="btn-primary" style="width:auto;padding:10px 28px" id="post-modal-save-btn">儲存</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -491,7 +577,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (e.key === 'Enter') handleLogin();
   });
   document.getElementById('logout-btn').addEventListener('click', handleLogout);
-  document.getElementById('add-btn').addEventListener('click', () => openModal(null));
+  document.getElementById('add-btn').addEventListener('click', () => openPageBuilder(null));
   document.getElementById('save-btn').addEventListener('click', saveAndPublish);
   document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
   document.getElementById('modal-save-btn').addEventListener('click', handleModalSave);
@@ -505,9 +591,39 @@ window.addEventListener('DOMContentLoaded', async () => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentCat = btn.dataset.cat;
-      renderList();
+      if (btn.dataset.cat === 'posts') {
+        currentMode = 'posts';
+        document.getElementById('projects-view').style.display = 'none';
+        document.getElementById('posts-view').style.display = '';
+        renderPostsList();
+      } else {
+        currentMode = 'projects';
+        document.getElementById('posts-view').style.display = 'none';
+        document.getElementById('projects-view').style.display = '';
+        currentCat = btn.dataset.cat;
+        renderList();
+      }
     });
+  });
+
+  document.getElementById('add-post-btn').addEventListener('click', () => openPostEditor(null));
+  document.getElementById('post-modal-cancel-btn').addEventListener('click', closePostModal);
+  document.getElementById('post-modal-save-btn').addEventListener('click', handlePostModalSave);
+  document.getElementById('pf-links-add').addEventListener('click', () => addLinkRow());
+  document.getElementById('pf-image-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    pendingPostImageFile = file;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('post-img-preview').innerHTML = `<img src="${ev.target.result}" alt="preview">`;
+      document.getElementById('pf-image-url').value = '';
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('pf-image-url').addEventListener('input', () => {
+    const url = document.getElementById('pf-image-url').value.trim();
+    if (url) document.getElementById('post-img-preview').innerHTML = `<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span>無法載入圖片</span>'">`;
   });
 });
 
@@ -553,7 +669,7 @@ async function handleLogin() {
 }
 
 function handleLogout() {
-  if (hasUnsaved && !confirm('有未儲存的變更，確定要登出嗎？')) return;
+  if ((hasUnsaved || hasUnsavedPosts) && !confirm('有未儲存的變更，確定要登出嗎？')) return;
   token = null;
   sessionStorage.removeItem('admin_token');
   projects = null;
@@ -569,7 +685,6 @@ async function initAdmin() {
     const res = await fetch('projects.json?nocache=' + Date.now());
     projects = await res.json();
 
-    // Ensure all categories exist, migrate old comingSoon format
     ['installation', 'animation', 'painting'].forEach(cat => {
       if (!projects[cat]) projects[cat] = [];
       projects[cat].forEach(p => {
@@ -579,12 +694,76 @@ async function initAdmin() {
       });
     });
 
+    // Load posts.json
+    try {
+      const postsRes = await fetch('posts.json?nocache=' + Date.now());
+      const postsData = await postsRes.json();
+      posts = postsData.posts || [];
+    } catch {
+      posts = [];
+    }
+
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
+
+    // Pick up saved data from page builder
+    applyPageBuilderReturn();
+    applyVbCardReturn();
+
     renderList();
   } catch (err) {
     alert('無法載入作品資料：' + err.message);
   }
+}
+
+function applyPageBuilderReturn() {
+  const raw = sessionStorage.getItem('pb_context');
+  if (!raw) return;
+  try {
+    const ctx = JSON.parse(raw);
+    if (!ctx.pb_saved) return;
+    const { cat, idx, project } = ctx;
+    if (!project || !cat) return;
+    if (!projects[cat]) projects[cat] = [];
+    if (idx === null || idx === undefined) {
+      project.order = projects[cat].length + 1;
+      projects[cat].push(project);
+    } else {
+      projects[cat][idx] = { ...projects[cat][idx], ...project };
+    }
+    markUnsaved();
+    currentCat = cat;
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === cat);
+    });
+  } catch(e) {}
+  sessionStorage.removeItem('pb_context');
+}
+
+function applyVbCardReturn() {
+  const raw = sessionStorage.getItem('vb_context');
+  if (!raw) return;
+  try {
+    const ctx = JSON.parse(raw);
+    if (!ctx.vb_saved || !ctx.saved_post) return;
+    const postData = ctx.saved_post;
+    if (ctx.idx === null || ctx.idx === undefined) {
+      postData.id = 'post-' + Date.now();
+      posts.unshift(postData);
+    } else {
+      posts[ctx.idx] = { ...posts[ctx.idx], ...postData };
+    }
+    markPostsUnsaved();
+    // Switch to posts tab
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    const postsTab = document.querySelector('.tab-btn[data-cat="posts"]');
+    if (postsTab) postsTab.classList.add('active');
+    currentMode = 'posts';
+    document.getElementById('projects-view').style.display = 'none';
+    document.getElementById('posts-view').style.display = '';
+    setTimeout(renderPostsList, 0);
+  } catch(e) {}
+  sessionStorage.removeItem('vb_context');
 }
 
 // ══════════════════════════════════════════
@@ -615,7 +794,7 @@ function renderList() {
         <span>${p.date}${p.comingSoon ? '　🔒 Coming Soon' : ''}</span>
       </div>
       <div class="project-actions">
-        <button class="btn-secondary btn-sm" onclick="openModal(${idx})">編輯</button>
+        <button class="btn-secondary btn-sm" onclick="openPageBuilder(${idx})">編輯</button>
         <button class="btn-danger" onclick="deleteProject(${idx})">刪除</button>
       </div>
     `;
@@ -663,6 +842,28 @@ function syncOrderFromDOM(list) {
   projects[currentCat] = reordered;
   markUnsaved();
   renderList();
+}
+
+// ══════════════════════════════════════════
+//  Page Builder Navigation
+// ══════════════════════════════════════════
+function openPageBuilder(idx) {
+  const ctx = {
+    cat: currentCat,
+    idx,
+    project: idx !== null ? projects[currentCat][idx] : null,
+  };
+  sessionStorage.setItem('pb_context', JSON.stringify(ctx));
+  window.location.href = './mockup-page-builder.html';
+}
+
+function openPostEditor(idx) {
+  const ctx = {
+    idx,
+    post: idx !== null ? posts[idx] : null,
+  };
+  sessionStorage.setItem('vb_context', JSON.stringify(ctx));
+  window.location.href = './vb-card-template.html';
 }
 
 // ══════════════════════════════════════════
@@ -848,45 +1049,38 @@ function resetPreview() {
 //  Save & Publish
 // ══════════════════════════════════════════
 async function saveAndPublish() {
+  if (currentMode === 'posts') {
+    await savePostsToGithub();
+  } else {
+    await saveProjectsToGithub();
+  }
+}
+
+async function saveProjectsToGithub() {
   const btn = document.getElementById('save-btn');
   const status = document.getElementById('save-status');
-
-  btn.disabled = true;
-  btn.textContent = '發佈中...';
+  btn.disabled = true; btn.textContent = '發佈中...';
   status.textContent = '正在儲存到 GitHub...';
-
   try {
     const res = await fetch('/.netlify/functions/update-projects', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ projects }),
     });
-
     const data = await res.json();
-
     if (!res.ok) {
-      if (res.status === 401) {
-        showToast('登入已過期，請重新登入', 'error');
-        handleLogout();
-        return;
-      }
+      if (res.status === 401) { showToast('登入已過期，請重新登入', 'error'); handleLogout(); return; }
       throw new Error(data.error || '儲存失敗');
     }
-
     hasUnsaved = false;
     document.getElementById('unsaved-badge').style.display = 'none';
     status.textContent = '✓ 已發佈！Netlify 正在重新部署（約 1 分鐘）';
     showToast('✓ 已成功發佈！', 'success');
-
   } catch (err) {
     status.textContent = '儲存失敗：' + err.message;
     showToast('儲存失敗：' + err.message, 'error');
   } finally {
-    btn.disabled = false;
-    btn.textContent = '儲存並發佈';
+    btn.disabled = false; btn.textContent = '儲存並發佈';
   }
 }
 
@@ -907,11 +1101,216 @@ function showToast(msg, type = 'success') {
 }
 
 window.addEventListener('beforeunload', e => {
-  if (hasUnsaved) {
+  if (hasUnsaved || hasUnsavedPosts) {
     e.preventDefault();
     e.returnValue = '';
   }
 });
+
+// ══════════════════════════════════════════
+//  Posts (近期動態)
+// ══════════════════════════════════════════
+let posts = null;
+let editingPostIndex = null;
+let pendingPostImageFile = null;
+let hasUnsavedPosts = false;
+let currentMode = 'projects'; // 'projects' | 'posts'
+
+async function savePostsToGithub() {
+  const btn = document.getElementById('save-btn');
+  const status = document.getElementById('save-status');
+  btn.disabled = true;
+  btn.textContent = '發佈中...';
+  status.textContent = '正在儲存動態到 GitHub...';
+  try {
+    const res = await fetch('/.netlify/functions/update-posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ posts }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 401) { showToast('登入已過期，請重新登入', 'error'); handleLogout(); return; }
+      throw new Error(data.error || '儲存失敗');
+    }
+    hasUnsavedPosts = false;
+    document.getElementById('unsaved-badge').style.display = 'none';
+    status.textContent = '✓ 動態已發佈！Netlify 正在重新部署（約 1 分鐘）';
+    showToast('✓ 動態已成功發佈！', 'success');
+  } catch (err) {
+    status.textContent = '儲存失敗：' + err.message;
+    showToast('儲存失敗：' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '儲存並發佈';
+  }
+}
+
+function renderPostsList() {
+  const list = document.getElementById('posts-admin-list');
+  list.innerHTML = '';
+
+  if (!posts || posts.length === 0) {
+    list.innerHTML = '<p style="color:var(--text-muted);font-size:14px;padding:12px 0">尚無動態，點擊「新增動態」開始</p>';
+    return;
+  }
+
+  const sorted = [...posts].map((p, i) => ({ ...p, _idx: i })).sort((a, b) => b.id.localeCompare(a.id));
+
+  sorted.forEach(post => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <img src="${post.image || ''}" alt="${post.title}"
+           onerror="this.src='';this.alt='📝'"
+           style="${post.image ? '' : 'background:var(--border);font-size:20px;display:flex;align-items:center;justify-content:center'}">
+      <div class="project-info">
+        <strong>${post.title}</strong>
+        <span>${post.date}${post.tag ? '　' + post.tag : ''}</span>
+        <span style="font-size:11px;opacity:.7;margin-top:2px;display:block">${(post.caption || '').slice(0, 60)}${post.caption && post.caption.length > 60 ? '...' : ''}</span>
+      </div>
+      <div class="project-actions">
+        <button class="btn-secondary btn-sm" onclick="openPostEditor(${post._idx})">編輯</button>
+        <button class="btn-danger" onclick="deletePost(${post._idx})">刪除</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function addLinkRow(label = '', url = '') {
+  const container = document.getElementById('pf-links-container');
+  const row = document.createElement('div');
+  row.className = 'link-row';
+  row.innerHTML = `
+    <input type="text" placeholder="名稱（如：作品頁面）" value="${label.replace(/"/g, '&quot;')}" class="lr-label">
+    <input type="text" placeholder="網址或路徑" value="${url.replace(/"/g, '&quot;')}" class="lr-url">
+    <button type="button" class="link-row-remove" title="刪除">✕</button>
+  `;
+  row.querySelector('.link-row-remove').addEventListener('click', () => row.remove());
+  container.appendChild(row);
+}
+
+function openPostModal(idx) {
+  editingPostIndex = idx;
+  pendingPostImageFile = null;
+  document.getElementById('post-modal-error').style.display = 'none';
+  document.getElementById('post-img-preview').innerHTML = '<span>點擊上傳圖片</span>';
+  document.getElementById('pf-links-container').innerHTML = '';
+
+  if (idx === null) {
+    document.getElementById('post-modal-title').textContent = '新增動態';
+    document.getElementById('pf-title').value = '';
+    document.getElementById('pf-caption').value = '';
+    document.getElementById('pf-image-url').value = '';
+    document.getElementById('pf-date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('pf-tag').value = '';
+  } else {
+    const p = posts[idx];
+    document.getElementById('post-modal-title').textContent = '編輯動態';
+    document.getElementById('pf-title').value = p.title || '';
+    document.getElementById('pf-caption').value = p.caption || '';
+    document.getElementById('pf-image-url').value = p.image || '';
+    document.getElementById('pf-date').value = p.date || '';
+    document.getElementById('pf-tag').value = p.tag || '';
+    if (p.image) document.getElementById('post-img-preview').innerHTML = `<img src="${p.image}" alt="preview">`;
+    const links = p.links || (p.link ? [{ label: '連結', url: p.link }] : []);
+    links.forEach(lk => addLinkRow(lk.label, lk.url));
+  }
+
+  document.getElementById('post-modal').classList.add('open');
+}
+
+function closePostModal() {
+  document.getElementById('post-modal').classList.remove('open');
+  pendingPostImageFile = null;
+}
+
+async function handlePostModalSave() {
+  const title = document.getElementById('pf-title').value.trim();
+  const caption = document.getElementById('pf-caption').value.trim();
+  const date = document.getElementById('pf-date').value.trim();
+  const tag = document.getElementById('pf-tag').value;
+  const links = Array.from(document.querySelectorAll('#pf-links-container .link-row'))
+    .map(row => ({ label: row.querySelector('.lr-label').value.trim(), url: row.querySelector('.lr-url').value.trim() }))
+    .filter(lk => lk.url);
+  const imageUrl = document.getElementById('pf-image-url').value.trim();
+  const errEl = document.getElementById('post-modal-error');
+  const saveBtn = document.getElementById('post-modal-save-btn');
+
+  errEl.style.display = 'none';
+  if (!title) { errEl.textContent = '請填寫標題'; errEl.style.display = 'block'; return; }
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = '儲存中...';
+
+  let finalImage = imageUrl;
+  if (pendingPostImageFile) {
+    try {
+      finalImage = await uploadPostImage(pendingPostImageFile);
+    } catch (err) {
+      errEl.textContent = '圖片上傳失敗：' + err.message;
+      errEl.style.display = 'block';
+      saveBtn.disabled = false;
+      saveBtn.textContent = '儲存';
+      return;
+    }
+  }
+
+  const post = {
+    id: editingPostIndex === null ? 'post-' + Date.now() : posts[editingPostIndex].id,
+    title,
+    caption,
+    image: finalImage,
+    date: date || new Date().toISOString().slice(0, 10),
+    tag,
+    links,
+  };
+
+  if (editingPostIndex === null) {
+    posts.unshift(post);
+  } else {
+    posts[editingPostIndex] = post;
+  }
+
+  markPostsUnsaved();
+  closePostModal();
+  renderPostsList();
+  saveBtn.disabled = false;
+  saveBtn.textContent = '儲存';
+}
+
+function deletePost(idx) {
+  if (!confirm(`確定要刪除「${posts[idx].title}」？`)) return;
+  posts.splice(idx, 1);
+  markPostsUnsaved();
+  renderPostsList();
+}
+
+async function uploadPostImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async ev => {
+      try {
+        const res = await fetch('/.netlify/functions/upload-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ filename: file.name, base64Data: ev.target.result, category: 'posts' }),
+        });
+        const data = await res.json();
+        if (!res.ok) reject(new Error(data.error || '上傳失敗'));
+        else resolve(data.path);
+      } catch (err) { reject(err); }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function markPostsUnsaved() {
+  hasUnsavedPosts = true;
+  document.getElementById('unsaved-badge').style.display = 'inline';
+  document.getElementById('save-status').textContent = '有未儲存的動態，記得點「儲存並發佈」';
+}
 </script>
 </body>
 </html>

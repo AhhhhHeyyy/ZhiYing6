@@ -17,13 +17,13 @@
 
     :root {
       --eb-bg:     rgba(0,44,64,0.97);
-      --eb-border: rgba(146,199,207,.35);
+      --eb-border: rgba(146,199,207,.4);
       --eb-accent: #92C7CF;
       --eb-text:   #E6F4F7;
-      --eb-muted:  rgba(230,244,247,0.6);
+      --eb-muted:  rgba(230,244,247,0.75);
       --eb-danger: #ff6b6b;
       --eb-r:      7px;
-      --tb-h:      50px;
+      --tb-h:      58px;
     }
 
     /* 讓 body 預留 toolbar 高度 */
@@ -35,134 +35,154 @@
       top: 0; left: 0; right: 0;
       height: var(--tb-h);
       z-index: 9900;
-      background: var(--eb-bg);
-      border-bottom: 1px solid var(--eb-border);
+      background: #002d3f;
+      border-bottom: 2px solid var(--eb-accent);
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 0 16px;
+      gap: 10px;
+      padding: 0 20px;
       font-family: 'Public Sans', system-ui, sans-serif;
     }
 
     .eb-toolbar-label {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--eb-muted);
       white-space: nowrap;
+      letter-spacing: .4px;
     }
 
     .eb-name-input {
-      background: rgba(0,0,0,.3);
+      background: rgba(0,0,0,.4);
       border: 1px solid var(--eb-border);
       border-radius: var(--eb-r);
       color: var(--eb-text);
-      font-size: 14px;
-      font-weight: 600;
-      padding: 5px 12px;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 6px 14px;
       outline: none;
-      width: 150px;
+      width: 160px;
     }
-    .eb-name-input:focus { border-color: var(--eb-accent); }
+    .eb-name-input:focus { border-color: var(--eb-accent); box-shadow: 0 0 0 2px rgba(146,199,207,.2); }
 
     .eb-sep {
-      width: 1px; height: 22px;
-      background: var(--eb-border);
+      width: 1px; height: 26px;
+      background: rgba(146,199,207,.3);
       flex-shrink: 0;
     }
 
     .eb-add-btn {
-      background: rgba(0,92,128,0.7);
-      border: 1px solid var(--eb-border);
+      background: rgba(146,199,207,.12);
+      border: 1.5px solid rgba(146,199,207,.5);
       border-radius: var(--eb-r);
-      color: var(--eb-text);
-      font-size: 12px;
-      padding: 5px 11px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: border-color .15s, background .15s;
-      font-family: inherit;
-    }
-    .eb-add-btn:hover { border-color: var(--eb-accent); background: rgba(146,199,207,.15); }
-
-    .eb-toolbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-
-    .eb-btn {
-      border-radius: var(--eb-r);
-      font-size: 12px;
+      color: #d8eef1;
+      font-size: 14px;
       font-weight: 600;
       padding: 6px 14px;
       cursor: pointer;
+      white-space: nowrap;
+      transition: border-color .15s, background .15s, color .15s;
+      font-family: inherit;
+      letter-spacing: .2px;
+    }
+    .eb-add-btn:hover {
+      border-color: var(--eb-accent);
+      background: rgba(146,199,207,.25);
+      color: #fff;
+    }
+
+    .eb-toolbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+    .eb-btn {
+      border-radius: var(--eb-r);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 7px 18px;
+      cursor: pointer;
       font-family: inherit;
       transition: opacity .15s;
+      letter-spacing: .3px;
     }
     .eb-btn-secondary {
-      background: rgba(0,92,128,0.7);
-      border: 1px solid var(--eb-border);
-      color: var(--eb-text);
+      background: rgba(0,92,128,0.5);
+      border: 1.5px solid rgba(146,199,207,.4);
+      color: var(--eb-muted);
     }
     .eb-btn-preview {
-      background: transparent;
-      border: 1px solid var(--eb-accent);
+      background: rgba(146,199,207,.1);
+      border: 1.5px solid var(--eb-accent);
       color: var(--eb-accent);
     }
     .eb-btn-save {
       background: var(--eb-accent);
       border: none;
-      color: #004a62;
+      color: #003a4d;
     }
-    .eb-btn:hover { opacity: .85; }
+    .eb-btn:hover { opacity: .82; }
 
     /* ── 編輯區塊通用 ── */
     .eb-block {
       position: relative;
+      /* 左側常駐編輯指示條 */
+      border-left: 3px solid transparent;
+      padding-left: 8px;
+      transition: border-color .15s;
     }
-
-    /* hover / selected 框線 */
-    .eb-block:hover  { outline: 2px dashed rgba(146,199,207,.45); outline-offset: 4px; }
-    .eb-block.eb-selected { outline: 2px solid var(--eb-accent); outline-offset: 4px; }
+    .eb-block:hover  {
+      border-left-color: rgba(146,199,207,.5);
+      outline: 1px dashed rgba(146,199,207,.35);
+      outline-offset: 6px;
+    }
+    .eb-block.eb-selected {
+      border-left-color: var(--eb-accent);
+      outline: 2px solid var(--eb-accent);
+      outline-offset: 6px;
+    }
 
     /* 浮動控制列 */
     .eb-ctrl {
       display: none;
       position: absolute;
-      top: -36px;
+      top: -42px;
       right: 0;
       z-index: 800;
-      background: var(--eb-bg);
-      border: 1px solid var(--eb-border);
+      background: #002d3f;
+      border: 1.5px solid var(--eb-accent);
       border-radius: var(--eb-r);
-      padding: 3px 6px;
-      gap: 4px;
+      padding: 5px 10px;
+      gap: 6px;
       align-items: center;
       white-space: nowrap;
       font-family: 'Public Sans', sans-serif;
+      box-shadow: 0 4px 14px rgba(0,0,0,.4);
     }
     .eb-block:hover .eb-ctrl,
     .eb-block.eb-selected .eb-ctrl { display: flex; }
 
     .eb-ctrl-tag {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .6px;
+      letter-spacing: .5px;
       color: var(--eb-accent);
-      padding: 2px 8px;
-      background: rgba(146,199,207,.12);
-      border-radius: 3px;
-      margin-right: 2px;
+      padding: 3px 10px;
+      background: rgba(146,199,207,.18);
+      border-radius: 4px;
+      margin-right: 4px;
     }
     .eb-ctrl-btn {
-      background: none;
-      border: none;
-      color: var(--eb-muted);
-      font-size: 13px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(146,199,207,.3);
+      color: var(--eb-text);
+      font-size: 15px;
+      font-weight: 700;
       cursor: pointer;
-      padding: 2px 6px;
-      border-radius: 4px;
-      transition: color .1s, background .1s;
+      padding: 3px 10px;
+      border-radius: 5px;
+      transition: color .1s, background .1s, border-color .1s;
       font-family: inherit;
     }
-    .eb-ctrl-btn:hover { color: var(--eb-text); background: rgba(255,255,255,.1); }
-    .eb-ctrl-btn.del:hover { color: var(--eb-danger); }
+    .eb-ctrl-btn:hover { color: #fff; background: rgba(146,199,207,.25); border-color: var(--eb-accent); }
+    .eb-ctrl-btn.del { color: var(--eb-danger); border-color: rgba(255,107,107,.4); }
+    .eb-ctrl-btn.del:hover { background: rgba(255,107,107,.2); border-color: var(--eb-danger); }
 
     /* ── contenteditable 視覺提示 ── */
     [contenteditable]:focus {
@@ -258,19 +278,20 @@
     /* 加圖按鈕（gallery block 底部） */
     .eb-gallery-add {
       width: 100%;
-      margin-top: 10px;
-      padding: 8px;
-      background: rgba(146,199,207,.06);
-      border: 1px dashed rgba(146,199,207,.3);
+      margin-top: 12px;
+      padding: 11px;
+      background: rgba(146,199,207,.08);
+      border: 1.5px dashed rgba(146,199,207,.5);
       border-radius: var(--eb-r);
-      color: rgba(146,199,207,.8);
-      font-size: 13px;
+      color: var(--eb-accent);
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
       text-align: center;
       font-family: 'Public Sans', sans-serif;
       transition: background .15s, border-color .15s;
     }
-    .eb-gallery-add:hover { background: rgba(146,199,207,.13); border-color: var(--eb-accent); }
+    .eb-gallery-add:hover { background: rgba(146,199,207,.18); border-color: var(--eb-accent); }
 
     /* ── Media-flex 的 li 可編輯 ── */
     .media-left li[contenteditable],
@@ -281,22 +302,25 @@
     /* 媒材 block：加 item 按鈕 */
     .eb-tools-add-row {
       display: flex;
-      gap: 8px;
+      gap: 12px;
       justify-content: center;
-      margin-top: 6px;
+      margin-top: 14px;
+      padding: 10px 0;
+      border-top: 1px dashed rgba(146,199,207,.2);
     }
     .eb-tools-add-btn {
-      background: rgba(146,199,207,.07);
-      border: 1px dashed rgba(146,199,207,.3);
-      border-radius: 5px;
-      color: rgba(146,199,207,.7);
-      font-size: 11px;
-      padding: 4px 12px;
+      background: rgba(146,199,207,.1);
+      border: 1.5px dashed rgba(146,199,207,.5);
+      border-radius: 6px;
+      color: var(--eb-accent);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 20px;
       cursor: pointer;
       font-family: 'Public Sans', sans-serif;
-      transition: background .15s;
+      transition: background .15s, border-color .15s;
     }
-    .eb-tools-add-btn:hover { background: rgba(146,199,207,.15); }
+    .eb-tools-add-btn:hover { background: rgba(146,199,207,.2); border-color: var(--eb-accent); }
 
     /* li 刪除按鈕 */
     .eb-li-wrap {
@@ -306,13 +330,17 @@
     }
     .eb-li-del {
       display: none;
-      background: none;
-      border: none;
+      background: rgba(255,107,107,.15);
+      border: 1px solid rgba(255,107,107,.4);
+      border-radius: 4px;
       color: var(--eb-danger);
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
-      padding: 0 2px;
+      padding: 1px 6px;
       font-family: inherit;
+      margin-left: 6px;
+      vertical-align: middle;
     }
     li:hover .eb-li-del { display: inline; }
 
@@ -342,14 +370,18 @@
     }
     .eb-grid-toolbar .add-img-btn:hover { background: rgba(146,199,207,.22); }
 
-    /* Grid cells */
+    /* Grid — dense auto-fill，每格獨立高度 */
     .eb-grid {
       display: grid;
       gap: 8px;
+      grid-auto-rows: 80px;      /* 最小高度單位 */
+      grid-auto-flow: dense;     /* 自動填滿空隙 */
+      align-items: stretch;
     }
     .eb-grid-cell {
       position: relative;
-      aspect-ratio: 4/3;
+      grid-row: span 2;          /* 預設佔 2 個 row unit = 168px */
+      user-select: none;         /* 避免拖曳時選到文字 */
       background: rgba(146,199,207,.07);
       border: 1px dashed rgba(146,199,207,.25);
       display: flex;
@@ -358,19 +390,172 @@
       font-size: 12px;
       color: rgba(64,79,99,.45);
       overflow: hidden;
-      cursor: pointer;
       font-family: 'Public Sans', sans-serif;
+      transition: border-color .15s;
+      min-height: 0;             /* 讓 grid-row span 控制高度 */
     }
     .eb-grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     .eb-grid-cell:hover { border-color: var(--eb-accent); }
-    .eb-grid-cell .cell-del {
-      position: absolute; top: 4px; right: 6px;
-      font-size: 13px; color: var(--eb-danger);
-      display: none; cursor: pointer; z-index: 2;
-      background: rgba(0,0,0,.4); border-radius: 50%;
-      width: 20px; height: 20px; line-height: 20px; text-align: center;
+
+    /* 頂部拖曳條帶（全寬，直覺易抓） */
+    .eb-cell-move-handle {
+      position: absolute;
+      top: 0; left: 0; right: 30px; /* 右側留出刪除按鈕空間 */
+      height: 28px;
+      cursor: grab;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to bottom, rgba(0,30,44,.65) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity .15s;
+      user-select: none;
+      gap: 3px;
     }
-    .eb-grid-cell:hover .cell-del { display: block; }
+    .eb-cell-move-handle::before {
+      content: '⠿';
+      color: rgba(146,199,207,.9);
+      font-size: 15px;
+      line-height: 1;
+    }
+    .eb-cell-move-handle:active { cursor: grabbing; }
+    .eb-grid-cell:hover .eb-cell-move-handle { opacity: 1; }
+
+    /* 刪除按鈕（右上角） */
+    .eb-cell-del-btn {
+      position: absolute;
+      top: 4px; right: 5px;
+      width: 22px; height: 22px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,20,30,.75);
+      border: 1px solid rgba(255,107,107,.5);
+      border-radius: 4px;
+      color: var(--eb-danger);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 6;
+      padding: 0;
+      font-family: inherit;
+      line-height: 1;
+    }
+    .eb-cell-del-btn:hover { background: rgba(255,107,107,.25); }
+    .eb-grid-cell:hover .eb-cell-del-btn { display: flex; }
+
+    /* 底部：調整高度（row span） */
+    .eb-cell-resize-handle {
+      position: absolute;
+      bottom: 0; left: 14px; right: 14px;
+      height: 14px;
+      cursor: ns-resize;
+      z-index: 5;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 3px;
+    }
+    .eb-cell-resize-handle::after {
+      content: '';
+      width: 36px; height: 4px;
+      background: rgba(146,199,207,.4);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    .eb-grid-cell:hover .eb-cell-resize-handle::after { opacity: 1; }
+    .eb-grid-cell.eb-resizing .eb-cell-resize-handle::after { opacity: 1; background: var(--eb-accent); }
+
+    /* 右側：調整寬度（col span） */
+    .eb-cell-resize-col {
+      position: absolute;
+      right: 0; top: 14px; bottom: 14px;
+      width: 14px;
+      cursor: ew-resize;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 3px;
+    }
+    .eb-cell-resize-col::after {
+      content: '';
+      width: 4px; height: 36px;
+      background: rgba(146,199,207,.4);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    .eb-grid-cell:hover .eb-cell-resize-col::after { opacity: 1; }
+    .eb-grid-cell.eb-resizing-col .eb-cell-resize-col::after { opacity: 1; background: var(--eb-accent); }
+
+    /* 格子尺寸標示（右下角） */
+    .eb-cell-size-tag {
+      position: absolute;
+      bottom: 18px; right: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(146,199,207,.7);
+      background: rgba(0,20,30,.55);
+      padding: 2px 6px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .15s;
+      font-family: 'Public Sans', sans-serif;
+    }
+    .eb-grid-cell:hover .eb-cell-size-tag,
+    .eb-grid-cell.eb-resizing .eb-cell-size-tag,
+    .eb-grid-cell.eb-resizing-col .eb-cell-size-tag { opacity: 1; }
+
+    /* ── Block 拖曳 handle ── */
+    .eb-block-drag {
+      position: absolute;
+      top: 8px; left: 6px;
+      width: 22px; height: 22px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,20,30,.75);
+      border: 1px solid rgba(146,199,207,.5);
+      border-radius: 4px;
+      color: var(--eb-accent);
+      font-size: 14px;
+      cursor: grab;
+      z-index: 6;
+      user-select: none;
+      line-height: 1;
+    }
+    .eb-block-drag:active { cursor: grabbing; }
+    .eb-block:hover .eb-block-drag { display: flex; }
+
+    /* Sortable.js — ghost 佔位框（顯示「會放到哪裡」） */
+    .eb-sortable-ghost.eb-grid-cell {
+      opacity: 0.2;
+      background: rgba(146,199,207,.12) !important;
+      border: 2px dashed var(--eb-accent) !important;
+    }
+    .eb-sortable-ghost.eb-block {
+      opacity: 0.2;
+      border-left-color: var(--eb-accent) !important;
+      outline: 2px dashed rgba(146,199,207,.6) !important;
+    }
+    /* Sortable.js — 正在拖曳的實體（浮起來的那個） */
+    .eb-sortable-drag.eb-grid-cell,
+    .eb-sortable-drag.eb-block {
+      opacity: 0.9;
+      box-shadow: 0 8px 28px rgba(0,0,0,.4);
+    }
+
+    /* preview 模式隱藏所有格子控制 */
+    body.eb-preview .eb-cell-move-handle,
+    body.eb-preview .eb-cell-del-btn,
+    body.eb-preview .eb-cell-resize-handle,
+    body.eb-preview .eb-cell-resize-col,
+    body.eb-preview .eb-cell-size-tag,
+    body.eb-preview .eb-block-drag { display: none !important; }
 
     /* ── 影片 placeholder ── */
     .eb-video-ph {
@@ -416,6 +601,35 @@
     body.eb-preview .eb-cover-replace { display: none !important; }
     body.eb-preview .eb-cover-placeholder { min-height: 0; border: none; background: transparent; }
     body.eb-preview [contenteditable] { border-bottom: none !important; cursor: default; }
+
+    /* 預覽時的浮動離開按鈕 */
+    .eb-exit-preview-btn {
+      display: none;
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      background: var(--eb-accent);
+      color: #004a62;
+      font-family: 'Public Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(0,0,0,.35);
+      transition: opacity .15s;
+    }
+    .eb-exit-preview-btn:hover { opacity: .85; }
+    body.eb-preview .eb-exit-preview-btn { display: block; }
+
+    /* ── 覆蓋真實頁面會隱藏/位移內容的樣式 ── */
+    .project-container {
+      opacity: 1 !important;
+      transform: none !important;
+      padding-top: 40px !important;  /* 原本 calc(500px+20px) 是為了首頁 intro 區，編輯器不需要 */
+    }
 
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 5px; }
@@ -605,6 +819,9 @@
   </div>
 </footer>
 
+<!-- 預覽模式：離開按鈕（固定右下角） -->
+<button class="eb-exit-preview-btn" onclick="togglePreview()">✕ 離開預覽</button>
+
 <a href="./index.html" class="home-button-fixed">HOME</a>
 <div class="project-nav-fixed">
   <a href="#" class="prev-btn-fixed">&#x2039;</a>
@@ -613,9 +830,48 @@
 
 
 <script>
+/* ══ 從 admin 載入作品資料 ══ */
+(function loadContext() {
+  const raw = sessionStorage.getItem('pb_context');
+  if (!raw) return;
+  try {
+    const ctx = JSON.parse(raw);
+    const p = ctx.project;
+    if (p) {
+      document.getElementById('work-name').value = p.title || '';
+      document.getElementById('display-title').textContent = p.title || '';
+      const yearEl = document.querySelector('.project-year');
+      if (yearEl && p.date) yearEl.textContent = p.date;
+      if (p.image) {
+        document.getElementById('cover-zone').innerHTML = `
+          <img src="${p.image}" alt="封面圖" style="width:100%;height:100%;object-fit:cover">
+          <div class="eb-cover-replace">🖼 替換封面圖</div>`;
+      }
+    }
+  } catch (e) {}
+})();
+
 /* ══ 同步標題 ══ */
 document.getElementById('work-name').addEventListener('input', function() {
   document.getElementById('display-title').textContent = this.value;
+});
+
+/* ══ 儲存並發佈（回存 sessionStorage → 返回 admin） ══ */
+document.querySelector('.eb-btn-save').addEventListener('click', function() {
+  const raw = sessionStorage.getItem('pb_context');
+  if (!raw) { goBack(); return; }
+  try {
+    const ctx = JSON.parse(raw);
+    const title = document.getElementById('work-name').value.trim();
+    const yearEl = document.querySelector('.project-year');
+    const date = yearEl ? yearEl.textContent.trim() : '';
+    if (!ctx.project) ctx.project = {};
+    ctx.project.title = title;
+    ctx.project.date = date;
+    ctx.pb_saved = true;
+    sessionStorage.setItem('pb_context', JSON.stringify(ctx));
+  } catch (e) {}
+  goBack();
 });
 
 /* ══ 預覽切換 ══ */
@@ -629,7 +885,7 @@ function togglePreview() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && inPreview) togglePreview(); });
 
 /* ══ 返回 ══ */
-function goBack() { alert('（實際會回到作品清單頁）'); }
+function goBack() { window.location.href = './admin.html'; }
 
 /* ══ 選取 block ══ */
 document.getElementById('blocks-root').addEventListener('click', function(e) {
@@ -734,8 +990,9 @@ function addBlock(type) {
         <button class="add-img-btn" onclick="addGridCell('${seq}',event)">＋ 加圖</button>
       </div>
       <div class="eb-grid" id="grid-${seq}" style="grid-template-columns:repeat(2,1fr)">
-        <div class="eb-grid-cell"><span>image1.png</span><span class="cell-del" onclick="this.parentElement.remove()">✕</span></div>
-        <div class="eb-grid-cell"><span>image2.png</span><span class="cell-del" onclick="this.parentElement.remove()">✕</span></div>
+        ${makeCellHTML(1,2)}
+        ${makeCellHTML(2,2)}
+        ${makeCellHTML(3,2)}
       </div>`;
 
   } else if (type === 'video') {
@@ -752,6 +1009,12 @@ function addBlock(type) {
 
   el.innerHTML = ctrl + body;
   root.appendChild(el);
+  injectBlockHandle(el);
+  if (type === 'grid') {
+    const gridEl = el.querySelector('.eb-grid');
+    gridEl.querySelectorAll('.eb-grid-cell').forEach(initCellInteraction);
+    initGridSort(gridEl);
+  }
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -784,7 +1047,7 @@ function delGalleryImg(btn) {
   btn.closest('.peek-image').remove();
 }
 
-/* ══ Grid：欄數 / 加 / 刪 ══ */
+/* ══ Grid：欄數 ══ */
 function updateGridCols(seqId) {
   const slider = document.getElementById('gc-' + seqId);
   const val    = document.getElementById('gcv-' + seqId);
@@ -794,21 +1057,139 @@ function updateGridCols(seqId) {
   grid.style.gridTemplateColumns = `repeat(${slider.value},1fr)`;
 }
 
+/* ══ Grid：產生格子 HTML ══ */
+function makeCellHTML(n, rowSpan, colSpan) {
+  rowSpan = rowSpan || 2;
+  colSpan = colSpan || 1;
+  return `
+    <div class="eb-grid-cell"
+         style="grid-row:span ${rowSpan};grid-column:span ${colSpan}"
+         data-span="${rowSpan}" data-col-span="${colSpan}">
+      <div class="eb-cell-move-handle" title="拖曳移動格子"></div>
+      <button class="eb-cell-del-btn" onclick="this.closest('.eb-grid-cell').remove();event.stopPropagation()">✕</button>
+      <span style="pointer-events:none;user-select:none;font-size:12px;color:rgba(64,79,99,.45)">image${n}.png</span>
+      <div class="eb-cell-size-tag">${colSpan}欄 × ${rowSpan}列</div>
+      <div class="eb-cell-resize-handle" title="拖曳調整高度"></div>
+      <div class="eb-cell-resize-col" title="拖曳調整寬度"></div>
+    </div>`;
+}
+
+/* ══ Grid：加格子 ══ */
 function addGridCell(seqId, e) {
-  e.stopPropagation();
+  e && e.stopPropagation();
   const grid = document.getElementById('grid-' + seqId);
   const n = grid.querySelectorAll('.eb-grid-cell').length + 1;
-  const cell = document.createElement('div');
-  cell.className = 'eb-grid-cell';
-  cell.innerHTML = `<span>image${n}.png</span><span class="cell-del" onclick="this.parentElement.remove()">✕</span>`;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = makeCellHTML(n, 2);
+  const cell = tmp.firstElementChild;
   grid.appendChild(cell);
+  initCellInteraction(cell);
 }
+
+/* ══════════════════════════════════
+   RESIZE（高度 + 寬度）— 純 mousemove，與 Sortable 互不干擾
+════════════════════════════════════ */
+const ROW_UNIT = 88; // 80px row + 8px gap
+let _resize    = null;
+let _resizeCol = null;
+
+function updateSizeTag(cell) {
+  const tag = cell.querySelector('.eb-cell-size-tag');
+  if (tag) tag.textContent = `${cell.dataset.colSpan || 1}欄 × ${cell.dataset.span || 2}列`;
+}
+
+function initCellInteraction(cell) {
+  /* 底部：調整高度 */
+  cell.querySelector('.eb-cell-resize-handle').addEventListener('mousedown', e => {
+    e.preventDefault(); e.stopPropagation();
+    cell.classList.add('eb-resizing');
+    _resize = { cell, startY: e.clientY, startSpan: parseInt(cell.dataset.span || 2) };
+  });
+
+  /* 右側：調整寬度（col span） */
+  cell.querySelector('.eb-cell-resize-col').addEventListener('mousedown', e => {
+    e.preventDefault(); e.stopPropagation();
+    const grid  = cell.closest('.eb-grid');
+    const cols  = parseInt(grid.style.gridTemplateColumns.match(/repeat\((\d+)/)?.[1] || 2);
+    cell.classList.add('eb-resizing-col');
+    _resizeCol = { cell, startX: e.clientX, startSpan: parseInt(cell.dataset.colSpan || 1),
+                   colW: grid.offsetWidth / cols, maxCols: cols };
+  });
+}
+
+document.addEventListener('mousemove', e => {
+  if (_resize) {
+    const { cell, startY, startSpan } = _resize;
+    const span = Math.max(1, Math.min(12, startSpan + Math.round((e.clientY - startY) / ROW_UNIT)));
+    cell.dataset.span = span;
+    cell.style.gridRow = 'span ' + span;
+    updateSizeTag(cell);
+  }
+  if (_resizeCol) {
+    const { cell, startX, startSpan, colW, maxCols } = _resizeCol;
+    const colSpan = Math.max(1, Math.min(maxCols, startSpan + Math.round((e.clientX - startX) / colW)));
+    cell.dataset.colSpan = colSpan;
+    cell.style.gridColumn = 'span ' + colSpan;
+    updateSizeTag(cell);
+  }
+});
+document.addEventListener('mouseup', () => {
+  if (_resize)    { _resize.cell.classList.remove('eb-resizing');        _resize = null; }
+  if (_resizeCol) { _resizeCol.cell.classList.remove('eb-resizing-col'); _resizeCol = null; }
+});
+
+document.querySelectorAll('.eb-grid-cell').forEach(initCellInteraction);
+
+/* ══════════════════════════════════
+   SORTABLE — 由 Sortable.js 接管拖曳排序
+════════════════════════════════════ */
+
+/* 注入 block 拖曳 handle，回傳 handle 元素 */
+function injectBlockHandle(block) {
+  if (block.querySelector('.eb-block-drag')) return;
+  const h = document.createElement('div');
+  h.className = 'eb-block-drag';
+  h.title     = '拖曳移動區塊';
+  h.textContent = '⠿';
+  block.prepend(h);
+}
+
+/* 初始化 grid 內格子的 Sortable */
+function initGridSort(gridEl) {
+  Sortable.create(gridEl, {
+    handle:      '.eb-cell-move-handle',
+    animation:   180,
+    ghostClass:  'eb-sortable-ghost',
+    dragClass:   'eb-sortable-drag',
+    forceFallback: false,
+  });
+}
+
+/* 初始化 blocks-root 的 Sortable（只需一次） */
+function initBlockSort() {
+  Sortable.create(document.getElementById('blocks-root'), {
+    handle:      '.eb-block-drag',
+    animation:   180,
+    ghostClass:  'eb-sortable-ghost',
+    dragClass:   'eb-sortable-drag',
+    forceFallback: false,
+  });
+}
+
+/* Sortable init 在 CDN 載入後才執行（見下方 defer script） */
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 <script src="./projects/project-script.js"></script>
+<script>
+/* Sortable.js 已載入，啟動拖曳排序 */
+document.querySelectorAll('#blocks-root .eb-block').forEach(injectBlockHandle);
+initBlockSort();
+document.querySelectorAll('.eb-grid').forEach(initGridSort);
+</script>
 
 </body>
 </html>

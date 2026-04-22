@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>範本 B — 置中英雄 + 右下角角標</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #0a1a22;
+      color: #E6F4F7;
+      min-height: 100vh;
+    }
+
+    .intro {
+      position: relative;
+      height: 100vh;
+      background: linear-gradient(160deg, #001824 0%, #005C80 80%, #92C7CF22 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(146,199,207,0.08) 0%, transparent 70%);
+    }
+
+    /* ── 桌機：左下角文字 ── */
+    .intro-text {
+      position: relative;
+      z-index: 2;
+      width: 60%;
+      margin-left: clamp(16px, 5vw, 80px);
+      align-self: flex-end;
+      padding-bottom: 10vh;
+    }
+
+    .intro-text h1 {
+      font-size: clamp(2.6rem, 8vw, 9rem);
+      font-weight: 900;
+      line-height: 1;
+      color: #E6F4F7;
+    }
+
+    .intro-text h1:nth-child(2) {
+      -webkit-text-stroke: clamp(0.5px, 0.2vw, 2px) #92C7CF;
+      color: transparent;
+      transform: scale(clamp(1.1, 0.8 + 1.5vw, 1.5));
+      transform-origin: left center;
+      display: inline-block;
+    }
+
+    /* ── 右下角浮動角標（桌機隱藏，手機/平板顯示） ── */
+    .social-badge {
+      display: none;
+      position: fixed;
+      right: 20px;
+      bottom: 28px;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(0, 20, 32, 0.80);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(146,199,207,0.2);
+      border-radius: 28px;
+      padding: 14px 10px;
+      z-index: 1000;
+    }
+
+    .social-badge a {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(146,199,207,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92C7CF;
+      font-size: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .social-badge a:hover {
+      background: rgba(146,199,207,0.15);
+      transform: scale(1.15);
+    }
+
+    /* ── 側欄社群（桌機） ── */
+    .social-side {
+      position: fixed;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .social-side a {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(146,199,207,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92C7CF;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .social-side a:hover {
+      background: rgba(146,199,207,0.15);
+      transform: translateX(4px);
+    }
+
+    /* ── RWD ── */
+    @media (max-width: 1024px) {
+      .social-side  { display: none; }
+      .social-badge { display: flex; }
+    }
+
+    /* 手機：文字置中 */
+    @media (max-width: 540px) {
+      .intro {
+        justify-content: center;
+        align-items: center;
+      }
+
+      .intro-text {
+        width: 88%;
+        margin-left: 0;
+        align-self: auto;
+        padding-bottom: 0;
+        text-align: center;
+      }
+
+      .intro-text h1:nth-child(2) {
+        transform: scale(1.15) !important;
+        transform-origin: center center !important;
+      }
+    }
+
+    /* 平板：保留左對齊但縮字 */
+    @media (min-width: 541px) and (max-width: 1024px) {
+      .intro-text {
+        width: 72%;
+        margin-left: 28px;
+      }
+    }
+
+    /* ── Label ── */
+    .tag {
+      position: fixed;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      background: #92C7CF22;
+      border: 1px solid #92C7CF55;
+      color: #92C7CF;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      z-index: 200;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 20px; left: 20px;
+      color: rgba(146,199,207,0.5);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tag">範本 B — 置中英雄 + 右下角角標 ｜ 拖動視窗縮放看效果</div>
+
+  <nav class="social-side">
+    <a title="Instagram">IG</a>
+    <a title="Medium">M</a>
+    <a title="Youtube">YT</a>
+    <a title="Linktree">LT</a>
+  </nav>
+
+  <nav class="social-badge">
+    <a title="Instagram">IG</a>
+    <a title="Medium">M</a>
+    <a title="Youtube">YT</a>
+    <a title="Linktree">LT</a>
+  </nav>
+
+  <section class="intro">
+    <div class="intro-text">
+      <h1>梁芷穎</h1>
+      <h1>Profolio</h1>
+    </div>
+  </section>
+
+  <div class="hint">
+    桌機：左側固定欄<br>
+    平板：右下角膠囊<br>
+    手機：文字置中 + 右下角膠囊
+  </div>
+
+</body>
+</html>

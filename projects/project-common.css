@@ -1,3 +1,12 @@
+/* BoutiqueBitmap 英文像素字體 */
+@font-face {
+    font-family: 'BoutiqueBitmap';
+    src: url('../../BoutiqueBitmap9x9-main/BoutiqueBitmap9x9_1.5.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* 字体引入 */
 @font-face {
     font-family: 'ChillDINGothic';
@@ -53,7 +62,7 @@
 
 h2 {
     color: #92C7CF;
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif !important;
+    font-family: 'BoutiqueBitmap', sans-serif !important;
 }
 
 p{

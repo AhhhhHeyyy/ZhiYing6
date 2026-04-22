@@ -1,3 +1,12 @@
+/* BoutiqueBitmap 英文像素字體 */
+@font-face {
+    font-family: 'BoutiqueBitmap';
+    src: url('../BoutiqueBitmap9x9-main/BoutiqueBitmap9x9_1.5.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* 字体引入 */
 @font-face {
     font-family: 'ChillDINGothic';
@@ -12,7 +21,7 @@
 
 /* ShipporiAntique 字体引入 - 标题字体（最粗版本 B1） */
 @font-face {
-    font-family: 'ShipporiAntique';
+    font-family: 'BoutiqueBitmap';
     src: url('./assets/ShipporiAntique-master/fonts/ttf/ShipporiAntiqueB1-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
@@ -55,6 +64,16 @@ body {
     background-attachment: fixed;
     font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
     /* 移除scroll-behavior: smooth，由Lenis处理 */
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0, 92, 128, 0.18) 2px, transparent 2px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* 頂部導航欄 */
@@ -138,22 +157,16 @@ body {
 }
 
 .intro-text {
-    position: relative;
-    z-index: 1;
-    width: 60%;
-    margin-top: 40px;
-    top: 20%;
-    margin-left: 32px;
+    display: none;
 }
 
 .intro-text h1 {
-    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'Public Sans', sans-serif !important;
-    font-size: 9rem;
+    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'BoutiqueBitmap', sans-serif !important;
+    font-size: clamp(2.6rem, 8vw, 9rem);
     margin-bottom: 10px;
     font-weight: bold !important;
     color: #E6F4F7;
     will-change: transform;
-    /* 优化滚动性能 */
 }
 
 .intro-text h1:nth-child(2) {
@@ -429,7 +442,7 @@ body {
 
 .skill-H2 h2 {
     display: inline-block;
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-weight: 800;
     font-size: 20px;
     color: #FCFCD4;
@@ -592,23 +605,33 @@ body {
         transform: scale(0.6) translateY(300%);
     }
 
+    .intro {
+        height: 100vh !important;
+        min-height: 600px !important;
+    }
+
     .intro-text {
-        padding-top: 200px !important;
-        text-align: right !important;
-        margin-left: auto !important;
-        margin-right: -20px !important;
-        width: calc(100% + 20px) !important;
-        padding-right: 0 !important;
+        position: absolute !important;
+        bottom: 48px !important;
+        top: auto !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 88% !important;
+        text-align: center !important;
     }
 
     .intro-text h1 {
-        font-size: 3.3rem !important;
+        font-size: 3rem !important;
+        font-weight: 900 !important;
     }
 
     .intro-text h1:nth-child(2) {
-        transform-origin: right center !important;
-        -webkit-text-stroke: 0.5px #005C80 !important;
-        text-stroke: 0.5px #005C80 !important;
+        transform: scale(1.15) !important;
+        transform-origin: center center !important;
+        -webkit-text-stroke: 1.5px #005C80 !important;
+        text-stroke: 1.5px #005C80 !important;
     }
 
     .intro-text p {
@@ -736,7 +759,7 @@ body {
 .skills-titles h1 {
     color: #92C7CF;
     font-size: 2.5vw !important;
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-weight: 900;
     text-align: left;
     margin: 0;
@@ -1013,7 +1036,7 @@ body {
 
 .skill-box h2,
 .skill-box2 h2 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-weight: 800;
     font-size: 20px;
     margin: 12px 8px;
@@ -1411,10 +1434,12 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-image: url('./assets/BackGround.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image:
+        radial-gradient(circle, rgba(0, 92, 128, 0.18) 2px, transparent 2px),
+        url('./assets/BackGround.jpg');
+    background-size: 56px 56px, cover;
+    background-position: 0 0, center;
+    background-repeat: repeat, no-repeat;
     position: relative;
 }
 
@@ -1435,7 +1460,7 @@ body {
 
 .gallery-content {
     flex: 1;
-    padding: 40px;
+    padding: 40px 40px 40px 90px;
     position: relative;
     z-index: 1;
 }
@@ -1549,7 +1574,7 @@ body {
 .gallery-item .item-overlay h3 {
     position: relative;
     z-index: 1;
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
     color: #ffffff;
@@ -1618,7 +1643,7 @@ body {
 }
 
 .gallery-item.coming-soon .coming-soon-text {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-size: 2.5rem;
     font-weight: 800;
     color: #E6F4F7;
@@ -1747,7 +1772,7 @@ body {
 }
 
 .social-links a {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     color: #404F63;
     text-decoration: none;
     font-weight: 800;
@@ -1760,7 +1785,7 @@ body {
 }
 
 .gallery-item h3 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-weight: 800;
 }
 
@@ -1770,7 +1795,7 @@ body {
 }
 
 .gallery-category h3 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-weight: 800;
 }
 
@@ -1781,13 +1806,13 @@ body {
 
 /* 添加标题样式 */
 h3 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-weight: 800;
 }
 
 /* 爱拼才会赢等标题 */
 .gallery-item .item-overlay h3 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
     color: #ffffff;
@@ -1822,7 +1847,7 @@ h3 {
 }
 
 .work-title h1 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-size: 5rem;
     font-weight: 800;
     line-height: 1;
@@ -1983,7 +2008,7 @@ h3 {
 }
 
 .work-title h1 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif;
+    font-family: 'BoutiqueBitmap', sans-serif;
     font-size: 5rem;
     font-weight: 800;
     line-height: 1;
@@ -2549,7 +2574,8 @@ h3 {
 
 }
 
-@media screen and (min-width: 601px) {
+/* 只在寬桌面顯示左側社群列（> iPad Pro landscape） */
+@media screen and (min-width: 1367px) {
     .social-icons {
         display: flex !important;
         position: fixed !important;
@@ -2559,6 +2585,14 @@ h3 {
         flex-direction: column;
         gap: 20px;
         z-index: 1000;
+    }
+}
+
+/* 平板／手機（含 iPad Pro 直向 1024px 和橫向 1366px）：隱藏左側社群列 */
+@media screen and (max-width: 1366px) {
+    body > div.social-icons,
+    .social-icons {
+        display: none !important;
     }
 }
 
@@ -2796,8 +2830,8 @@ h3 {
     }
 
     .intro-text {
-        margin-top: 100px !important;
-        top: 30% !important;
+        margin-top: 40px !important;
+        top: 10% !important;
     }
 
     .intro-text h1 {
@@ -3454,12 +3488,12 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'ShipporiAntique', 'Public Sans', sans-serif !important;
+    font-family: 'BoutiqueBitmap', sans-serif !important;
 }
 
 /* Intro 标题使用 ChillDINGothic Bold - 必须在全局 h1 规则之后，确保优先级 */
 .intro-text h1 {
-    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'Public Sans', sans-serif !important;
+    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'BoutiqueBitmap', sans-serif !important;
     font-weight: bold !important;
 }
 
@@ -3838,4 +3872,622 @@ span {
         /* 移除 !important */
         transform-origin: center;
     }
+}
+/* ═══════════════════════════════════════
+   IG 貼文風格動態區塊
+═══════════════════════════════════════ */
+.posts-section {
+    padding: 48px 0 60px;
+    overflow: hidden;
+}
+
+.posts-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 0 40px 24px;
+}
+
+.posts-label {
+    font-family: 'BoutiqueBitmap', serif;
+    color: #E6F4F7;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+}
+
+.posts-label-en {
+    font-family: 'BoutiqueBitmap', sans-serif;
+    color: rgba(146, 199, 207, 0.6);
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.posts-track {
+    display: flex;
+    gap: 18px;
+    padding: 8px 40px 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.posts-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── IG Post Card ── */
+.ig-card {
+    flex: 0 0 210px;
+    scroll-snap-align: start;
+    background: rgba(0, 44, 64, 0.72);
+    border: 1px solid rgba(146, 199, 207, 0.18);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    backdrop-filter: blur(6px);
+    text-decoration: none;
+    display: block;
+}
+
+.ig-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(146, 199, 207, 0.55);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.ig-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px 8px;
+}
+
+.ig-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ig-avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(0, 30, 50, 0.9);
+    border: 1.5px solid rgba(0, 30, 50, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #92C7CF;
+    font-family: 'ChillDINGothicBold', sans-serif;
+    font-weight: bold;
+}
+
+.ig-card-dots {
+    color: rgba(230, 244, 247, 0.4);
+    font-size: 13px;
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+.ig-card-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(0, 20, 35, 0.8);
+}
+
+.ig-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.ig-card:hover .ig-card-img img {
+    transform: scale(1.05);
+}
+
+.ig-card-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 92, 128, 0.6), rgba(0, 30, 50, 0.9));
+}
+
+.ig-card-img-placeholder span {
+    font-family: 'ChillDINGothic', sans-serif;
+    color: rgba(146, 199, 207, 0.5);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+}
+
+.ig-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px 4px;
+}
+
+.ig-card-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.ig-card-actions svg,
+.ig-card-bm svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: rgba(230, 244, 247, 0.5);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    display: block;
+}
+
+.ig-card-caption {
+    padding: 4px 12px 2px;
+}
+
+.ig-card-caption strong {
+    display: block;
+    font-size: 0.78rem;
+    color: #E6F4F7;
+    font-family: 'ChillDINGothic', sans-serif;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ig-card-caption p {
+    font-size: 0.72rem;
+    color: rgba(230, 244, 247, 0.55);
+    font-family: 'ChillDINGothic', sans-serif;
+    line-height: 1.45;
+    margin-top: 2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ig-card-meta {
+    padding: 4px 12px 12px;
+    font-size: 0.66rem;
+    color: rgba(146, 199, 207, 0.4);
+    font-family: 'BoutiqueBitmap', sans-serif;
+    letter-spacing: 0.05em;
+}
+
+.posts-track-empty {
+    padding: 20px 0;
+    color: rgba(230, 244, 247, 0.3);
+    font-family: 'ChillDINGothic', sans-serif;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .posts-header { padding: 0 20px 20px; }
+    .posts-track { padding: 8px 20px 20px; gap: 14px; }
+    .ig-card { flex: 0 0 178px; }
+}
+
+/* ══════════════════════════════════════════
+   近期動態 — 角落展開鈕 + 全螢幕視窗
+═══════════════════════════════════════════ */
+
+/* Header 覆寫：align center 讓按鈕垂直對齊 */
+.posts-header { align-items: center; }
+
+.posts-cn {
+    font-family: 'BoutiqueBitmap', serif;
+    color: #005C80;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+}
+.posts-en {
+    font-family: 'BoutiqueBitmap', sans-serif;
+    color: rgba(0,92,128,0.5);
+    font-size: 0.78rem;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+.posts-dash {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(146,199,207,0.8), rgba(146,199,207,0) 90%);
+    margin-inline: 4px 0;
+    align-self: center;
+}
+.posts-count {
+    font-family: 'BoutiqueBitmap', sans-serif;
+    color: rgba(0,92,128,0.5);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+}
+
+/* 角落展開鈕 */
+.posts-expand-btn {
+    background: #fff;
+    border: 1px solid #92C7CF;
+    color: #005C80;
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    margin-left: 4px;
+    padding: 0;
+    box-shadow: 0 1px 0 rgba(0,44,64,0.06);
+    flex-shrink: 0;
+}
+.posts-expand-btn:hover {
+    background: #C8E0E4;
+    transform: scale(1.06);
+    box-shadow: 3px 3px 0 #92C7CF;
+}
+.posts-expand-btn:active { transform: scale(0.96); }
+
+/* 全螢幕 Modal */
+.posts-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(247,243,232,0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .32s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px;
+}
+.posts-modal.is-open { opacity: 1; pointer-events: auto; }
+
+.posts-modal-card {
+    width: 100%;
+    max-width: 880px;
+    max-height: 90vh;
+    background: #fff;
+    border: 1px solid #92C7CF;
+    border-radius: 18px;
+    box-shadow: 8px 8px 0 #92C7CF, 0 24px 64px rgba(0,44,64,0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.97) translateY(8px);
+    opacity: 0;
+    transition: transform .38s cubic-bezier(.2,.9,.3,1.15), opacity .28s ease;
+}
+.posts-modal.is-open .posts-modal-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.posts-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 14px;
+    border-bottom: 1px dashed rgba(146,199,207,0.55);
+    gap: 20px;
+    background: linear-gradient(180deg, rgba(146,199,207,0.1) 0%, transparent 100%);
+    flex-shrink: 0;
+}
+.posts-modal-head .posts-cn { font-size: 1.3rem; margin-right: 14px; }
+.posts-modal-head .posts-en { font-size: 0.68rem; }
+
+.posts-modal-close {
+    background: #fff;
+    border: 1px solid #92C7CF;
+    color: #005C80;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.posts-modal-close:hover { background: #92C7CF; color: #fff; transform: rotate(90deg); }
+
+.posts-modal-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 20px 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #92C7CF transparent;
+}
+.posts-modal-scroll::-webkit-scrollbar { width: 6px; }
+.posts-modal-scroll::-webkit-scrollbar-track { background: transparent; }
+.posts-modal-scroll::-webkit-scrollbar-thumb { background: #92C7CF; border-radius: 3px; }
+
+.posts-modal-foot {
+    padding: 10px 24px 14px;
+    border-top: 1px dashed rgba(146,199,207,0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'BoutiqueBitmap', sans-serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    color: rgba(0,92,128,0.5);
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+.posts-modal-foot .hint { color: rgba(0,92,128,0.35); }
+
+/* ── vb-compact 時間軸 ── */
+.vb-timeline {
+    padding: 20px 0 40px;
+    position: relative;
+    max-width: 980px;
+}
+.vb-timeline::before {
+    content: "";
+    position: absolute;
+    left: 90px; top: 40px; bottom: 40px;
+    width: 1px;
+    background: repeating-linear-gradient(to bottom, #92C7CF 0 4px, transparent 4px 10px);
+    opacity: 0.65;
+}
+.vb-row {
+    display: grid;
+    grid-template-columns: 110px 24px 1fr;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 18px 0;
+    position: relative;
+}
+.vb-date { text-align: right; padding-top: 12px; font-family: 'BoutiqueBitmap', sans-serif; }
+.vb-date .d { font-size: 1.8rem; color: #005C80; font-weight: 500; line-height: 1; letter-spacing: 0.02em; }
+.vb-date .m { display: block; margin-top: 4px; font-size: 0.64rem; letter-spacing: 0.22em; color: rgba(0,92,128,0.6); text-transform: uppercase; }
+.vb-dot-wrap { display: flex; justify-content: center; padding-top: 22px; }
+.vb-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #fff; border: 2px solid #92C7CF;
+    box-shadow: 0 0 0 4px rgba(146,199,207,0.25);
+    position: relative; z-index: 2;
+}
+.vb-card {
+    background: #fff;
+    border: 1px solid rgba(146,199,207,0.4);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 2px 6px rgba(0,44,64,0.05);
+}
+.vb-card:hover { border-color: #92C7CF; transform: translateX(4px); box-shadow: 6px 6px 0 #92C7CF; }
+.vb-thumb {
+    width: 92px; height: 92px; border-radius: 10px;
+    overflow: hidden; background: #C8E0E4; position: relative; flex-shrink: 0;
+}
+.vb-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vb-thumb::after {
+    content: ""; position: absolute; top: -4px; left: 12px;
+    width: 30px; height: 10px; background: #92C7CF;
+    opacity: .9; transform: rotate(-6deg); border-radius: 2px;
+}
+.vb-body { min-width: 0; }
+.vb-body .title { font-family: 'BoutiqueBitmap', serif; font-size: 1.05rem; color: #002C40; margin: 2px 0 6px; letter-spacing: 0.04em; }
+.vb-body .cap {
+    font-family: 'ChillDINGothic', sans-serif; color: rgba(0,44,64,0.65);
+    font-size: 0.8rem; line-height: 1.55; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* compact modifier */
+.vb-compact::before { left: 42px; }
+.vb-compact .vb-row { padding: 10px 0; grid-template-columns: 48px 24px 1fr; gap: 12px; }
+.vb-compact .vb-date { padding-top: 8px; }
+.vb-compact .vb-date .d { font-size: 1.2rem; font-weight: 500; }
+.vb-compact .vb-date .m { font-size: 0.58rem; margin-top: 2px; letter-spacing: 0.2em; }
+.vb-compact .vb-dot-wrap { padding-top: 14px; }
+.vb-compact .vb-dot { width: 10px; height: 10px; box-shadow: 0 0 0 3px rgba(146,199,207,0.25); }
+.vb-compact .vb-card { padding: 10px 12px 10px 10px; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; border-radius: 10px; }
+.vb-compact .vb-thumb { width: 56px; height: 56px; border-radius: 8px; }
+.vb-compact .vb-thumb::after { top: -3px; left: 6px; width: 20px; height: 7px; }
+.vb-compact .vb-body .title { font-size: 0.9rem; margin: 0; letter-spacing: 0.03em; }
+.vb-compact .vb-body .top-row { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.vb-compact .vb-body .cap { font-size: 0.72rem; line-height: 1.4; color: rgba(0,44,64,0.55); -webkit-line-clamp: 1; }
+.vb-compact .vb-arrow {
+    color: #005C80; font-size: 1.4rem; font-family: 'BoutiqueBitmap', sans-serif;
+    opacity: 0.5; transition: transform .2s ease, opacity .2s ease; align-self: center; line-height: 1;
+}
+.vb-compact .vb-card:hover .vb-arrow { opacity: 1; transform: translateX(3px); }
+
+/* modal 內的 scroll timeline */
+.vb-scroll-timeline { padding: 0 !important; max-width: none !important; }
+.vb-scroll-timeline::before { left: 42px !important; top: 14px; bottom: 14px; }
+.vb-scroll-timeline .vb-row { grid-template-columns: 48px 24px 1fr; }
+
+/* chip */
+.ps-chip {
+    display: inline-flex; align-items: center;
+    font-family: 'ChillDINGothic', sans-serif;
+    font-size: 0.66rem; letter-spacing: 0.05em;
+    padding: 3px 9px; border-radius: 999px;
+    color: #005C80; background: #C8E0E4; line-height: 1; flex-shrink: 0;
+}
+
+/* links row inside vb-card */
+.vb-links {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 8px;
+}
+.vb-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: 'ChillDINGothic', sans-serif;
+    font-size: 0.68rem; font-weight: 600;
+    color: #005C80; text-decoration: none;
+    padding: 4px 12px; border: 1.5px solid #92C7CF;
+    border-radius: 999px;
+    transition: background .2s, color .2s;
+    white-space: nowrap;
+}
+.vb-link:hover { background: #92C7CF; color: #fff; }
+.vb-link.ghost {
+    border-color: rgba(146,199,207,0.5);
+    color: rgba(0,92,128,0.65);
+}
+.vb-link.ghost:hover { background: #C8E0E4; color: #005C80; border-color: #92C7CF; }
+
+@media (max-width: 640px) {
+    .posts-modal { padding: 16px 12px; }
+    .posts-modal-card { border-radius: 14px; }
+}
+
+/* 超小手機（≤400px）動態框修正 */
+@media (max-width: 400px) {
+    .vb-compact .vb-row { grid-template-columns: 36px 16px 1fr; gap: 8px; }
+    .vb-compact::before { left: 32px; }
+    .vb-compact .vb-date .d { font-size: 0.95rem; }
+    .vb-compact .vb-date .m { font-size: 0.52rem; }
+    .vb-compact .vb-dot-wrap { padding-top: 12px; }
+    .vb-compact .vb-dot { width: 8px; height: 8px; box-shadow: 0 0 0 2px rgba(146,199,207,0.25); }
+    .vb-compact .vb-card { grid-template-columns: 46px 1fr; gap: 8px; padding: 8px 10px 8px 8px; border-radius: 8px; }
+    .vb-compact .vb-thumb { width: 46px; height: 46px; }
+    .vb-compact .vb-arrow { display: none; }
+    .vb-compact .vb-body .top-row { flex-wrap: wrap; gap: 4px; }
+    .vb-compact .vb-body .title { font-size: 0.82rem; white-space: normal; }
+    .vb-compact .vb-body .cap { -webkit-line-clamp: 2; }
+}
+
+/* ── 範本 B：右下角社群角標 ── */
+.social-badge {
+    display: none;
+    position: fixed;
+    right: 20px;
+    left: auto;
+    bottom: 28px;
+    flex-direction: column;
+    gap: 14px;
+    background: rgba(0, 20, 32, 0.80);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(146, 199, 207, 0.2);
+    border-radius: 28px;
+    padding: 14px 10px;
+    z-index: 1000;
+}
+
+.social-badge a {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(146, 199, 207, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.social-badge img {
+    width: 18px;
+    height: 18px;
+    filter: brightness(0) saturate(100%) invert(70%) sepia(30%) saturate(500%) hue-rotate(150deg) brightness(95%) contrast(85%);
+    transition: filter 0.3s ease;
+}
+
+.social-badge a:hover {
+    background: rgba(146, 199, 207, 0.15);
+    transform: scale(1.12);
+}
+
+.social-badge a:hover img {
+    filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
+}
+
+/* 手機：顯示角標 */
+@media screen and (max-width: 767px) {
+    .social-badge { display: flex; }
+}
+
+/* 平板（768–1024px）：隱藏角標 */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .social-badge { display: none !important; }
+}
+
+/* 平板小尺寸（541-767px）：角標稍大 */
+@media screen and (min-width: 541px) and (max-width: 767px) {
+    .social-badge {
+        right: 24px;
+        bottom: 36px;
+        gap: 16px;
+        padding: 16px 12px;
+    }
+
+    .social-badge a {
+        width: 36px;
+        height: 36px;
+    }
+
+    .social-badge img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 平板（541–1024px）：intro-text 定位 */
+@media screen and (min-width: 541px) and (max-width: 1024px) {
+    .intro {
+        justify-content: flex-end !important;
+    }
+
+    .intro-text {
+        width: 72% !important;
+        margin-left: 28px !important;
+        margin-top: 0 !important;
+        top: 0 !important;
+        margin-bottom: 44px !important;
+        align-self: flex-start !important;
+    }
+
+    /* Profolio scale 在平板不能 1.5，否則右側跑版 */
+    .intro-text h1:nth-child(2) {
+        transform: scale(1.2) !important;
+        transform-origin: left center !important;
+        -webkit-text-stroke: 1px #005C80 !important;
+        text-stroke: 1px #005C80 !important;
+    }
+}
+
+/* iPad Pro landscape (1025–1366px)：intro-text 推到 hero 下半段 */
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+    .intro {
+        justify-content: flex-end !important;
+    }
+
+    .intro-text {
+        margin-top: 0 !important;
+        top: 0 !important;
+        margin-bottom: 44px !important;
+    }
+
+    .social-badge { display: none !important; }
 }

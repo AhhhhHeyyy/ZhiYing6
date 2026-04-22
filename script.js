@@ -55,6 +55,89 @@ async function loadAndRenderProjects() {
     }
 }
 
+// 渲染 vb-compact 時間軸格式
+function renderPostsTimeline(posts, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+    const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+    container.innerHTML = sorted.map(post => {
+        const d = new Date(post.date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = MONTHS[d.getMonth()];
+        const imgHTML = post.image ? `<img src="${post.image}" alt="${post.title}">` : '';
+        const chipHTML = post.tag ? `<span class="ps-chip">${post.tag}</span>` : '';
+
+        // 支援新格式 links[] 與舊格式 link 字串
+        const links = post.links?.length
+            ? post.links
+            : (post.link ? [{ label: '了解更多', url: post.link }] : []);
+
+        const linksHTML = links.length
+            ? `<div class="vb-links">${links.map((lk, i) =>
+                `<a class="vb-link${i > 0 ? ' ghost' : ''}" href="${lk.url}" target="_blank" rel="noopener">${lk.label || '連結'} →</a>`
+              ).join('')}</div>`
+            : '';
+
+        return `
+        <div class="vb-row">
+            <div class="vb-date"><div class="d">${day}</div><span class="m">${month}</span></div>
+            <div class="vb-dot-wrap"><div class="vb-dot"></div></div>
+            <div class="vb-card">
+                <div class="vb-thumb">${imgHTML}</div>
+                <div class="vb-body">
+                    <div class="top-row">${chipHTML}<h3 class="title">${post.title}</h3></div>
+                    <p class="cap">${post.caption || ''}</p>
+                    ${linksHTML}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// 載入近期動態並渲染到時間軸
+async function loadAndRenderPosts() {
+    try {
+        const res = await fetch('posts.json?nocache=' + Date.now());
+        const { posts } = await res.json();
+        if (!posts || posts.length === 0) return;
+
+        renderPostsTimeline(posts, 'posts-timeline');
+        renderPostsTimeline(posts, 'posts-modal-timeline');
+
+        const footEl = document.getElementById('posts-modal-foot-count');
+        if (footEl) footEl.textContent = posts.length + (posts.length === 1 ? ' UPDATE' : ' UPDATES');
+    } catch (err) {
+        console.error('載入動態失敗:', err);
+    }
+}
+
+// 展開鈕 + 全螢幕 Modal
+function initPostsModal() {
+    const btn   = document.getElementById('posts-expand-btn');
+    const modal = document.getElementById('posts-modal');
+    const close = document.getElementById('posts-modal-close');
+    if (!btn || !modal) return;
+
+    const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    };
+    const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    };
+
+    btn.addEventListener('click', openModal);
+    close?.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+}
+
 // 初始化 intro-images 随机项目显示
 async function initIntroProjects() {
     try {
@@ -204,6 +287,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // 先加载作品
     await loadAndRenderProjects();
+    // 載入近期動態時間軸 + 初始化展開 Modal
+    loadAndRenderPosts();
+    initPostsModal();
     // 初始化 intro-images 随机项目显示
     initIntroProjects();
     // 初始化Lenis平滑滚动 - 优化性能

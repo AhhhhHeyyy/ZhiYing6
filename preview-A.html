@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>範本 A — 底欄社群條</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #0a1a22;
+      color: #E6F4F7;
+      min-height: 100vh;
+    }
+
+    /* ── Hero section ── */
+    .intro {
+      position: relative;
+      height: 100vh;
+      background: linear-gradient(135deg, #0a1a22 0%, #003d57 60%, #92C7CF33 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 12vh;
+    }
+
+    /* 背景裝飾格線 */
+    .intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(146,199,207,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(146,199,207,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Intro text ── */
+    .intro-text {
+      position: relative;
+      z-index: 2;
+      width: clamp(280px, 60%, 700px);
+      margin-left: clamp(16px, 5vw, 80px);
+    }
+
+    .intro-text h1 {
+      font-size: clamp(2.6rem, 8vw, 9rem);
+      font-weight: 900;
+      line-height: 1;
+      color: #E6F4F7;
+      letter-spacing: -0.02em;
+    }
+
+    .intro-text h1:nth-child(2) {
+      -webkit-text-stroke: clamp(0.5px, 0.2vw, 2px) #92C7CF;
+      color: transparent;
+      transform: scale(clamp(1.1, 0.8 + 1.5vw, 1.5));
+      transform-origin: left center;
+      display: inline-block;
+    }
+
+    /* ── 側欄社群（桌機） ── */
+    .social-side {
+      position: fixed;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .social-side a {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(146,199,207,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92C7CF;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .social-side a:hover {
+      background: rgba(146,199,207,0.15);
+      transform: translateX(4px);
+    }
+
+    /* ── 底欄社群（手機 / 平板）── */
+    .social-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      flex-direction: row;
+      justify-content: center;
+      gap: 36px;
+      padding: 14px 0;
+      background: rgba(0, 20, 32, 0.88);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(146,199,207,0.15);
+      z-index: 1000;
+    }
+
+    .social-bar a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(146,199,207,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92C7CF;
+      font-size: 15px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .social-bar a:hover { background: rgba(146,199,207,0.15); }
+
+    /* ── RWD ── */
+    @media (max-width: 1024px) {
+      .social-side { display: none; }
+      .social-bar  { display: flex; }
+      .intro { padding-bottom: calc(12vh + 64px); } /* 避免被底欄蓋住 */
+    }
+
+    /* ── Label ── */
+    .tag {
+      position: fixed;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      background: #92C7CF22;
+      border: 1px solid #92C7CF55;
+      color: #92C7CF;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      z-index: 200;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 80px; right: 20px;
+      color: rgba(146,199,207,0.5);
+      font-size: 11px;
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 1025px) {
+      .hint { bottom: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tag">範本 A — 底欄社群條 ｜ 拖動視窗縮放看效果</div>
+
+  <!-- 側欄社群（桌機） -->
+  <nav class="social-side">
+    <a title="Instagram">IG</a>
+    <a title="Medium">M</a>
+    <a title="Youtube">YT</a>
+    <a title="Linktree">LT</a>
+  </nav>
+
+  <!-- 底欄社群（手機/平板） -->
+  <nav class="social-bar">
+    <a title="Instagram">IG</a>
+    <a title="Medium">M</a>
+    <a title="Youtube">YT</a>
+    <a title="Linktree">LT</a>
+  </nav>
+
+  <section class="intro">
+    <div class="intro-text">
+      <h1>梁芷穎</h1>
+      <h1>Profolio</h1>
+    </div>
+  </section>
+
+  <div class="hint">
+    桌機：社群圖示在左側<br>
+    手機/平板：底部固定橫條
+  </div>
+
+</body>
+</html>

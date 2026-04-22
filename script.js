@@ -750,6 +750,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             // work-title动画 - 从下往上
+            if (!document.querySelector('.work-title')) return;
             gsap.from('.work-title .title-group', {
                 scrollTrigger: {
                     trigger: '.work-title',

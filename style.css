@@ -1678,21 +1678,10 @@ body::before {
     pointer-events: none;
 }
 
-.gallery-item:hover .card-tag {
-    animation: tagShine 0.7s ease forwards;
-}
-
-@keyframes tagShine {
-    0%   { background: rgba(146, 199, 207, 0.85); color: #e8f6f8; }
-    45%  { background: rgba(230, 248, 252, 0.95); color: #002C40; }
-    100% { background: rgba(146, 199, 207, 0.85); color: #e8f6f8; }
-}
-
 .card-tag {
     font-family: 'BoutiqueBitmap', monospace;
     font-size: 0.6rem;
     letter-spacing: 0.12em;
-    color: #e8f6f8;
     background: rgba(146, 199, 207, 0.85);
     border: none;
     padding: 3px 10px;
@@ -1700,6 +1689,49 @@ body::before {
     white-space: nowrap;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-tag-text {
+    position: relative;
+    z-index: 1;
+    color: #e8f6f8;
+}
+
+/* 白色斜切塊，預設藏在左外側 */
+.card-tag::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    left: -80%;
+    width: 60%;
+    background: rgba(255, 255, 255, 0.95);
+    transform: skewX(-25deg);
+    z-index: 0;
+}
+
+/* hover：白塊從左掃到右，延遲 0.44s 對應白線抵達右側的時機 */
+.gallery-item:hover .card-tag::before {
+    animation: tagWipe 0.22s ease 0.44s both;
+}
+
+.gallery-item:hover .card-tag-text {
+    animation: tagTextFlip 0.22s ease 0.44s both;
+}
+
+@keyframes tagWipe {
+    0%   { left: -80%; }
+    45%  { left: 20%; }
+    55%  { left: 20%; }
+    100% { left: 120%; }
+}
+
+@keyframes tagTextFlip {
+    0%        { color: #e8f6f8; }
+    30%, 70%  { color: #002C40; }
+    100%      { color: #e8f6f8; }
 }
 
 /* 桌面端（預設） */

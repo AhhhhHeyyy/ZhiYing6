@@ -34,7 +34,7 @@ async function loadAndRenderProjects() {
                 }
                 
                 const tagsHTML = project.tags && project.tags.length
-                    ? `<div class="card-tags">${project.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>`
+                    ? `<div class="card-tags">${project.tags.map(t => `<span class="card-tag"><span class="card-tag-text">${t}</span></span>`).join('')}</div>`
                     : '';
                 item.innerHTML = `
                     <a href="${project.link}">

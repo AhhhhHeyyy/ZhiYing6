@@ -195,10 +195,20 @@
       pointer-events: none;
     }
 
+    /* ── 編輯模式：確保 main-image inline ── */
+    .main-image {
+      position: relative !important;
+      height: 500px !important;
+      z-index: auto !important;
+    }
+    @media screen and (max-width: 1024px) { .main-image { height: 450px !important; } }
+    @media screen and (max-width: 768px)  { .main-image { height: 350px !important; } }
+    @media screen and (max-width: 480px)  { .main-image { height: 300px !important; } }
+
     /* ── 封面圖佔位 ── */
     .eb-cover-placeholder {
       width: 100%;
-      min-height: 320px;
+      height: 100%;
       background: rgba(146,199,207,.08);
       border: 2px dashed rgba(146,199,207,.3);
       display: flex;
@@ -219,7 +229,6 @@
     .eb-cover-placeholder .ph-icon { font-size: 36px; }
 
     /* 封面圖已有圖片時的替換 overlay */
-    .main-image { position: relative; }
     .eb-cover-replace {
       position: absolute;
       inset: 0;
@@ -235,6 +244,23 @@
       font-family: 'Public Sans', sans-serif;
     }
     .main-image:hover .eb-cover-replace { opacity: 1; }
+
+    /* ── 預覽模式：封面圖同一般頁面，隨頁面滾動 ── */
+    body.eb-preview .main-image {
+      position: relative !important;
+      height: 500px !important;
+      overflow: hidden !important;
+      z-index: auto !important;
+    }
+    @media screen and (max-width: 1024px) {
+      body.eb-preview .main-image { height: 450px !important; }
+    }
+    @media screen and (max-width: 768px) {
+      body.eb-preview .main-image { height: 350px !important; }
+    }
+    @media screen and (max-width: 480px) {
+      body.eb-preview .main-image { height: 300px !important; }
+    }
 
     /* ── Peek Gallery 每張圖的控制 ── */
     .peek-image {
@@ -669,14 +695,9 @@
 ══════════════════════════════ -->
 <div class="project-container">
 
-  <header class="project-header">
-    <h1 id="display-title" contenteditable="true" spellcheck="false" data-placeholder="作品名稱">孔外狂徒</h1>
-    <p class="project-year" contenteditable="true" spellcheck="false" data-placeholder="年份－編號">2025-1</p>
-  </header>
-
   <main class="project-content">
 
-    <!-- 封面圖區域（固定，不是 block） -->
+    <!-- 封面圖區域 -->
     <div class="project-gallery">
       <div class="main-image" id="cover-zone">
         <!-- 有圖片時顯示 img，無圖時顯示佔位 -->
@@ -689,6 +710,11 @@
       </div>
       <p contenteditable="true" spellcheck="false" data-placeholder="作品類別（如：互動裝置）" style="padding-top:12px">互動裝置</p>
     </div>
+
+    <header class="project-header">
+      <h1 id="display-title" contenteditable="true" spellcheck="false" data-placeholder="作品名稱">孔外狂徒</h1>
+      <p class="project-year" contenteditable="true" spellcheck="false" data-placeholder="年份－編號">2025-1</p>
+    </header>
 
     <!-- ── 可編輯 Blocks ── -->
     <div class="project-description" id="blocks-root">
@@ -856,6 +882,23 @@ document.getElementById('work-name').addEventListener('input', function() {
   document.getElementById('display-title').textContent = this.value;
 });
 
+/* ══ 序列化 blocks ══ */
+function serializeBlocks() {
+  const blocks = [];
+  document.querySelectorAll('#blocks-root .eb-block').forEach(block => {
+    const ctrl = block.querySelector('.eb-ctrl-tag');
+    const type = ctrl ? ctrl.textContent.trim() : 'unknown';
+    blocks.push({ type, html: block.innerHTML });
+  });
+  return blocks;
+}
+
+/* ══ 序列化封面圖 ══ */
+function serializeCover() {
+  const img = document.querySelector('#cover-zone img');
+  return img ? img.src : null;
+}
+
 /* ══ 儲存並發佈（回存 sessionStorage → 返回 admin） ══ */
 document.querySelector('.eb-btn-save').addEventListener('click', function() {
   const raw = sessionStorage.getItem('pb_context');
@@ -865,12 +908,16 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     const title = document.getElementById('work-name').value.trim();
     const yearEl = document.querySelector('.project-year');
     const date = yearEl ? yearEl.textContent.trim() : '';
+    const category = document.querySelector('.project-gallery p');
     if (!ctx.project) ctx.project = {};
-    ctx.project.title = title;
-    ctx.project.date = date;
+    ctx.project.title    = title;
+    ctx.project.date     = date;
+    ctx.project.category = category ? category.textContent.trim() : '';
+    ctx.project.image    = serializeCover();
+    ctx.project.blocks   = serializeBlocks();
     ctx.pb_saved = true;
     sessionStorage.setItem('pb_context', JSON.stringify(ctx));
-  } catch (e) {}
+  } catch (e) { console.error('儲存失敗', e); }
   goBack();
 });
 
@@ -1031,6 +1078,85 @@ function addToolsItem(listId) {
 function delLi(btn) {
   btn.closest('li').remove();
 }
+
+/* ══ 通用：觸發 file input ══ */
+function pickFile(accept, cb) {
+  const inp = document.createElement('input');
+  inp.type   = 'file';
+  inp.accept = accept;
+  inp.onchange = () => {
+    const f = inp.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = e => cb(e.target.result, f.name);
+    reader.readAsDataURL(f);
+  };
+  inp.click();
+}
+
+/* ══ 封面圖上傳 ══ */
+function initCoverUpload() {
+  const zone = document.getElementById('cover-zone');
+  zone.addEventListener('click', function(e) {
+    if (e.target.closest('.eb-img-del')) return;
+    pickFile('image/*', (dataUrl) => {
+      zone.innerHTML = `
+        <img src="${dataUrl}" alt="封面圖">
+        <div class="eb-cover-replace">🖼 替換封面圖</div>`;
+    });
+  });
+}
+initCoverUpload();
+
+/* ══ Gallery：點擊 placeholder 或已上傳的 img 都可以（重新）上傳 ══ */
+document.addEventListener('click', function(e) {
+  // 點到刪除鈕就跳過
+  if (e.target.closest('.eb-img-del')) return;
+
+  const peekImg = e.target.closest('.peek-image img');
+  const ph      = e.target.closest('.eb-peek-placeholder');
+  const target  = peekImg || ph;
+  if (!target) return;
+
+  const peekImage = target.closest('.peek-image');
+  pickFile('image/*', (dataUrl) => {
+    // 移除舊的 placeholder 或舊 img，插入新 img
+    const old = peekImage.querySelector('.eb-peek-placeholder, img');
+    const newImg = Object.assign(document.createElement('img'), {
+      src: dataUrl,
+      alt: '圖片'
+    });
+    newImg.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+    if (old) old.replaceWith(newImg);
+    else peekImage.prepend(newImg);
+  });
+});
+
+/* ══ 影片 placeholder 點擊上傳 ══ */
+document.addEventListener('click', function(e) {
+  const ph = e.target.closest('.eb-video-ph');
+  if (!ph) return;
+  pickFile('video/*', (dataUrl) => {
+    const wrapper = ph.closest('.custom-video-wrapper');
+    wrapper.innerHTML = `<video src="${dataUrl}" controls style="width:100%"></video>`;
+  });
+});
+
+/* ══ Grid cell 點擊上傳（含替換已上傳的圖片） ══ */
+document.addEventListener('click', function(e) {
+  const cell = e.target.closest('.eb-grid-cell');
+  if (!cell) return;
+  // 略過控制用的子元素
+  if (e.target.closest('.eb-cell-del-btn, .eb-cell-move-handle, .eb-cell-resize-handle, .eb-cell-resize-col')) return;
+  pickFile('image/*', (dataUrl) => {
+    // 移除文字佔位 span 和舊圖（若有），再插入新圖
+    cell.querySelectorAll('span, img').forEach(el => el.remove());
+    const img = document.createElement('img');
+    img.src = dataUrl;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0';
+    cell.appendChild(img);
+  });
+});
 
 /* ══ 圖片堆疊：加 / 刪 ══ */
 function addGalleryImg(galleryId) {

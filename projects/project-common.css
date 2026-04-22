@@ -174,7 +174,7 @@ p{
         display: flex !important;
     }
     .project-container {
-        padding: calc(400px + 20px) 7vw 12vw 7vw;
+        padding: 40px 7vw 12vw 7vw;
     }
     .project-video video,
     .project-video iframe,
@@ -249,7 +249,7 @@ p{
         display: flex !important;
     }
     .project-container {
-        padding: calc(350px + 20px) 5vw 10vw 5vw;
+        padding: 40px 5vw 10vw 5vw;
     }
     .project-video {
         max-width: 90%;
@@ -318,7 +318,7 @@ p{
         display: flex !important;
     }
     .project-container {
-        padding: calc(300px + 20px) 3vw 8vw 3vw;
+        padding: 20px 3vw 8vw 3vw;
     }
     .project-video {
         max-width: 85%;

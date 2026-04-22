@@ -1,27 +1,13 @@
 {
   "posts": [
     {
+      "id": "post-1745200000001",
       "title": "test",
       "caption": "",
       "image": "assets/Posts/半乾中.png",
       "date": "2026-04-22",
       "tag": "",
-      "links": [],
-      "id": "post-1776846704680"
-    },
-    {
-      "id": "post-1745200000001",
-      "title": "HOLOGACHA 開發中",
-      "caption": "物聯網 + 裸眼3D 互動裝置，硬體架構已完成，下一步處理影像同步！",
-      "image": "assets/Installation Art/Hologacha.png",
-      "date": "2026-04-21",
-      "tag": "#互動裝置",
-      "links": [
-        {
-          "label": "作品頁面",
-          "url": "projects/HOLOGACHA/HOLOGACHA.html"
-        }
-      ]
+      "links": []
     }
   ]
 }

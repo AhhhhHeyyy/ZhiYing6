@@ -1697,41 +1697,35 @@ body::before {
     position: relative;
     z-index: 1;
     color: #e8f6f8;
+    /* 離開 hover 時快速復原 */
+    transition: color 0.12s ease;
 }
 
-/* 白色斜切塊，預設藏在左外側 */
+/* 白色斜切塊：預設藏在左外側 */
 .card-tag::before {
     content: '';
     position: absolute;
     top: -20%;
     bottom: -20%;
-    left: -80%;
-    width: 60%;
+    left: -250%;   /* 初始藏在外面，夠遠讓斜切角不外露 */
+    width: 160%;   /* 夠寬，保證 skew 後能完全覆蓋標籤 */
     background: rgba(255, 255, 255, 0.95);
     transform: skewX(-25deg);
     z-index: 0;
+    /* 離開 hover 時快速縮回 */
+    transition: left 0.12s ease;
 }
 
-/* hover：白塊從左掃到右，延遲 0.44s 對應白線抵達右側的時機 */
+/* hover 進入：延遲到白線抵達右側（0.7s ease 中約 0.58s 處），掃入後停住覆蓋全標籤 */
 .gallery-item:hover .card-tag::before {
-    animation: tagWipe 0.22s ease 0.44s both;
+    left: -10%;
+    transition: left 0.16s ease 0.2s;
 }
 
 .gallery-item:hover .card-tag-text {
-    animation: tagTextFlip 0.22s ease 0.44s both;
-}
-
-@keyframes tagWipe {
-    0%   { left: -80%; }
-    45%  { left: 20%; }
-    55%  { left: 20%; }
-    100% { left: 120%; }
-}
-
-@keyframes tagTextFlip {
-    0%        { color: #e8f6f8; }
-    30%, 70%  { color: #002C40; }
-    100%      { color: #e8f6f8; }
+    color: #002C40;
+    /* 稍晚於白塊抵達，視覺上像被蓋到才變色 */
+    transition: color 0.05s ease 0.2s;
 }
 
 /* 桌面端（預設） */

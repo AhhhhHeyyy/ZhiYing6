@@ -1,0 +1,68 @@
+{
+  "installation": [
+    {
+      "title": "孔外狂徒",
+      "link": "projects/outofhole/outofhole.html",
+      "order": 1
+    },
+    {
+      "title": "艟Tong",
+      "link": "projects/tong/tong.html",
+      "order": 2
+    },
+    {
+      "title": "Stamped",
+      "link": "projects/Stamped/Stamped.html",
+      "order": 3
+    },
+    {
+      "title": "HOLOGACHA",
+      "link": "projects/HOLOGACHA/HOLOGACHA.html",
+      "order": 4
+    },
+    {
+      "title": "哈囉",
+      "link": "project-page.html?title=%E5%93%88%E5%9B%89",
+      "order": 5
+    }
+  ],
+  "animation": [
+    {
+      "title": "Weekender Girl",
+      "link": "projects/weekendergirl/weekendergirl.html",
+      "order": 1
+    },
+    {
+      "title": "愛拼才會營",
+      "link": "projects/Win/mahjong.html",
+      "order": 2
+    },
+    {
+      "title": "有料沒料?",
+      "link": "projects/Post/post.html",
+      "order": 3
+    },
+    {
+      "title": "Walker",
+      "link": "projects/Walker/walker.html",
+      "order": 4
+    },
+    {
+      "title": "The Rose",
+      "link": "projects/Rose/Rose.html",
+      "order": 5
+    }
+  ],
+  "painting": [
+    {
+      "title": "Summer Week",
+      "link": "projects/Summer Week/summerweek.html",
+      "order": 1
+    },
+    {
+      "title": "Kiss",
+      "link": "projects/Kiss/kiss.html",
+      "order": 2
+    }
+  ]
+}

@@ -476,6 +476,9 @@
     <label>作品頁面路徑</label>
     <input type="text" id="f-link" placeholder="projects/outofhole/outofhole.html">
 
+    <label>卡片標籤（逗號分隔）</label>
+    <input type="text" id="f-tags" placeholder="例：互動裝置, TouchDesigner, Webcam">
+
     <div id="has-modal-row" class="checkbox-row">
       <input type="checkbox" id="f-has-modal">
       <label for="f-has-modal">啟用 Modal 展示</label>
@@ -897,6 +900,7 @@ function openModal(idx) {
     document.getElementById('f-date').value = '';
     document.getElementById('f-image-url').value = '';
     document.getElementById('f-link').value = '';
+    document.getElementById('f-tags').value = '';
     document.getElementById('f-has-modal').checked = isInstallation;
     document.getElementById('f-coming-soon').checked = false;
     resetPreview();
@@ -908,6 +912,7 @@ function openModal(idx) {
     document.getElementById('f-date').value = p.date || '';
     document.getElementById('f-image-url').value = p.image || '';
     document.getElementById('f-link').value = p.link || '';
+    document.getElementById('f-tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     document.getElementById('f-has-modal').checked = !!p.hasModal;
     document.getElementById('f-coming-soon').checked = !!p.comingSoon || p.title === 'HOLOGACHA';
 
@@ -934,6 +939,8 @@ async function handleModalSave() {
   const hasModal = document.getElementById('f-has-modal').checked;
   const comingSoon = document.getElementById('f-coming-soon').checked;
   const imageUrl = document.getElementById('f-image-url').value.trim();
+  const tagsRaw = document.getElementById('f-tags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
   const errEl = document.getElementById('modal-error');
   const saveBtn = document.getElementById('modal-save-btn');
 
@@ -968,6 +975,7 @@ async function handleModalSave() {
     date,
     image: finalImagePath,
     link,
+    tags,
     comingSoon: comingSoon || false,
     order: editingIndex === null
       ? (projects[currentCat].length + 1)

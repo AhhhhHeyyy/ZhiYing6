@@ -7,10 +7,8 @@
         const currentPath = window.location.pathname;
         const currentFile = currentPath.split('/').pop();
         
-        // 计算 projects.json 的相对路径
-        // projects.json 在 ZhiYing5 目录下
-        // 从 projects/xxx/xxx.html 到 projects.json 需要 ../../projects.json
-        const jsonPath = '../../projects.json';
+        // projects-nav.json 是精簡版（僅含 title/link/order），避免載入含 base64 圖片的 4MB+ projects.json
+        const jsonPath = '../../projects-nav.json';
         
         // 加载项目数据
         const response = await fetch(jsonPath);

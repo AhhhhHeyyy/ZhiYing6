@@ -85,6 +85,28 @@ exports.handler = async (event) => {
     return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: '更新失敗', detail: err }) };
   }
 
+  // Also write a slim projects-nav.json (title + link + order only) used by navigation.js
+  // This avoids loading a potentially large projects.json (which may contain base64 images)
+  try {
+    const navData = {};
+    Object.keys(projects).forEach(cat => {
+      navData[cat] = (projects[cat] || []).map(({ title, link, order }) => ({ title, link, order }));
+    });
+    const navContent = Buffer.from(JSON.stringify(navData, null, 2) + '\n').toString('base64');
+    const navApiBase = `https://api.github.com/repos/${owner}/${repo}/contents/projects-nav.json`;
+    const navGetRes = await fetch(navApiBase, { headers: ghHeaders });
+    const navSha = navGetRes.ok ? (await navGetRes.json()).sha : undefined;
+    await fetch(navApiBase, {
+      method: 'PUT',
+      headers: ghHeaders,
+      body: JSON.stringify({
+        message: 'chore: update projects-nav via admin panel',
+        content: navContent,
+        ...(navSha ? { sha: navSha } : {}),
+      }),
+    });
+  } catch (_) { /* non-critical — navigation.js will fall back gracefully */ }
+
   return {
     statusCode: 200,
     headers: HEADERS,

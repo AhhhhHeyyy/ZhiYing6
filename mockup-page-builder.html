@@ -688,6 +688,11 @@
 
   <div class="eb-sep"></div>
 
+  <span class="eb-toolbar-label">卡片標籤</span>
+  <input class="eb-name-input" type="text" id="work-tags" placeholder="標籤1, 標籤2" title="逗號分隔，顯示在首頁作品卡片上" style="width:160px">
+
+  <div class="eb-sep"></div>
+
   <span class="eb-toolbar-label">新增區塊</span>
   <button class="eb-add-btn" onclick="addBlock('tools')">⊟ 媒材/負責</button>
   <button class="eb-add-btn" onclick="addBlock('heading')">T 標題</button>
@@ -881,6 +886,7 @@
       // 新增作品：清空預設佔位內容
       document.getElementById('work-name').value = '';
       document.getElementById('display-title').textContent = '';
+      document.getElementById('work-tags').value = '';
       const yearEl = document.querySelector('.project-year');
       if (yearEl) yearEl.textContent = '';
       if (ctx.cat) document.getElementById('work-cat').value = ctx.cat;
@@ -888,6 +894,7 @@
     }
     document.getElementById('work-name').value = p.title || '';
     document.getElementById('work-link').value = p.link || '';
+    document.getElementById('work-tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     if (ctx.cat) document.getElementById('work-cat').value = ctx.cat;
     document.getElementById('display-title').textContent = p.title || '';
     const yearEl = document.querySelector('.project-year');
@@ -936,11 +943,14 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     const yearEl = document.querySelector('.project-year');
     const date = yearEl ? yearEl.textContent.trim() : '';
     const category = document.querySelector('.project-gallery p');
+    const tagsRaw = document.getElementById('work-tags').value.trim();
+    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
     if (!ctx.project) ctx.project = {};
     ctx.project.title    = title;
     ctx.project.date     = date;
     ctx.project.link     = link || ctx.project.link || ('project-page.html?title=' + encodeURIComponent(title));
     ctx.project.category = category ? category.textContent.trim() : '';
+    ctx.project.tags     = tags;
     ctx.project.image    = serializeCover();
     ctx.project.blocks   = serializeBlocks();
     ctx.targetCat        = selectedCat || ctx.cat;

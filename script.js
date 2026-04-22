@@ -37,7 +37,7 @@ async function loadAndRenderProjects() {
                     ? `<div class="card-tags">${project.tags.map(t => `<span class="card-tag"><span class="card-tag-text">${t}</span></span>`).join('')}</div>`
                     : '';
                 item.innerHTML = `
-                    <a href="${project.link}">
+                    <a href="${project.link || 'project-page.html?title=' + encodeURIComponent(project.title)}">
                         <img src="${project.image}" alt="${project.title}">
                         <div class="item-overlay">
                             <h3>${project.title}</h3>
@@ -327,9 +327,8 @@ async function initIntroProjects() {
         // 点击图片可以跳转到项目页面
         introImage.style.cursor = 'pointer';
         introImage.addEventListener('click', () => {
-            if (selectedProjects[currentIndex].link) {
-                window.location.href = selectedProjects[currentIndex].link;
-            }
+            const p = selectedProjects[currentIndex];
+            window.location.href = p.link || ('project-page.html?title=' + encodeURIComponent(p.title));
         });
         
     } catch (error) {

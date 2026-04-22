@@ -1521,6 +1521,13 @@ body::before {
     left: 170%;
 }
 
+.gallery-item > a {
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 2;
+}
+
 .gallery-item img {
     position: absolute;
     top: 0;
@@ -4333,6 +4340,83 @@ span {
     font-size: 0.66rem; letter-spacing: 0.05em;
     padding: 3px 9px; border-radius: 999px;
     color: #005C80; background: #C8E0E4; line-height: 1; flex-shrink: 0;
+}
+
+/* ── vb-post-overlay ── */
+#vb-post-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,44,64,0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1200;
+    align-items: center; justify-content: center;
+    padding: 24px 16px;
+}
+#vb-post-overlay.is-open { display: flex; }
+#vb-post-overlay .vb-open-card {
+    width: 100%; max-width: 520px;
+    animation: vbSlideUp .28s ease;
+}
+@keyframes vbSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.vb-open-card {
+    background: #fff;
+    border: 1.5px solid #92C7CF;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 8px 8px 0 #92C7CF;
+}
+.vb-open-head {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid rgba(146,199,207,0.4);
+}
+.vb-open-head .thumb {
+    width: 64px; height: 64px;
+    border-radius: 10px; overflow: hidden;
+    background: #C8E0E4; flex-shrink: 0; position: relative;
+}
+.vb-open-head .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vb-open-head .thumb::after {
+    content: ''; position: absolute; top: -3px; left: 8px;
+    width: 24px; height: 8px;
+    background: #92C7CF; opacity: .9;
+    transform: rotate(-6deg); border-radius: 2px;
+}
+.vb-open-meta { flex: 1; min-width: 0; }
+.vb-open-meta .row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.vb-open-meta .title { font-size: 1rem; font-weight: 700; color: #002C40; letter-spacing: 0.03em; }
+.vb-open-meta .date-str {
+    font-size: 0.62rem; letter-spacing: 0.15em; color: rgba(0,44,64,0.55); text-transform: uppercase;
+}
+.vb-open-close {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; border: 1px solid rgba(146,199,207,0.4);
+    background: none; cursor: pointer; flex-shrink: 0;
+    transition: background .15s, transform .2s;
+    color: #005C80;
+}
+.vb-open-close:hover { background: #92C7CF; color: #fff; transform: rotate(90deg); }
+.vb-open-hero {
+    width: 100%; aspect-ratio: 16/7;
+    background: #C8E0E4; overflow: hidden;
+}
+.vb-open-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vb-open-body {
+    padding: 18px 20px;
+}
+.vb-open-body p {
+    font-size: 0.85rem; line-height: 1.75;
+    color: rgba(0,44,64,0.75);
+}
+.vb-open-foot {
+    padding: 14px 20px;
+    border-top: 1px solid rgba(146,199,207,0.4);
 }
 
 /* links row inside vb-card */

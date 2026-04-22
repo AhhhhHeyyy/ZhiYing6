@@ -63,38 +63,97 @@ function renderPostsTimeline(posts, containerId) {
     const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
     const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
-    container.innerHTML = sorted.map(post => {
+    container.innerHTML = sorted.map((post, i) => {
         const d = new Date(post.date);
         const day = String(d.getDate()).padStart(2, '0');
         const month = MONTHS[d.getMonth()];
         const imgHTML = post.image ? `<img src="${post.image}" alt="${post.title}">` : '';
         const chipHTML = post.tag ? `<span class="ps-chip">${post.tag}</span>` : '';
 
-        // 支援新格式 links[] 與舊格式 link 字串
-        const links = post.links?.length
-            ? post.links
-            : (post.link ? [{ label: '了解更多', url: post.link }] : []);
-
-        const linksHTML = links.length
-            ? `<div class="vb-links">${links.map((lk, i) =>
-                `<a class="vb-link${i > 0 ? ' ghost' : ''}" href="${lk.url}" target="_blank" rel="noopener">${lk.label || '連結'} →</a>`
-              ).join('')}</div>`
-            : '';
-
         return `
         <div class="vb-row">
             <div class="vb-date"><div class="d">${day}</div><span class="m">${month}</span></div>
             <div class="vb-dot-wrap"><div class="vb-dot"></div></div>
-            <div class="vb-card">
+            <div class="vb-card" data-post-index="${i}" role="button" tabindex="0">
                 <div class="vb-thumb">${imgHTML}</div>
                 <div class="vb-body">
                     <div class="top-row">${chipHTML}<h3 class="title">${post.title}</h3></div>
                     <p class="cap">${post.caption || ''}</p>
-                    ${linksHTML}
                 </div>
+                <span class="vb-arrow">›</span>
             </div>
         </div>`;
     }).join('');
+
+    container.addEventListener('click', e => {
+        const card = e.target.closest('.vb-card[data-post-index]');
+        if (!card) return;
+        openPostOverlay(sorted[+card.dataset.postIndex]);
+    });
+}
+
+// 開啟 vb-open-card overlay
+function openPostOverlay(post) {
+    const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const d = new Date(post.date);
+    const dateStr = `${MONTHS[d.getMonth()]} ${d.getDate()} · ${d.getFullYear()}`;
+
+    const links = post.links?.length
+        ? post.links
+        : (post.link ? [{ label: '了解更多', url: post.link }] : []);
+
+    const linksHTML = links.map((lk, i) =>
+        `<a class="vb-link${i > 0 ? ' ghost' : ''}" href="${lk.url}" target="_blank" rel="noopener">${lk.label || '連結'} →</a>`
+    ).join('');
+
+    const heroHTML = post.image
+        ? `<div class="vb-open-hero"><img src="${post.image}" alt="${post.title}"></div>`
+        : '';
+
+    const chipHTML = post.tag ? `<span class="ps-chip">${post.tag}</span>` : '';
+
+    let overlay = document.getElementById('vb-post-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'vb-post-overlay';
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closePostOverlay(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePostOverlay(); });
+    }
+
+    overlay.innerHTML = `
+    <div class="vb-open-card">
+        <div class="vb-open-head">
+            <div class="thumb">${post.image ? `<img src="${post.image}" alt="${post.title}">` : ''}</div>
+            <div class="vb-open-meta">
+                <div class="row1">
+                    <span class="title">${post.title}</span>
+                    ${chipHTML}
+                </div>
+                <span class="date-str">${dateStr}</span>
+            </div>
+            <button class="vb-open-close" aria-label="關閉">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                    <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
+                </svg>
+            </button>
+        </div>
+        ${heroHTML}
+        <div class="vb-open-body">
+            <p>${post.caption || ''}</p>
+        </div>
+        ${linksHTML ? `<div class="vb-open-foot"><div class="vb-links">${linksHTML}</div></div>` : ''}
+    </div>`;
+
+    overlay.querySelector('.vb-open-close').addEventListener('click', closePostOverlay);
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePostOverlay() {
+    const overlay = document.getElementById('vb-post-overlay');
+    if (overlay) overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
 }
 
 // 載入近期動態並渲染到時間軸

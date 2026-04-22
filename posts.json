@@ -16,7 +16,12 @@
       "image": "assets/Posts/半乾中.png",
       "date": "2026-04-22",
       "tag": "",
-      "links": []
+      "links": [
+        {
+          "label": "連結",
+          "url": "https://codepen.io/search/pens?q=mouse+track"
+        }
+      ]
     }
   ]
 }

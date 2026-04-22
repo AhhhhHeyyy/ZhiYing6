@@ -674,6 +674,15 @@
 
   <div class="eb-sep"></div>
 
+  <span class="eb-toolbar-label">分類</span>
+  <select id="work-cat" style="background:rgba(0,0,0,.4);border:1px solid rgba(146,199,207,.4);border-radius:7px;color:#E6F4F7;font-size:14px;font-weight:600;padding:6px 10px;outline:none;cursor:pointer">
+    <option value="installation">裝置藝術</option>
+    <option value="animation">動畫</option>
+    <option value="painting">繪畫</option>
+  </select>
+
+  <div class="eb-sep"></div>
+
   <span class="eb-toolbar-label">頁面路徑</span>
   <input class="eb-name-input" type="text" id="work-link" placeholder="projects/xxx/xxx.html" style="width:220px">
 
@@ -874,10 +883,12 @@
       document.getElementById('display-title').textContent = '';
       const yearEl = document.querySelector('.project-year');
       if (yearEl) yearEl.textContent = '';
+      if (ctx.cat) document.getElementById('work-cat').value = ctx.cat;
       return;
     }
     document.getElementById('work-name').value = p.title || '';
     document.getElementById('work-link').value = p.link || '';
+    if (ctx.cat) document.getElementById('work-cat').value = ctx.cat;
     document.getElementById('display-title').textContent = p.title || '';
     const yearEl = document.querySelector('.project-year');
     if (yearEl) yearEl.textContent = p.date || '';
@@ -921,6 +932,7 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     const ctx = JSON.parse(raw);
     const title = document.getElementById('work-name').value.trim();
     const link  = document.getElementById('work-link').value.trim();
+    const selectedCat = document.getElementById('work-cat').value;
     const yearEl = document.querySelector('.project-year');
     const date = yearEl ? yearEl.textContent.trim() : '';
     const category = document.querySelector('.project-gallery p');
@@ -931,6 +943,7 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     ctx.project.category = category ? category.textContent.trim() : '';
     ctx.project.image    = serializeCover();
     ctx.project.blocks   = serializeBlocks();
+    ctx.targetCat        = selectedCat || ctx.cat;
     ctx.pb_saved = true;
     sessionStorage.setItem('pb_context', JSON.stringify(ctx));
   } catch (e) { console.error('儲存失敗', e); }

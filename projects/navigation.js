@@ -47,35 +47,35 @@
         const prevBtn = document.querySelector('.prev-btn-fixed');
         const nextBtn = document.querySelector('.next-btn-fixed');
         
+        // Compute path relative to current page (which is 2 dirs deep: projects/xxx/xxx.html)
+        function resolveLink(link) {
+            if (link.startsWith('projects/')) return link.replace('projects/', '../');
+            return '../../' + link;
+        }
+
         if (prevBtn) {
             if (prevProject) {
-                // 计算相对路径
-                const prevPath = prevProject.link.replace('projects/', '../');
-                prevBtn.href = prevPath;
+                prevBtn.href = resolveLink(prevProject.link);
                 prevBtn.style.visibility = 'visible';
                 prevBtn.style.pointerEvents = 'auto';
-                prevBtn.style.opacity = '0.8';
+                prevBtn.style.opacity = '';
             } else {
-                // 如果是第一个项目，隐藏上一个按钮但保持布局
                 prevBtn.style.visibility = 'hidden';
                 prevBtn.style.pointerEvents = 'none';
-                prevBtn.style.opacity = '0';
+                prevBtn.style.opacity = '';
             }
         }
-        
+
         if (nextBtn) {
             if (nextProject) {
-                // 计算相对路径
-                const nextPath = nextProject.link.replace('projects/', '../');
-                nextBtn.href = nextPath;
+                nextBtn.href = resolveLink(nextProject.link);
                 nextBtn.style.visibility = 'visible';
                 nextBtn.style.pointerEvents = 'auto';
-                nextBtn.style.opacity = '0.8';
+                nextBtn.style.opacity = '';
             } else {
-                // 如果是最后一个项目，隐藏下一个按钮但保持布局
                 nextBtn.style.visibility = 'hidden';
                 nextBtn.style.pointerEvents = 'none';
-                nextBtn.style.opacity = '0';
+                nextBtn.style.opacity = '';
             }
         }
         

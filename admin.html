@@ -724,17 +724,29 @@ function applyPageBuilderReturn() {
     if (!ctx.pb_saved) return;
     const { cat, idx, project } = ctx;
     if (!project || !cat) return;
-    if (!projects[cat]) projects[cat] = [];
+
+    const targetCat = ctx.targetCat || cat;
+    if (!projects[targetCat]) projects[targetCat] = [];
+
     if (idx === null || idx === undefined) {
-      project.order = projects[cat].length + 1;
-      projects[cat].push(project);
+      // New project
+      project.order = projects[targetCat].length + 1;
+      projects[targetCat].push(project);
+    } else if (targetCat !== cat) {
+      // Category changed: remove from old, append to new
+      projects[cat].splice(idx, 1);
+      projects[cat].forEach((item, i) => { item.order = i + 1; });
+      project.order = projects[targetCat].length + 1;
+      projects[targetCat].push(project);
     } else {
+      // Same category, update in place
       projects[cat][idx] = { ...projects[cat][idx], ...project };
     }
+
     markUnsaved();
-    currentCat = cat;
+    currentCat = targetCat;
     document.querySelectorAll('.tab-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.cat === cat);
+      b.classList.toggle('active', b.dataset.cat === targetCat);
     });
   } catch(e) {}
   sessionStorage.removeItem('pb_context');

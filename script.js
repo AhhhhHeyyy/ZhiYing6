@@ -346,6 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // 先加载作品
     await loadAndRenderProjects();
+    ScrollTrigger.refresh();
     // 載入近期動態時間軸 + 初始化展開 Modal
     loadAndRenderPosts();
     initPostsModal();

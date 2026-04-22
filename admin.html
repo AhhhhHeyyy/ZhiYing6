@@ -551,7 +551,7 @@
 // ══════════════════════════════════════════
 //  State
 // ══════════════════════════════════════════
-let token = sessionStorage.getItem('admin_token') || null;
+let token = localStorage.getItem('admin_token') || null;
 let projects = null;   // { installation:[], animation:[], painting:[] }
 let currentCat = 'installation';
 let editingIndex = null; // null = new, number = editing existing
@@ -656,7 +656,7 @@ async function handleLogin() {
     }
 
     token = data.token;
-    sessionStorage.setItem('admin_token', token);
+    localStorage.setItem('admin_token', token);
     await initAdmin();
 
   } catch (err) {
@@ -671,7 +671,7 @@ async function handleLogin() {
 function handleLogout() {
   if ((hasUnsaved || hasUnsavedPosts) && !confirm('有未儲存的變更，確定要登出嗎？')) return;
   token = null;
-  sessionStorage.removeItem('admin_token');
+  localStorage.removeItem('admin_token');
   projects = null;
   document.getElementById('admin-screen').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';

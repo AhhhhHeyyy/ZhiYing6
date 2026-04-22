@@ -1433,7 +1433,7 @@ body::before {
 .gallery-section {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     background-image:
         radial-gradient(circle, rgba(0, 92, 128, 0.18) 2px, transparent 2px),
         url('./assets/BackGround.jpg');

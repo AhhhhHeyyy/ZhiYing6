@@ -674,6 +674,11 @@
 
   <div class="eb-sep"></div>
 
+  <span class="eb-toolbar-label">頁面路徑</span>
+  <input class="eb-name-input" type="text" id="work-link" placeholder="projects/xxx/xxx.html" style="width:220px">
+
+  <div class="eb-sep"></div>
+
   <span class="eb-toolbar-label">新增區塊</span>
   <button class="eb-add-btn" onclick="addBlock('tools')">⊟ 媒材/負責</button>
   <button class="eb-add-btn" onclick="addBlock('heading')">T 標題</button>
@@ -865,6 +870,7 @@
     const p = ctx.project;
     if (p) {
       document.getElementById('work-name').value = p.title || '';
+      document.getElementById('work-link').value = p.link || '';
       document.getElementById('display-title').textContent = p.title || '';
       const yearEl = document.querySelector('.project-year');
       if (yearEl && p.date) yearEl.textContent = p.date;
@@ -906,12 +912,14 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
   try {
     const ctx = JSON.parse(raw);
     const title = document.getElementById('work-name').value.trim();
+    const link  = document.getElementById('work-link').value.trim();
     const yearEl = document.querySelector('.project-year');
     const date = yearEl ? yearEl.textContent.trim() : '';
     const category = document.querySelector('.project-gallery p');
     if (!ctx.project) ctx.project = {};
     ctx.project.title    = title;
     ctx.project.date     = date;
+    ctx.project.link     = link || ctx.project.link || '';
     ctx.project.category = category ? category.textContent.trim() : '';
     ctx.project.image    = serializeCover();
     ctx.project.blocks   = serializeBlocks();

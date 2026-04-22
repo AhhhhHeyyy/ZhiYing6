@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品頁面 - 梁芷穎作品集</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./projects/project-common.css">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Strip all page-builder editor controls */
+    .eb-ctrl,
+    .eb-tools-add-row,
+    .eb-gallery-add,
+    .eb-li-del,
+    .eb-block-drag,
+    .eb-img-del,
+    .eb-video-ph,
+    .eb-peek-placeholder { display: none !important; }
+
+    .eb-block {
+      outline: none !important;
+      padding: 0 !important;
+      border: none !important;
+    }
+
+    [contenteditable] { outline: none; }
+  </style>
+</head>
+<body>
+  <div class="project-container" id="project-container" style="opacity:0;transition:opacity 0.4s ease">
+    <main class="project-content">
+      <div class="project-gallery" id="project-gallery"></div>
+      <header class="project-header" id="project-header"></header>
+      <div class="project-description" id="project-description"></div>
+    </main>
+  </div>
+
+  <footer class="project-footer">
+    <div class="social-icons-phone">
+      <a href="https://www.instagram.com/ttong_do_something?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+        <img src="./assets/icon _instagram_.png" alt="Instagram">
+      </a>
+      <a href="https://medium.com/@qazwsx04152" target="_blank">
+        <img src="./assets/icon _medium_.png" alt="Medium">
+      </a>
+      <a href="https://www.youtube.com/@Zong-g9r" target="_blank">
+        <img src="./assets/icon _Youtube_.png" alt="Youtube">
+      </a>
+      <a href="https://linktr.ee/qi.4145" target="_blank">
+        <img src="./assets/icon_inktree_.png" alt="LinkTree">
+      </a>
+    </div>
+  </footer>
+
+  <a href="./index.html" class="home-button-fixed">HOME</a>
+  <div class="project-nav-fixed">
+    <a href="#" class="prev-btn-fixed">&#x2039;</a>
+    <a href="#" class="next-btn-fixed">&#x203A;</a>
+  </div>
+
+  <div id="img-modal" class="img-modal">
+    <span class="img-modal-close">&times;</span>
+    <button class="img-modal-nav prev">&#8249;</button>
+    <button class="img-modal-nav next">&#8250;</button>
+    <img class="img-modal-content" id="img-modal-img" src="" alt="放大圖">
+  </div>
+
+  <script>
+  const CAT_LABEL = { installation: '互動裝置', animation: '動畫', painting: '繪畫' };
+
+  async function loadProject() {
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get('title');
+    if (!title) {
+      showError('缺少作品標題參數');
+      return;
+    }
+
+    let allProjects;
+    try {
+      const res = await fetch('./projects.json?nocache=' + Date.now());
+      allProjects = await res.json();
+    } catch (e) {
+      showError('無法載入作品資料');
+      return;
+    }
+
+    let found = null;
+    let foundCat = null;
+    for (const cat of Object.keys(allProjects)) {
+      const p = allProjects[cat].find(p => p.title === title);
+      if (p) { found = p; foundCat = cat; break; }
+    }
+
+    if (!found) {
+      showError('找不到作品：' + title);
+      return;
+    }
+
+    document.title = found.title + ' - 梁芷穎作品集';
+
+    if (found.image) {
+      document.getElementById('project-gallery').innerHTML = `
+        <div class="main-image">
+          <img src="${found.image}" alt="${found.title}" onclick="openImgModal(this.src)">
+        </div>
+        <p>${CAT_LABEL[foundCat] || foundCat}</p>
+      `;
+    }
+
+    document.getElementById('project-header').innerHTML = `
+      <h1>${found.title}</h1>
+      <p class="project-year">${found.date || ''}</p>
+    `;
+
+    if (found.blocks && found.blocks.length > 0) {
+      const desc = document.getElementById('project-description');
+      found.blocks.forEach(block => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = block.html;
+
+        // Remove all editor-only elements
+        wrapper.querySelectorAll(
+          '.eb-ctrl, .eb-tools-add-row, .eb-gallery-add, .eb-li-del, ' +
+          '.eb-block-drag, .eb-img-del, .eb-video-ph, .eb-peek-placeholder'
+        ).forEach(el => el.remove());
+
+        // Strip editor attributes
+        wrapper.querySelectorAll('[contenteditable]').forEach(el => {
+          el.removeAttribute('contenteditable');
+          el.removeAttribute('data-placeholder');
+          el.removeAttribute('spellcheck');
+        });
+
+        // Unwrap the eb-block div, append its children directly
+        Array.from(wrapper.childNodes).forEach(child => desc.appendChild(child));
+      });
+    }
+
+    document.getElementById('project-container').style.opacity = '1';
+  }
+
+  function showError(msg) {
+    document.getElementById('project-header').innerHTML = `<h1>${msg}</h1>`;
+    document.getElementById('project-container').style.opacity = '1';
+  }
+
+  function openImgModal(src) {
+    document.getElementById('img-modal-img').src = src;
+    document.getElementById('img-modal').style.display = 'flex';
+  }
+
+  document.getElementById('img-modal').addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('img-modal-close')) {
+      this.style.display = 'none';
+    }
+  });
+
+  loadProject();
+  </script>
+</body>
+</html>

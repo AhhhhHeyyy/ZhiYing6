@@ -917,7 +917,8 @@ function closeModal() {
 async function handleModalSave() {
   const title = document.getElementById('f-title').value.trim();
   const date = document.getElementById('f-date').value.trim();
-  const link = document.getElementById('f-link').value.trim();
+  const linkRaw = document.getElementById('f-link').value.trim();
+  const link = linkRaw || ('project-page.html?title=' + encodeURIComponent(title));
   const hasModal = document.getElementById('f-has-modal').checked;
   const comingSoon = document.getElementById('f-coming-soon').checked;
   const imageUrl = document.getElementById('f-image-url').value.trim();
@@ -926,8 +927,8 @@ async function handleModalSave() {
 
   errEl.style.display = 'none';
 
-  if (!title || !date || !link) {
-    errEl.textContent = '請填寫作品名稱、日期和頁面路徑';
+  if (!title || !date) {
+    errEl.textContent = '請填寫作品名稱和日期';
     errEl.style.display = 'block';
     return;
   }

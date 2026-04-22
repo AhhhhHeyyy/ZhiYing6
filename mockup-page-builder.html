@@ -919,7 +919,7 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     if (!ctx.project) ctx.project = {};
     ctx.project.title    = title;
     ctx.project.date     = date;
-    ctx.project.link     = link || ctx.project.link || '';
+    ctx.project.link     = link || ctx.project.link || ('project-page.html?title=' + encodeURIComponent(title));
     ctx.project.category = category ? category.textContent.trim() : '';
     ctx.project.image    = serializeCover();
     ctx.project.blocks   = serializeBlocks();

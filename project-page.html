@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="project-container" id="project-container" style="opacity:0;transition:opacity 0.4s ease">
+  <div class="project-container" id="project-container">
     <main class="project-content">
       <div class="project-gallery" id="project-gallery"></div>
       <header class="project-header" id="project-header"></header>
@@ -104,7 +104,7 @@
     if (found.image) {
       document.getElementById('project-gallery').innerHTML = `
         <div class="main-image">
-          <img src="${found.image}" alt="${found.title}" onclick="openImgModal(this.src)">
+          <img src="${found.image}" alt="${found.title}" onclick="openModal(this.src)">
         </div>
         <p>${CAT_LABEL[foundCat] || foundCat}</p>
       `;
@@ -142,22 +142,36 @@
       });
     }
 
-    document.getElementById('project-container').style.opacity = '1';
+    setTimeout(() => { document.getElementById('project-container').classList.add('visible'); }, 100);
+    setTimeout(() => { document.querySelector('.project-nav-fixed').classList.add('visible'); }, 300);
+    setTimeout(() => { document.querySelector('.home-button-fixed').classList.add('visible'); }, 500);
+
+    // 讓描述區塊內的所有圖片都能點擊開 modal（包含 peek-gallery、eb-grid 等動態內容）
+    document.getElementById('project-description').addEventListener('click', function(e) {
+      const img = e.target.closest('img');
+      if (img && img.src) {
+        openModal(img.src);
+      }
+    });
   }
 
   function showError(msg) {
     document.getElementById('project-header').innerHTML = `<h1>${msg}</h1>`;
-    document.getElementById('project-container').style.opacity = '1';
+    setTimeout(() => { document.getElementById('project-container').classList.add('visible'); }, 100);
+    setTimeout(() => { document.querySelector('.project-nav-fixed').classList.add('visible'); }, 300);
+    setTimeout(() => { document.querySelector('.home-button-fixed').classList.add('visible'); }, 500);
   }
 
-  function openImgModal(src) {
+  function openModal(src) {
     document.getElementById('img-modal-img').src = src;
-    document.getElementById('img-modal').style.display = 'flex';
+    document.getElementById('img-modal-video').style.display = 'none';
+    document.getElementById('img-modal-img').style.display = 'block';
+    document.getElementById('img-modal').classList.add('show');
   }
 
   document.getElementById('img-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.classList.contains('img-modal-close')) {
-      this.style.display = 'none';
+      this.classList.remove('show');
     }
   });
 
@@ -186,9 +200,13 @@
       const setBtn = (btn, proj) => {
         if (proj && proj.link) {
           btn.href = proj.link;
-          btn.style.cssText = 'visibility:visible;opacity:0.8;pointer-events:auto';
+          btn.style.visibility = 'visible';
+          btn.style.pointerEvents = 'auto';
+          btn.style.opacity = '';
         } else {
-          btn.style.cssText = 'visibility:hidden;opacity:0;pointer-events:none';
+          btn.style.visibility = 'hidden';
+          btn.style.pointerEvents = 'none';
+          btn.style.opacity = '';
         }
       };
       setBtn(document.querySelector('.prev-btn-fixed'), idx > 0 ? all[idx - 1] : null);

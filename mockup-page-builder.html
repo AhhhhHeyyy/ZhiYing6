@@ -868,17 +868,25 @@
   try {
     const ctx = JSON.parse(raw);
     const p = ctx.project;
-    if (p) {
-      document.getElementById('work-name').value = p.title || '';
-      document.getElementById('work-link').value = p.link || '';
-      document.getElementById('display-title').textContent = p.title || '';
+    if (!p) {
+      // 新增作品：清空預設佔位內容
+      document.getElementById('work-name').value = '';
+      document.getElementById('display-title').textContent = '';
       const yearEl = document.querySelector('.project-year');
-      if (yearEl && p.date) yearEl.textContent = p.date;
-      if (p.image) {
-        document.getElementById('cover-zone').innerHTML = `
-          <img src="${p.image}" alt="封面圖" style="width:100%;height:100%;object-fit:cover">
-          <div class="eb-cover-replace">🖼 替換封面圖</div>`;
-      }
+      if (yearEl) yearEl.textContent = '';
+      return;
+    }
+    document.getElementById('work-name').value = p.title || '';
+    document.getElementById('work-link').value = p.link || '';
+    document.getElementById('display-title').textContent = p.title || '';
+    const yearEl = document.querySelector('.project-year');
+    if (yearEl) yearEl.textContent = p.date || '';
+    const catEl = document.querySelector('.project-gallery p');
+    if (catEl && p.category) catEl.textContent = p.category;
+    if (p.image) {
+      document.getElementById('cover-zone').innerHTML = `
+        <img src="${p.image}" alt="封面圖" style="width:100%;height:100%;object-fit:cover">
+        <div class="eb-cover-replace">🖼 替換封面圖</div>`;
     }
   } catch (e) {}
 })();
@@ -902,7 +910,7 @@ function serializeBlocks() {
 /* ══ 序列化封面圖 ══ */
 function serializeCover() {
   const img = document.querySelector('#cover-zone img');
-  return img ? img.src : null;
+  return img ? (img.getAttribute('src') || img.src) : null;
 }
 
 /* ══ 儲存並發佈（回存 sessionStorage → 返回 admin） ══ */
@@ -1393,9 +1401,44 @@ function initBlockSort() {
 <script src="./projects/project-script.js"></script>
 <script>
 /* Sortable.js 已載入，啟動拖曳排序 */
+
+/* 若是編輯已有 blocks 的作品，從 sessionStorage 還原 */
+let _restoredFromCtx = false;
+(function restoreBlocks() {
+  try {
+    const raw = sessionStorage.getItem('pb_context');
+    if (!raw) return;
+    const ctx = JSON.parse(raw);
+    const p = ctx.project;
+    if (!p || !p.blocks || !p.blocks.length) return;
+
+    const root = document.getElementById('blocks-root');
+    root.innerHTML = '';
+    let maxN = 9;
+
+    p.blocks.forEach(block => {
+      const m = block.html.match(/moveBlock\('eb-(\d+)'/);
+      const n = m ? parseInt(m[1]) : ++maxN;
+      if (n > maxN) maxN = n;
+      const el = document.createElement('div');
+      el.className = 'eb-block';
+      el.id = 'eb-' + n;
+      el.innerHTML = block.html;
+      root.appendChild(el);
+      const gridEl = el.querySelector('.eb-grid');
+      if (gridEl) {
+        gridEl.querySelectorAll('.eb-grid-cell').forEach(initCellInteraction);
+        initGridSort(gridEl);
+      }
+    });
+    seq = maxN + 1;
+    _restoredFromCtx = true;
+  } catch(e) {}
+})();
+
 document.querySelectorAll('#blocks-root .eb-block').forEach(injectBlockHandle);
 initBlockSort();
-document.querySelectorAll('.eb-grid').forEach(initGridSort);
+if (!_restoredFromCtx) document.querySelectorAll('.eb-grid').forEach(initGridSort);
 </script>
 
 </body>

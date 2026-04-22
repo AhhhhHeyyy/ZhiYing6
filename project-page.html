@@ -124,7 +124,10 @@
         // Remove all editor-only elements
         wrapper.querySelectorAll(
           '.eb-ctrl, .eb-tools-add-row, .eb-gallery-add, .eb-li-del, ' +
-          '.eb-block-drag, .eb-img-del, .eb-video-ph, .eb-peek-placeholder'
+          '.eb-block-drag, .eb-img-del, .eb-video-ph, .eb-peek-placeholder, ' +
+          '.eb-grid-toolbar, .eb-cell-move-handle, .eb-cell-del-btn, ' +
+          '.eb-cell-size-tag, .eb-cell-resize-handle, .eb-cell-resize-col, ' +
+          '.eb-cover-replace'
         ).forEach(el => el.remove());
 
         // Strip editor attributes

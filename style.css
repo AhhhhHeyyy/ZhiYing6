@@ -1664,6 +1664,44 @@ body::before {
     /* hover 时淡出文字 */
 }
 
+/* 卡片標籤 */
+.card-tags {
+    position: absolute;
+    top: 18px;
+    right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 5px;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.gallery-item:hover .card-tag {
+    animation: tagShine 0.7s ease forwards;
+}
+
+@keyframes tagShine {
+    0%   { background: rgba(146, 199, 207, 0.85); color: #e8f6f8; }
+    45%  { background: rgba(230, 248, 252, 0.95); color: #002C40; }
+    100% { background: rgba(146, 199, 207, 0.85); color: #e8f6f8; }
+}
+
+.card-tag {
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: #e8f6f8;
+    background: rgba(146, 199, 207, 0.85);
+    border: none;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
 /* 桌面端（預設） */
 .gallery-item .play-button {
     display: none !important;

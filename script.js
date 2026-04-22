@@ -33,6 +33,9 @@ async function loadAndRenderProjects() {
                     item.setAttribute('data-target', '#artModal');
                 }
                 
+                const tagsHTML = project.tags && project.tags.length
+                    ? `<div class="card-tags">${project.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>`
+                    : '';
                 item.innerHTML = `
                     <a href="${project.link}">
                         <img src="${project.image}" alt="${project.title}">
@@ -41,6 +44,7 @@ async function loadAndRenderProjects() {
                             <p>${project.date}</p>
                         </div>
                         ${project.title === 'HOLOGACHA' ? '<div class="coming-soon-overlay"><span class="coming-soon-text">Coming Soon...</span></div>' : ''}
+                        ${tagsHTML}
                     </a>
                 `;
                 

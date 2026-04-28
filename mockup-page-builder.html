@@ -24,6 +24,14 @@
       --eb-danger: #ff6b6b;
       --eb-r:      7px;
       --tb-h:      58px;
+
+      /* toolbar white theme */
+      --tb-bg:      #ffffff;
+      --tb-text:    #002d3f;
+      --tb-muted:   rgba(0,44,64,.55);
+      --tb-accent:  #005C80;
+      --tb-border:  rgba(0,60,80,.2);
+      --tb-surface: #f0f6f8;
     }
 
     /* 讓 body 預留 toolbar 高度 */
@@ -35,15 +43,15 @@
       top: 0; left: 0; right: 0;
       height: var(--tb-h);
       z-index: 9900;
-      background: #002d3f;
-      border-bottom: 2px solid var(--eb-accent);
+      background: var(--tb-bg);
+      border-bottom: 2px solid var(--tb-accent);
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 0 20px;
       font-family: 'Public Sans', system-ui, sans-serif;
       overflow-x: auto;
-      overflow-y: hidden;
+      overflow-y: visible;
       scrollbar-width: none;
     }
     .eb-toolbar::-webkit-scrollbar { display: none; }
@@ -51,49 +59,80 @@
 
     .eb-toolbar-label {
       font-size: 13px;
-      color: var(--eb-muted);
+      color: var(--tb-muted);
       white-space: nowrap;
       letter-spacing: .4px;
     }
 
     .eb-name-input {
-      background: rgba(0,0,0,.4);
-      border: 1px solid var(--eb-border);
+      background: var(--tb-surface);
+      border: 1px solid var(--tb-border);
       border-radius: var(--eb-r);
-      color: var(--eb-text);
+      color: var(--tb-text);
       font-size: 15px;
       font-weight: 700;
       padding: 6px 14px;
       outline: none;
       width: 160px;
     }
-    .eb-name-input:focus { border-color: var(--eb-accent); box-shadow: 0 0 0 2px rgba(146,199,207,.2); }
+    .eb-name-input:focus { border-color: var(--tb-accent); box-shadow: 0 0 0 2px rgba(0,92,128,.15); }
 
     .eb-sep {
       width: 1px; height: 26px;
-      background: rgba(146,199,207,.3);
+      background: var(--tb-border);
       flex-shrink: 0;
     }
 
-    .eb-add-btn {
-      background: rgba(146,199,207,.12);
-      border: 1.5px solid rgba(146,199,207,.5);
+    /* ── 新增區塊 Dropdown ── */
+    .eb-dropdown-wrap { position: relative; }
+    .eb-dropdown-btn {
+      background: var(--tb-surface);
+      border: 1.5px solid rgba(0,60,80,.28);
       border-radius: var(--eb-r);
-      color: #d8eef1;
+      color: var(--tb-text);
       font-size: 14px;
       font-weight: 600;
-      padding: 6px 14px;
+      padding: 6px 16px;
       cursor: pointer;
       white-space: nowrap;
       transition: border-color .15s, background .15s, color .15s;
       font-family: inherit;
       letter-spacing: .2px;
     }
-    .eb-add-btn:hover {
-      border-color: var(--eb-accent);
-      background: rgba(146,199,207,.25);
+    .eb-dropdown-btn:hover, .eb-dropdown-btn.open {
+      border-color: var(--tb-accent);
+      background: var(--tb-accent);
       color: #fff;
     }
+    .eb-dropdown-menu {
+      display: none;
+      position: fixed;
+      background: #ffffff;
+      border: 1.5px solid rgba(0,60,80,.18);
+      border-radius: var(--eb-r);
+      box-shadow: 0 4px 18px rgba(0,44,64,.13);
+      min-width: 148px;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .eb-dropdown-menu.open { display: block; }
+    .eb-dropdown-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      color: var(--tb-text);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 9px 16px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .1s;
+      white-space: nowrap;
+    }
+    .eb-dropdown-item:hover { background: rgba(0,92,128,.09); color: var(--tb-accent); }
 
     .eb-toolbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
 
@@ -108,19 +147,19 @@
       letter-spacing: .3px;
     }
     .eb-btn-secondary {
-      background: rgba(0,92,128,0.5);
-      border: 1.5px solid rgba(146,199,207,.4);
-      color: var(--eb-muted);
+      background: rgba(0,60,80,.07);
+      border: 1.5px solid rgba(0,60,80,.25);
+      color: var(--tb-muted);
     }
     .eb-btn-preview {
-      background: rgba(146,199,207,.1);
-      border: 1.5px solid var(--eb-accent);
-      color: var(--eb-accent);
+      background: rgba(0,92,128,.06);
+      border: 1.5px solid var(--tb-accent);
+      color: var(--tb-accent);
     }
     .eb-btn-save {
-      background: var(--eb-accent);
+      background: var(--tb-accent);
       border: none;
-      color: #003a4d;
+      color: #ffffff;
     }
     .eb-btn:hover { opacity: .82; }
 
@@ -680,7 +719,7 @@
   <div class="eb-sep"></div>
 
   <span class="eb-toolbar-label">分類</span>
-  <select id="work-cat" style="background:rgba(0,0,0,.4);border:1px solid rgba(146,199,207,.4);border-radius:7px;color:#E6F4F7;font-size:14px;font-weight:600;padding:6px 10px;outline:none;cursor:pointer">
+  <select id="work-cat" style="background:var(--tb-surface);border:1px solid var(--tb-border);border-radius:7px;color:var(--tb-text);font-size:14px;font-weight:600;padding:6px 10px;outline:none;cursor:pointer">
     <option value="installation">裝置藝術</option>
     <option value="animation">動畫</option>
     <option value="painting">繪畫</option>
@@ -698,13 +737,17 @@
 
   <div class="eb-sep"></div>
 
-  <span class="eb-toolbar-label">新增區塊</span>
-  <button class="eb-add-btn" onclick="addBlock('tools')">⊟ 媒材/負責</button>
-  <button class="eb-add-btn" onclick="addBlock('heading')">T 標題</button>
-  <button class="eb-add-btn" onclick="addBlock('text')">¶ 文字</button>
-  <button class="eb-add-btn" onclick="addBlock('gallery')">🖼 圖片堆疊</button>
-  <button class="eb-add-btn" onclick="addBlock('grid')">⊞ 圖片格</button>
-  <button class="eb-add-btn" onclick="addBlock('video')">▶ 影片</button>
+  <div class="eb-dropdown-wrap">
+    <button class="eb-dropdown-btn" id="add-block-btn" onclick="toggleAddDropdown(event)">＋ 新增區塊 ▾</button>
+    <div class="eb-dropdown-menu" id="add-block-menu">
+      <button class="eb-dropdown-item" onclick="addBlock('tools');closeAddDropdown()">⊟ 媒材/負責</button>
+      <button class="eb-dropdown-item" onclick="addBlock('heading');closeAddDropdown()">T 標題</button>
+      <button class="eb-dropdown-item" onclick="addBlock('text');closeAddDropdown()">¶ 文字</button>
+      <button class="eb-dropdown-item" onclick="addBlock('gallery');closeAddDropdown()">🖼 圖片堆疊</button>
+      <button class="eb-dropdown-item" onclick="addBlock('grid');closeAddDropdown()">⊞ 圖片格</button>
+      <button class="eb-dropdown-item" onclick="addBlock('video');closeAddDropdown()">▶ 影片</button>
+    </div>
+  </div>
 
   <div class="eb-toolbar-right">
     <button class="eb-btn eb-btn-secondary" onclick="goBack()">← 返回清單</button>
@@ -964,6 +1007,25 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
   } catch (e) { console.error('儲存失敗', e); }
   goBack();
 });
+
+/* ══ 新增區塊 Dropdown ══ */
+function toggleAddDropdown(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('add-block-menu');
+  const btn  = document.getElementById('add-block-btn');
+  const rect = btn.getBoundingClientRect();
+  if (!menu.classList.contains('open')) {
+    menu.style.top  = (rect.bottom + 4) + 'px';
+    menu.style.left = rect.left + 'px';
+  }
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeAddDropdown() {
+  document.getElementById('add-block-menu').classList.remove('open');
+  document.getElementById('add-block-btn').classList.remove('open');
+}
+document.addEventListener('click', () => closeAddDropdown());
 
 /* ══ 預覽切換 ══ */
 let inPreview = false;

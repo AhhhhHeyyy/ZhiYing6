@@ -34,6 +34,11 @@
         
         if (currentProjectIndex === -1) {
             console.warn('未找到当前项目，导航链接将不会显示');
+            // 找不到時仍顯示按鈕（保留 href="#"），避免永久隱藏
+            const pb = document.querySelector('.prev-btn-fixed');
+            const nb = document.querySelector('.next-btn-fixed');
+            if (pb) pb.style.visibility = 'visible';
+            if (nb) nb.style.visibility = 'visible';
             return;
         }
         
@@ -79,7 +84,11 @@
         
     } catch (error) {
         console.error('加载导航数据失败:', error);
-        // 如果加载失败，保持原有的导航链接不变
+        // fetch/解析失敗時仍顯示按鈕，避免 visibility:hidden 永久生效
+        const pb = document.querySelector('.prev-btn-fixed');
+        const nb = document.querySelector('.next-btn-fixed');
+        if (pb) pb.style.visibility = 'visible';
+        if (nb) nb.style.visibility = 'visible';
     }
 })();
 

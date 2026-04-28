@@ -31,10 +31,12 @@
 
         console.log('[NAV] allProjects count:', allProjects.length, allProjects.map(p => p.title));
 
-        // 找到当前项目
+        // 找到当前项目（大小寫不敏感 + 忽略 .html，兼容 Netlify Pretty URLs）
         const currentProjectIndex = allProjects.findIndex(project => {
-            const projectPath = project.link.replace('projects/', '');
-            return projectPath.includes(currentFile) || currentPath.includes(projectPath);
+            const projectPath = project.link.replace('projects/', '').toLowerCase().replace('.html', '');
+            const normalizedFile = currentFile.toLowerCase().replace('.html', '');
+            const normalizedPath = currentPath.toLowerCase().replace('.html', '');
+            return projectPath.includes(normalizedFile) || normalizedPath.includes(projectPath);
         });
 
         console.log('[NAV] currentProjectIndex:', currentProjectIndex);

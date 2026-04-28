@@ -42,7 +42,12 @@
       gap: 10px;
       padding: 0 20px;
       font-family: 'Public Sans', system-ui, sans-serif;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
     }
+    .eb-toolbar::-webkit-scrollbar { display: none; }
+    .eb-toolbar > * { flex-shrink: 0; }
 
     .eb-toolbar-label {
       font-size: 13px;

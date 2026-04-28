@@ -3752,6 +3752,7 @@ span {
     transform: scale(0.9);
     opacity: 0.8;
     line-height: 0.8;
+    visibility: hidden; /* 預設隱藏，等 setBtn() 確認鄰頁後才顯示 */
 }
 
 .prev-btn-fixed::before,
@@ -4217,7 +4218,7 @@ span {
 .posts-modal {
     position: fixed;
     inset: 0;
-    z-index: 999;
+    z-index: 2000;
     background: rgba(247,243,232,0.78);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);

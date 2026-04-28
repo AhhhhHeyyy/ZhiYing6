@@ -226,6 +226,25 @@
             }
         });
 
+        // 6c. 全域 fallback：收集 #project-description 內所有圖片（含 eb-block、peek-gallery 等任意容器）
+        const descImages = document.querySelectorAll('#project-description img');
+        descImages.forEach(img => {
+            if (img.src) {
+                const alreadyAdded = imageList.some(item => {
+                    const itemPath = item.src.split('/').pop().split('?')[0];
+                    const imgPath = img.src.split('/').pop().split('?')[0];
+                    return itemPath === imgPath;
+                });
+                if (!alreadyAdded) {
+                    imageList.push({
+                        type: 'image',
+                        src: img.src,
+                        element: img
+                    });
+                }
+            }
+        });
+
         // 6. 其他视频（不在 progress-item 或 documentation-item 中的，如 .project-video）
         const otherVideos = document.querySelectorAll('.project-video video');
         otherVideos.forEach(video => {
@@ -602,7 +621,7 @@
 
     // 监听所有图片点击事件
     document.addEventListener('click', function(e) {
-        const img = e.target.closest('.project-gallery img, .peek-image img, .main-image img, .progress-image img, .progress-item img, .documentation-item img, .eb-grid-cell img');
+        const img = e.target.closest('.project-gallery img, .peek-image img, .main-image img, .progress-image img, .progress-item img, .documentation-item img, .eb-grid-cell img, #project-description img');
         if (img) {
             // 延迟执行，确保模态窗口已经打开
             setTimeout(onModalOpen, 150);
@@ -623,7 +642,7 @@
 
     // 重写图片点击处理，确保索引更新
     function interceptImageClicks() {
-        const images = document.querySelectorAll('.project-gallery img, .peek-image img, .main-image img, .progress-image img, .progress-item img, .documentation-item img, .eb-grid-cell img');
+        const images = document.querySelectorAll('.project-gallery img, .peek-image img, .main-image img, .progress-image img, .progress-item img, .documentation-item img, .eb-grid-cell img, #project-description img');
         images.forEach((img, index) => {
             const originalClick = img.onclick;
             img.addEventListener('click', function(e) {

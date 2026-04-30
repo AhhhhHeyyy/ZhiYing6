@@ -346,7 +346,7 @@ body::before {
 .intro-pixel-shadow {
     position: relative;
     background: #fff;
-    animation: introPixelBreath 2.4s ease-in-out 2s infinite;
+    animation: introPixelBreath 2.4s ease-in-out 2s infinite backwards;
 }
 
 /* 拍立得內容 */

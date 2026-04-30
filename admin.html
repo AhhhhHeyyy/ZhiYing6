@@ -560,6 +560,7 @@ let currentCat = 'installation';
 let editingIndex = null; // null = new, number = editing existing
 let pendingImageFile = null;
 let hasUnsaved = false;
+let isReauthenticating = false;
 
 const CATEGORIES = {
   installation: '裝置藝術',
@@ -660,7 +661,15 @@ async function handleLogin() {
 
     token = data.token;
     localStorage.setItem('admin_token', token);
-    await initAdmin();
+
+    if (isReauthenticating) {
+      isReauthenticating = false;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      showToast('重新登入成功，請再次點擊「儲存並發佈」', 'success');
+    } else {
+      await initAdmin();
+    }
 
   } catch (err) {
     errEl.textContent = '網路錯誤，請稍後再試';
@@ -678,6 +687,18 @@ function handleLogout() {
   projects = null;
   document.getElementById('admin-screen').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
+}
+
+function forceReauth() {
+  token = null;
+  localStorage.removeItem('admin_token');
+  isReauthenticating = true;
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '登入已過期，請重新登入後繼續儲存';
+  errEl.style.display = 'block';
+  errEl.style.color = 'var(--accent)';
 }
 
 // ══════════════════════════════════════════
@@ -751,8 +772,10 @@ function applyPageBuilderReturn() {
     document.querySelectorAll('.tab-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.cat === targetCat);
     });
-  } catch(e) {}
-  sessionStorage.removeItem('pb_context');
+    sessionStorage.removeItem('pb_context');
+  } catch(e) {
+    console.error('applyPageBuilderReturn error:', e);
+  }
 }
 
 function applyVbCardReturn() {
@@ -1090,7 +1113,7 @@ async function saveProjectsToGithub() {
     });
     const data = await res.json();
     if (!res.ok) {
-      if (res.status === 401) { showToast('登入已過期，請重新登入', 'error'); handleLogout(); return; }
+      if (res.status === 401) { forceReauth(); return; }
       throw new Error(data.error || '儲存失敗');
     }
     hasUnsaved = false;
@@ -1151,7 +1174,7 @@ async function savePostsToGithub() {
     });
     const data = await res.json();
     if (!res.ok) {
-      if (res.status === 401) { showToast('登入已過期，請重新登入', 'error'); handleLogout(); return; }
+      if (res.status === 401) { forceReauth(); return; }
       throw new Error(data.error || '儲存失敗');
     }
     hasUnsavedPosts = false;

@@ -1124,5 +1124,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
     });
+
+    // 社群 logo 遮罩：intro 展示區內顯示深藍色
+    const maskedIcons = document.querySelector('.social-icons-masked');
+    const introSection = document.querySelector('.intro');
+    if (maskedIcons && introSection) {
+        function updateSocialMask() {
+            const el = maskedIcons.getBoundingClientRect();
+            const intro = introSection.getBoundingClientRect();
+            // 從上方裁切：icon 在 intro 頂部以上的部分
+            const clipTop = Math.max(0, intro.top - el.top);
+            // 從下方裁切：icon 在 intro 底部以下的部分
+            const clipBottom = Math.max(0, el.bottom - intro.bottom);
+            maskedIcons.style.clipPath = `inset(${clipTop}px 0 ${clipBottom}px 0)`;
+        }
+        updateSocialMask();
+        window.addEventListener('scroll', updateSocialMask, { passive: true });
+        window.addEventListener('resize', updateSocialMask, { passive: true });
+    }
 });
 

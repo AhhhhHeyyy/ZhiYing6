@@ -2127,6 +2127,20 @@ h3 {
     filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
 }
 
+/* 遮罩層：intro 展示區內顯示深藍色 */
+.social-icons-masked {
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0);
+}
+
+.social-icons-masked img {
+    filter: brightness(0) invert(1) !important;
+}
+
+.social-icons-masked a:hover img {
+    filter: brightness(0) invert(1) !important;
+}
+
 /* 移动端和平板端下拉菜单样式 */
 @media screen and (max-width: 1024px) {
     .mobile-dropdown {

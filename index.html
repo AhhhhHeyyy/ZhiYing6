@@ -79,23 +79,106 @@
     </nav>
   </header>
 
-  <!-- 自我介紹區域 -->
+  <!-- 自我介紹區域 — Polaroid Hero -->
   <section class="intro" id="intro">
-    <div class="intro-images">
-      <!-- 项目图片满版显示 -->
-      <div class="intro-project-image">
-        <img id="introProjectImage" src="" alt="Project Image">
+
+    <!-- 左：文字塊 -->
+    <div class="intro-text-block">
+      <div class="intro-kicker intro-fade-up" style="--fadeDelay:1.6s">
+        ＞ PROFOLIO · 2026 · NO.001
       </div>
-      <!-- 添加分页指示器 -->
-      <div class="intro-pagination" id="introPagination">
-        <!-- 圆点将通过 JavaScript 动态生成 -->
+      <h1 class="intro-name-display">
+        <span id="introTypedName"></span><span class="intro-caret" id="introCaret"></span>
+      </h1>
+      <h1 class="intro-en-sub intro-fade-up" style="--fadeDelay:2.9s">LIANG ZHI YING</h1>
+      <div class="intro-role intro-fade-up" style="--fadeDelay:3.1s">
+        <span class="intro-role-dot"></span>
+        INTERACTION DESIGNER · NTUT
+      </div>
+      <p class="intro-bio intro-fade-up" style="--fadeDelay:3.3s">
+        Hello！我是啊嘿，做互動裝置 / VR / 動畫，也喜歡手繪和拼貼。
+      </p>
+    </div>
+
+    <!-- 右：拍立得容器（定位層） -->
+    <div class="intro-polaroid-container">
+      <!-- 掉落動畫層 -->
+      <div class="intro-polaroid-wrap" id="introPolaroidWrap">
+        <!-- 懸停旋轉層 -->
+        <div class="intro-polaroid-inner" id="introPolaroidInner">
+          <!-- 像素邊框（呼吸動畫） -->
+          <div class="intro-pixel-shadow">
+            <!-- 拍立得內容 -->
+            <div class="intro-polaroid-content">
+              <span class="intro-tape"></span>
+              <!-- 照片框 -->
+              <div class="intro-photo-box" id="introPhotoBox">
+                <div class="intro-photo-img" id="introPhotoImg"></div>
+                <div class="intro-shutter-star" id="introShutterStar"></div>
+                <div class="intro-flash" id="introFlash"></div>
+                <div class="intro-shutter-top" id="introShutterTop"></div>
+                <div class="intro-shutter-bot" id="introShutterBot"></div>
+              </div>
+              <!-- 底部標題 + 年份 -->
+              <div class="intro-photo-footer">
+                <span id="introPhotoTitle">＞ 作品</span>
+                <span class="intro-photo-year" id="introPhotoYear">'25</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="intro-text">
-      <h1>梁芷穎</h1>
-      <h1>Profolio</h1>
+    <!-- NEW! 星形貼紙 -->
+    <div class="intro-new-sticker intro-fade-up" style="--fadeDelay:3.5s">
+      <span>NEW!</span>
     </div>
+
+    <!-- 右下：作品切換計數器 -->
+    <div class="intro-counter intro-fade-up" style="--fadeDelay:3.4s">
+      <button class="intro-counter-btn" id="introPrevBtn" aria-label="上一張">
+        <svg width="18" height="18" viewBox="0 0 9 9" shape-rendering="crispEdges" style="transform:scaleX(-1)">
+          <rect x="2" y="1" width="1" height="1" fill="#002C40"/><rect x="2" y="2" width="1" height="1" fill="#002C40"/>
+          <rect x="3" y="2" width="1" height="1" fill="#002C40"/><rect x="2" y="3" width="1" height="1" fill="#002C40"/>
+          <rect x="3" y="3" width="1" height="1" fill="#002C40"/><rect x="4" y="3" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="4" width="1" height="1" fill="#002C40"/><rect x="3" y="4" width="1" height="1" fill="#002C40"/>
+          <rect x="4" y="4" width="1" height="1" fill="#002C40"/><rect x="5" y="4" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="5" width="1" height="1" fill="#002C40"/><rect x="3" y="5" width="1" height="1" fill="#002C40"/>
+          <rect x="4" y="5" width="1" height="1" fill="#002C40"/><rect x="6" y="5" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="6" width="1" height="1" fill="#002C40"/><rect x="3" y="6" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="7" width="1" height="1" fill="#002C40"/>
+        </svg>
+      </button>
+      <div class="intro-counter-display">
+        <span id="introCurIdx">01</span>
+        <span class="intro-counter-sep"></span>
+        <span class="intro-counter-total" id="introTotalIdx">07</span>
+      </div>
+      <button class="intro-counter-btn" id="introNextBtn" aria-label="下一張">
+        <svg width="18" height="18" viewBox="0 0 9 9" shape-rendering="crispEdges">
+          <rect x="2" y="1" width="1" height="1" fill="#002C40"/><rect x="2" y="2" width="1" height="1" fill="#002C40"/>
+          <rect x="3" y="2" width="1" height="1" fill="#002C40"/><rect x="2" y="3" width="1" height="1" fill="#002C40"/>
+          <rect x="3" y="3" width="1" height="1" fill="#002C40"/><rect x="4" y="3" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="4" width="1" height="1" fill="#002C40"/><rect x="3" y="4" width="1" height="1" fill="#002C40"/>
+          <rect x="4" y="4" width="1" height="1" fill="#002C40"/><rect x="5" y="4" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="5" width="1" height="1" fill="#002C40"/><rect x="3" y="5" width="1" height="1" fill="#002C40"/>
+          <rect x="4" y="5" width="1" height="1" fill="#002C40"/><rect x="6" y="5" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="6" width="1" height="1" fill="#002C40"/><rect x="3" y="6" width="1" height="1" fill="#002C40"/>
+          <rect x="2" y="7" width="1" height="1" fill="#002C40"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 左下：座標條 -->
+    <div class="intro-coord intro-fade-up" style="--fadeDelay:3.4s">
+      <span>📅 2026.05.01</span>
+      <span class="intro-coord-sep"></span>
+      <span>TAIPEI</span>
+      <span class="intro-coord-sep"></span>
+      <span>PAGE 01</span>
+    </div>
+
   </section>
 
   <!-- 技能區域 — Skills Notebook（翻頁手帳版） -->

@@ -1,3 +1,5 @@
+/* === FONTS === */
+
 /* BoutiqueBitmap 英文像素字體 */
 @font-face {
     font-family: 'BoutiqueBitmap';
@@ -39,6 +41,9 @@
     /* 立即显示文字，字体加载完成后立即替换 */
 }
 
+
+/* === BASE RESET === */
+
 /* 基本重设 */
 * {
     margin: 0;
@@ -75,6 +80,9 @@ body::before {
     pointer-events: none;
     z-index: 0;
 }
+
+
+/* === NAVIGATION === */
 
 /* 頂部導航欄 */
 .main-header {
@@ -134,155 +142,436 @@ body::before {
     transform: scale(1.1);
 }
 
-/* 調整其他區域的上邊距 */
-.intro {
-    padding-top: 80px;
-}
+/* ── Intro Hero — 拍立得版 ────────────────────────────── */
+
+
+/* === INTRO SECTION === */
 
 /* 自我介紹區域 */
 .intro {
-    height: 600px;
+    height: 100vh;
+    min-height: 680px;
     position: relative;
-    background-image: url('./assets/BackGround.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: yellow;
-    padding: 40px 40px 0 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 0;
+    background:
+        radial-gradient(circle at 1px 1px, rgba(0,44,64,0.18) 1px, transparent 1px),
+        #FBF8EE;
+    background-size: 24px 24px, 100% 100%;
+    color: #002C40;
     overflow: hidden;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', sans-serif;
+    padding-top: 80px;
 }
 
-.intro-text {
-    display: none;
+/* 動畫 keyframes */
+@keyframes introDrop {
+    0%   { transform: translateY(-110vh); }
+    60%  { transform: translateY(20px); }
+    80%  { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
 }
 
-.intro-text h1 {
-    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'BoutiqueBitmap', sans-serif !important;
-    font-size: clamp(2.6rem, 8vw, 9rem);
-    margin-bottom: 10px;
-    font-weight: bold !important;
-    color: #E6F4F7;
+@keyframes introPixelBreath {
+    0%, 100% { box-shadow:
+        0 -6px 0 0 #002C40, 0 6px 0 0 #002C40, -6px 0 0 0 #002C40, 6px 0 0 0 #002C40,
+        6px 6px 0 0 #92C7CF, 12px 6px 0 0 #92C7CF, 6px 12px 0 0 #92C7CF,
+        12px 12px 0 0 #92C7CF, 18px 12px 0 0 #92C7CF, 12px 18px 0 0 #92C7CF,
+        18px 18px 0 0 #92C7CF;
+    }
+    50% { box-shadow:
+        0 -6px 0 0 #002C40, 0 6px 0 0 #002C40, -6px 0 0 0 #002C40, 6px 0 0 0 #002C40,
+        6px 6px 0 0 #005C80, 12px 6px 0 0 #005C80, 6px 12px 0 0 #005C80,
+        12px 12px 0 0 #005C80, 18px 12px 0 0 #005C80, 12px 18px 0 0 #005C80,
+        18px 18px 0 0 #005C80;
+    }
+}
+
+@keyframes introTapeUnroll {
+    from { transform: rotate(-6deg) scaleX(0); }
+    to   { transform: rotate(-6deg) scaleX(1); }
+}
+
+@keyframes introPhotoDevelop {
+    0%   { opacity: 0; filter: brightness(0) contrast(2); }
+    40%  { opacity: 1; filter: brightness(0.4) contrast(1.6) sepia(0.3); }
+    100% { opacity: 1; filter: sepia(0.1) saturate(0.85); }
+}
+
+@keyframes introShutterStar {
+    0%   { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; }
+    30%  { transform: translate(-50%, -50%) scale(1.4) rotate(180deg); opacity: 1; }
+    70%  { transform: translate(-50%, -50%) scale(1) rotate(540deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.6) rotate(720deg); opacity: 0; }
+}
+
+@keyframes introFlash {
+    0%, 100% { opacity: 0; }
+    30%      { opacity: 1; }
+    60%      { opacity: 0.4; }
+}
+
+@keyframes introFadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes introCaret {
+    0%, 50%  { opacity: 1; }
+    51%, 100%{ opacity: 0; }
+}
+
+/* fade-up 動畫（CSS custom property 控制延遲） */
+.intro-fade-up {
+    opacity: 0;
+    animation: introFadeUp 0.5s ease-out var(--fadeDelay, 0s) both;
+}
+
+/* 左：文字塊 */
+.intro-text-block {
+    position: absolute;
+    left: 8.5%;
+    top: 50%;
+    transform: translateY(-45%);
+    width: 42%;
+    z-index: 5;
+}
+
+.intro-kicker {
+    display: inline-block;
+    padding: 6px 14px;
+    background: #F7F3E8;
+    border: 2px solid #002C40;
+    box-shadow: 3px 3px 0 #92C7CF;
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    color: #002C40;
+    margin-bottom: 22px;
+}
+
+.intro-name-display {
+    font-family: 'ChillDINGothicBold', 'ChillDINGothic', 'Noto Sans TC', sans-serif;
+    font-size: clamp(4rem, 7vw, 7rem);
+    line-height: 0.9;
+    margin: 0 0 14px 0;
+    font-weight: 900;
+    color: #002C40;
+    text-shadow: 6px 6px 0 #92C7CF;
+    min-height: 1em;
+    letter-spacing: -0.01em;
+}
+
+.intro-caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 0.85em;
+    background: #002C40;
+    margin-left: 4px;
+    vertical-align: -8%;
+    animation: introCaret 1s steps(1) infinite;
+}
+
+.intro-en-sub {
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+    line-height: 1;
+    margin: 0;
+    font-weight: bold;
+    color: #002C40;
+    letter-spacing: 0.05em;
+    background: #F7F3E8;
+    display: inline-block;
+    padding: 4px 10px;
+    border: 2px solid #002C40;
+    box-shadow: 3px 3px 0 #002C40;
+}
+
+.intro-role {
+    margin-top: 28px;
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #002C40;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.intro-role-dot {
+    width: 12px;
+    height: 12px;
+    background: #92C7CF;
+    border: 1.5px solid #002C40;
+    flex-shrink: 0;
+}
+
+.intro-bio {
+    margin-top: 14px;
+    font-family: 'ChillDINGothic', 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #005C80;
+    max-width: 400px;
+    margin-bottom: 0;
+}
+
+/* 右：拍立得定位容器 */
+.intro-polaroid-container {
+    position: absolute;
+    right: 16%;
+    top: 50%;
+    transform: translateY(-48%);
+    z-index: 4;
+}
+
+/* 掉落動畫層 */
+.intro-polaroid-wrap {
+    animation: introDrop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+    transform-origin: center top;
+}
+
+/* 懸停旋轉層 */
+.intro-polaroid-inner {
+    transform: rotate(-3deg);
+    transform-origin: center center;
+    transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+    cursor: pointer;
     will-change: transform;
 }
 
-.intro-text h1:nth-child(2) {
-    -webkit-text-stroke: 2px #005C80;
-    text-stroke: 2px #005C80;
-    color: transparent;
-    transform: scale(1.5);
-    transform-origin: left center;
-    display: inline-block;
-    margin-left: 0;
+.intro-polaroid-container:hover .intro-polaroid-inner {
+    transform: rotate(0deg) scale(1.05);
 }
 
-.intro-text p {
-    font-family: 'ChillDINGothic', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', Arial, sans-serif;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    font-weight: 800;
-    color: #E6F4F7;
-    letter-spacing: 0.05em;
-}
-
-.intro-image {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: -50px;
-    z-index: 0;
-}
-
-.intro-image img {
-    width: 150px;
-    border-radius: 50%;
-    margin-top: 20px;
-}
-
-.intro-images {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-/* 项目图片满版显示 */
-.intro-project-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.intro-project-image::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(146, 199, 207, 0.5);
-    z-index: 2;
-    pointer-events: none;
-}
-
-.intro-project-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: grayscale(100%);
+/* 像素邊框（呼吸動畫） */
+.intro-pixel-shadow {
     position: relative;
-    z-index: 1;
-    cursor: pointer;
-    transform-origin: center center;
-    will-change: transform, opacity;
+    background: #fff;
+    animation: introPixelBreath 2.4s ease-in-out 2s infinite;
 }
 
-/* Intro 分页指示器 */
-.intro-pagination {
+/* 拍立得內容 */
+.intro-polaroid-content {
+    width: clamp(220px, 22vw, 360px);
+    padding: 16px 16px 56px;
+    background: #fff;
+    position: relative;
+}
+
+/* 紙膠帶 */
+.intro-tape {
     position: absolute;
-    bottom: 30px;
+    top: -10px;
+    left: 30%;
+    width: 100px;
+    height: 22px;
+    background: repeating-linear-gradient(90deg, #F7F3E8 0 8px, #FBF8EE 8px 16px);
+    border: 1.5px solid #002C40;
+    box-shadow: 2px 2px 0 #002C40;
+    transform-origin: left center;
+    animation: introTapeUnroll 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.1) 1.0s both;
+}
+
+/* 照片框 */
+.intro-photo-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #0a0a0a;
+    border: 3px solid #002C40;
+    overflow: hidden;
+}
+
+.intro-photo-img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    animation: introPhotoDevelop 1.6s ease-out 1.7s both;
+}
+
+.intro-shutter-star {
+    position: absolute;
     left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 12px;
-    z-index: 10;
-    justify-content: center;
-    align-items: center;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    z-index: 5;
+    background: #fff;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    filter: drop-shadow(0 0 12px #fff);
     pointer-events: none;
+    animation: introShutterStar 0.7s ease-out 1.2s both;
 }
 
-.intro-pagination-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgba(146, 199, 207, 0.5);
+.intro-flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    pointer-events: none;
+    z-index: 4;
+    animation: introFlash 0.35s ease-out 1.55s both;
+}
+
+/* 快門板（切換轉場用） */
+.intro-shutter-top,
+.intro-shutter-bot {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: #002C40;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.intro-shutter-top {
+    top: 0;
+}
+
+.intro-shutter-bot {
+    bottom: 0;
+}
+
+/* 照片底部（標題 + 年份） */
+.intro-photo-footer {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #002C40;
+}
+
+.intro-photo-year {
+    padding: 2px 6px;
+    background: #F7F3E8;
+    border: 1.5px solid #002C40;
+}
+
+/* NEW! 星形貼紙 */
+.intro-new-sticker {
+    position: absolute;
+    right: 5.5%;
+    top: calc(80px + 6%);
+    z-index: 7;
+    transform: rotate(-15deg);
+    width: 80px;
+    height: 80px;
+    background: #F7F3E8;
+    border: 3px solid #002C40;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(4px 4px 0 #92C7CF);
+}
+
+.intro-new-sticker span {
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    color: #002C40;
+    letter-spacing: 0.1em;
+}
+
+/* 右下：作品計數器 */
+.intro-counter {
+    position: absolute;
+    right: 5%;
+    bottom: 50px;
+    z-index: 5;
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    border: 2px solid #002C40;
+    box-shadow: 3px 3px 0 #002C40;
+    font-family: 'BoutiqueBitmap', monospace;
+}
+
+.intro-counter-btn {
+    padding: 8px 12px;
+    background: #fff;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(146, 199, 207, 0.8);
-    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
 }
 
-.intro-pagination-dot:hover {
-    background-color: rgba(146, 199, 207, 0.8);
-    transform: scale(1.2);
+.intro-counter-btn:first-child {
+    border-right: 2px solid #002C40;
 }
 
-.intro-pagination-dot.active {
-    background-color: #92C7CF;
-    width: 12px;
+.intro-counter-btn:last-child {
+    border-left: 2px solid #002C40;
+}
+
+.intro-counter-btn:hover {
+    background: #92C7CF;
+}
+
+.intro-counter-btn:active {
+    transform: translate(1px, 1px);
+}
+
+.intro-counter-display {
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #002C40;
+    letter-spacing: 0.15em;
+    min-width: 70px;
+    justify-content: center;
+}
+
+.intro-counter-sep {
+    display: inline-block;
+    width: 6px;
+    height: 10px;
+    background: #92C7CF;
+    border: 1.5px solid #002C40;
+}
+
+.intro-counter-total {
+    opacity: 0.55;
+}
+
+/* 左下：座標條 */
+.intro-coord {
+    position: absolute;
+    left: 8.5%;
+    bottom: 50px;
+    z-index: 5;
+    padding: 8px 16px;
+    background: #002C40;
+    border: 2px solid #002C40;
+    box-shadow: 3px 3px 0 #92C7CF;
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: #F7F3E8;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.intro-coord-sep {
+    width: 1px;
     height: 12px;
-    border-color: #92C7CF;
+    background: #92C7CF;
+    opacity: 0.5;
 }
+
+
+/* === SKILLS SECTION === */
 
 /* 技能區域 */
 .skills {
@@ -1429,6 +1718,9 @@ body::before {
 
 /* 其他被覆盖、无用、重复的 skill box 相关样式已删除 */
 
+
+/* === GALLERY SECTION === */
+
 /* 画廊区域样式 */
 .gallery-section {
     display: flex;
@@ -2095,6 +2387,9 @@ h3 {
     filter: drop-shadow(0 0 5px rgba(146, 199, 207, 0.5));
 }
 
+
+/* === SOCIAL ICONS === */
+
 /* 社交媒體圖標 */
 .social-icons {
     position: fixed;
@@ -2134,12 +2429,15 @@ h3 {
 }
 
 .social-icons-masked img {
-    filter: brightness(0) invert(1) !important;
+    filter: brightness(0) saturate(100%) invert(14%) sepia(80%) saturate(700%) hue-rotate(200deg) brightness(85%) !important;
 }
 
 .social-icons-masked a:hover img {
-    filter: brightness(0) invert(1) !important;
+    filter: brightness(0) saturate(100%) invert(14%) sepia(80%) saturate(700%) hue-rotate(200deg) brightness(85%) !important;
 }
+
+
+/* === MOBILE DROPDOWN === */
 
 /* 移动端和平板端下拉菜单样式 */
 @media screen and (max-width: 1024px) {
@@ -2362,6 +2660,9 @@ h3 {
         height: 25px;
     }
 }
+
+
+/* === DESKTOP LAYOUT === */
 
 /* 电脑端样式 */
 @media screen and (min-width: 1025px) {
@@ -2967,6 +3268,9 @@ h3 {
     }
 }
 
+
+/* === ULTRA-WIDE (2K / 4K / 8K) === */
+
 /* 2K (QHD) */
 @media screen and (min-width: 2561px) and (max-width: 2560px) and (max-height: 1440px) {
     .skills {
@@ -3192,6 +3496,9 @@ footer .social-icons-phone img {
 footer .social-icons-phone a:hover img {
     filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
 }
+
+
+/* === PROJECT DETAIL PAGE === */
 
 /* 项目详情页面样式 */
 .project-container {
@@ -3563,6 +3870,9 @@ footer .social-icons-phone a:hover img {
     }
 }
 
+
+/* === TYPOGRAPHY === */
+
 /* 标题使用 Public Sans */
 h1,
 h2,
@@ -3785,6 +4095,9 @@ span {
     opacity: 1;
 }
 
+
+/* === HOME BUTTON & SCROLLBAR === */
+
 /* HOME按钮动画 */
 .home-button-fixed {
     position: fixed;
@@ -3956,6 +4269,9 @@ span {
         transform-origin: center;
     }
 }
+
+/* === POSTS SECTION === */
+
 /* ═══════════════════════════════════════
    IG 貼文風格動態區塊
 ═══════════════════════════════════════ */
@@ -4538,6 +4854,9 @@ span {
     .vb-compact .vb-body .cap { -webkit-line-clamp: 2; }
 }
 
+
+/* === SOCIAL BADGE (MOBILE FIXED) === */
+
 /* ── 範本 B：右下角社群角標 ── */
 .social-badge {
     display: none;
@@ -4641,13 +4960,112 @@ span {
 @media screen and (min-width: 1025px) and (max-width: 1366px) {
     .intro {
         justify-content: flex-end !important;
-    }
-
-    .intro-text {
-        margin-top: 0 !important;
-        top: 0 !important;
-        margin-bottom: 44px !important;
+        height: 80vh;
+        min-height: 580px;
     }
 
     .social-badge { display: none !important; }
+}
+
+/* ── Intro Hero 響應式 ─────────────────────────────────── */
+
+/* iPad Pro landscape（1025–1366px）：拍立得放大靠左 */
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+    .intro-text-block {
+        left: 6%;
+        width: 44%;
+    }
+    .intro-polaroid-container {
+        right: 14%;
+    }
+    .intro-polaroid-content {
+        width: clamp(280px, 28vw, 400px);
+    }
+    .intro-new-sticker {
+        right: 8%;
+        width: 68px;
+        height: 68px;
+    }
+    .intro-coord { left: 6%; }
+    .intro-counter { right: 4%; }
+}
+
+/* 中等平板（768–1024px）：拍立得放大靠左 */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .intro {
+        height: 80vh;
+        min-height: 560px;
+    }
+    .intro-text-block {
+        left: 5%;
+        width: 44%;
+        transform: translateY(-50%);
+    }
+    .intro-polaroid-container {
+        right: 12%;
+        transform: translateY(-50%);
+    }
+    .intro-polaroid-content {
+        width: clamp(240px, 30vw, 320px);
+    }
+    .intro-new-sticker {
+        right: 6%;
+        top: calc(80px + 4%);
+        width: 56px;
+        height: 56px;
+    }
+    .intro-new-sticker span { font-size: 11px; }
+    .intro-coord { left: 5%; }
+    .intro-counter { right: 4%; }
+}
+
+/* 手機 / 小平板（≤ 767px）：單欄，隱藏拍立得 */
+@media screen and (max-width: 767px) {
+    .intro {
+        height: auto;
+        min-height: 0;
+        padding-bottom: 72px;
+    }
+    .intro-text-block {
+        position: relative;
+        left: unset;
+        top: unset;
+        transform: none;
+        width: 86%;
+        margin: 32px auto 0;
+    }
+    .intro-polaroid-container,
+    .intro-new-sticker {
+        display: none !important;
+    }
+    .intro-name-display {
+        font-size: clamp(2.8rem, 11vw, 5rem);
+        text-shadow: 4px 4px 0 #92C7CF;
+    }
+    .intro-counter {
+        right: 5%;
+        bottom: 24px;
+    }
+    .intro-coord {
+        left: 5%;
+        bottom: 24px;
+        font-size: 10px;
+        gap: 8px;
+        max-width: 54%;
+        flex-wrap: wrap;
+        line-height: 1.6;
+    }
+}
+
+/* 極小手機（≤ 360px） */
+@media screen and (max-width: 360px) {
+    .intro-text-block {
+        width: 92%;
+        margin-top: 28px;
+    }
+    .intro-coord { display: none; }
+    .intro-counter {
+        right: 4%;
+        bottom: 20px;
+    }
 }

@@ -1,3 +1,4 @@
+// === DATA LOADING ===
 gsap.registerPlugin(ScrollTrigger);
 
 // 加载并渲染作品
@@ -58,6 +59,8 @@ async function loadAndRenderProjects() {
         return false;
     }
 }
+
+// === POSTS TIMELINE ===
 
 // 渲染 vb-compact 時間軸格式
 function renderPostsTimeline(posts, containerId) {
@@ -201,141 +204,200 @@ function initPostsModal() {
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 }
 
-// 初始化 intro-images 随机项目显示
-async function initIntroProjects() {
+// === INTRO SLIDESHOW ===
+// 初始化拍立得 Hero — 作品輪播 + 打字動畫
+async function initIntroPolaroid() {
+    // ── 打字動畫 ──────────────────────────────────────────────
+    const TYPED_NAME = '梁芷穎';
+    const typedEl = document.getElementById('introTypedName');
+    const caretEl = document.getElementById('introCaret');
+    if (typedEl) {
+        let ci = 0;
+        setTimeout(() => {
+            const tid = setInterval(() => {
+                ci++;
+                typedEl.textContent = TYPED_NAME.slice(0, ci);
+                if (ci >= TYPED_NAME.length) {
+                    clearInterval(tid);
+                    setTimeout(() => {
+                        if (caretEl) { caretEl.style.animation = 'none'; caretEl.style.opacity = '0'; }
+                    }, 1200);
+                }
+            }, 180);
+        }, 2000);
+    }
+
+    // ── 作品資料 ──────────────────────────────────────────────
     try {
         const response = await fetch('projects.json');
         const projects = await response.json();
-        
-        // 收集所有项目的图片
+
         const allProjects = [];
-        Object.keys(projects).forEach(category => {
-            projects[category].forEach(project => {
-                allProjects.push({
-                    image: project.image,
-                    title: project.title,
-                    link: project.link
+        Object.values(projects).forEach(cat => {
+            cat.forEach(p => {
+                if (p.image) allProjects.push({
+                    img: p.image,
+                    title: '＞ ' + p.title.toUpperCase(),
+                    year: "'" + (p.date ? p.date.toString().slice(0, 4).slice(2) : '25'),
+                    link: p.link,
                 });
             });
         });
-        
-        // 随机打乱数组
-        const shuffledProjects = allProjects.sort(() => Math.random() - 0.5);
-        
-        // 限制显示的项目数量（例如显示 5 个）
-        const displayCount = Math.min(5, shuffledProjects.length);
-        const selectedProjects = shuffledProjects.slice(0, displayCount);
-        
-        // 获取 DOM 元素
-        const introImage = document.getElementById('introProjectImage');
-        const paginationContainer = document.getElementById('introPagination');
-        
-        if (!introImage || !paginationContainer) return;
-        
-        let currentIndex = 0;
-        
-        // 创建分页圆点
-        selectedProjects.forEach((project, index) => {
-            const dot = document.createElement('span');
-            dot.className = 'intro-pagination-dot';
-            if (index === 0) dot.classList.add('active');
-            dot.setAttribute('data-index', index);
-            dot.addEventListener('click', () => {
-                switchToProject(index);
+
+        // 隨機取最多 7 個
+        const pool = allProjects.sort(() => Math.random() - 0.5).slice(0, 7);
+        if (pool.length === 0) return;
+
+        // 預加載圖片（快取 Promise，避免重複請求）
+        const _imgCache = new Map();
+        function preloadImage(src) {
+            if (!src) return Promise.resolve();
+            if (_imgCache.has(src)) return _imgCache.get(src);
+            const p = new Promise(resolve => {
+                const img = new Image();
+                img.onload = img.onerror = () => resolve();
+                img.src = src;
             });
-            paginationContainer.appendChild(dot);
-        });
-        
-        // 切换项目函数
-        function switchToProject(index) {
-            if (index === currentIndex || index < 0 || index >= selectedProjects.length) return;
-            
-            const project = selectedProjects[index];
-            const dots = paginationContainer.querySelectorAll('.intro-pagination-dot');
-            
-            // 更新圆点状态
-            dots.forEach((dot, i) => {
-                if (i === index) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
+            _imgCache.set(src, p);
+            return p;
+        }
+        // 背景預加載所有圖片
+        pool.forEach(item => preloadImage(item.img));
+
+        let idx = 0;
+
+        // DOM refs
+        const photoImg    = document.getElementById('introPhotoImg');
+        const photoTitle  = document.getElementById('introPhotoTitle');
+        const photoYear   = document.getElementById('introPhotoYear');
+        const curIdxEl    = document.getElementById('introCurIdx');
+        const totalIdxEl  = document.getElementById('introTotalIdx');
+        const prevBtn     = document.getElementById('introPrevBtn');
+        const nextBtn     = document.getElementById('introNextBtn');
+        const shutterEl  = document.getElementById('introShutterStar');
+        const flashEl    = document.getElementById('introFlash');
+        const shutterTop = document.getElementById('introShutterTop');
+        const shutterBot = document.getElementById('introShutterBot');
+
+        if (!photoImg) return;
+
+        totalIdxEl && (totalIdxEl.textContent = String(pool.length).padStart(2, '0'));
+
+        // 重啟 CSS 動畫
+        function replayAnim(el, name, dur, delay) {
+            if (!el) return;
+            el.style.animation = 'none';
+            el.offsetHeight; // reflow
+            el.style.animation = `${name} ${dur} ease-out ${delay} both`;
+        }
+
+        // 設定照片（含快門動畫）
+        let _shutterTl  = null;
+        let _pendingImg = null;
+
+        // 明確用 GSAP 設定快門初始位置（不依賴 CSS transform 讓 GSAP 自己讀）
+        if (shutterTop) gsap.set(shutterTop, { yPercent: -100 });
+        if (shutterBot) gsap.set(shutterBot, { yPercent:  100 });
+
+        function showPhoto(p, isFirst) {
+            if (isFirst) {
+                // 首次載入：淡入
+                if (photoImg) {
+                    photoImg.style.animation = 'none';
+                    photoImg.style.opacity   = '0';
+                    photoImg.style.backgroundImage = `url("${p.img}")`;
+                    gsap.to(photoImg, { opacity: 1, duration: 0.9, delay: 1.5, ease: 'power2.out' });
                 }
-            });
-            
-            // 停止当前的动画
-            gsap.killTweensOf(introImage);
-            
-            // 淡出并缩小当前图片
-            gsap.to(introImage, {
-                opacity: 0,
-                scale: 0.95,
-                duration: 0.4,
-                ease: "power2.in",
-                onComplete: () => {
-                    // 切换图片
-                    introImage.src = project.image;
-                    introImage.alt = project.title;
-                    
-                    // 设置初始状态（放大并透明）
-                    gsap.set(introImage, {
-                        opacity: 0,
-                        scale: 1.05
-                    });
-                    
-                    // 淡入并缩小到正常大小，然后开始缓慢放大动画
-                    const tl = gsap.timeline();
-                    tl.to(introImage, {
-                        opacity: 1,
-                        scale: 1,
-                        duration: 0.5,
-                        ease: "power2.out"
+                if (photoTitle) photoTitle.textContent = p.title;
+                if (photoYear) photoYear.textContent = p.year;
+                replayAnim(shutterEl, 'introShutterStar', '0.7s',  '1.2s');
+                replayAnim(flashEl,   'introFlash',       '0.35s', '1.55s');
+            } else {
+                // 停止進行中的 CSS animation
+                if (photoImg) {
+                    photoImg.style.animation = 'none';
+                    photoImg.style.opacity   = '1';
+                    photoImg.style.filter    = 'sepia(0.1) saturate(0.85)';
+                }
+
+                // Kill 上一個 timeline，立刻重置快門板位置
+                if (_shutterTl) {
+                    _shutterTl.kill();
+                    _shutterTl = null;
+                    if (_pendingImg && photoImg) photoImg.style.backgroundImage = `url("${_pendingImg}")`;
+                    _pendingImg = null;
+                }
+                gsap.set(shutterTop, { yPercent: -100 });
+                gsap.set(shutterBot, { yPercent:  100 });
+
+                _pendingImg = p.img;
+
+                _shutterTl = gsap.timeline({
+                    onComplete: () => {
+                        gsap.set(shutterTop, { yPercent: -100 });
+                        gsap.set(shutterBot, { yPercent:  100 });
+                        _shutterTl = null;
+                        _pendingImg = null;
+                    }
+                })
+                    // 快門關閉：fromTo 確保起點正確
+                    .fromTo(shutterTop, { yPercent: -100 }, { yPercent: 0,    duration: 0.22, ease: 'power2.inOut' }, 0)
+                    .fromTo(shutterBot, { yPercent:  100 }, { yPercent: 0,    duration: 0.22, ease: 'power2.inOut' }, 0)
+                    // 換圖 + 換文字 + 觸發星星旋轉
+                    .call(() => {
+                        if (photoImg)   photoImg.style.backgroundImage = `url("${p.img}")`;
+                        if (photoTitle) photoTitle.textContent = p.title;
+                        if (photoYear)  photoYear.textContent  = p.year;
+                        replayAnim(shutterEl, 'introShutterStar', '0.6s', '0s');
+                        replayAnim(flashEl,   'introFlash',       '0.2s', '0s');
                     })
-                    .to(introImage, {
-                        scale: 1.08,
-                        duration: 4.5,
-                        ease: "power1.inOut"
-                    }, "-=0.2");
-                }
-            });
-            
-            currentIndex = index;
+                    // 快門開啟：fromTo 確保起點正確
+                    .fromTo(shutterTop, { yPercent: 0 }, { yPercent: -100, duration: 0.28, ease: 'power2.inOut' })
+                    .fromTo(shutterBot, { yPercent: 0 }, { yPercent:  100, duration: 0.28, ease: 'power2.inOut' }, '<');
+            }
         }
-        
-        // 设置初始图片
-        if (selectedProjects.length > 0) {
-            introImage.src = selectedProjects[0].image;
-            introImage.alt = selectedProjects[0].title;
-            gsap.set(introImage, {
-                opacity: 1,
-                scale: 1
-            });
-            
-            // 初始图片也添加缓慢放大动画
-            gsap.to(introImage, {
-                scale: 1.08,
-                duration: 5,
-                ease: "power1.inOut"
+
+        // 切換函式（async：等圖片載完再開始轉場）
+        async function go(delta) {
+            idx = (idx + delta + pool.length) % pool.length;
+            const item = pool[idx]; // await 前先捕捉，避免 idx 被後續呼叫改掉
+            if (curIdxEl) curIdxEl.textContent = String(idx + 1).padStart(2, '0');
+            await preloadImage(item.img);
+            showPhoto(item, false);
+        }
+
+        // 初始顯示
+        showPhoto(pool[0], true);
+        if (curIdxEl) curIdxEl.textContent = '01';
+
+        // 可重置的自動輪播（每 5 秒）
+        let _autoTimer = null;
+        function scheduleAuto() {
+            clearTimeout(_autoTimer);
+            _autoTimer = setTimeout(() => { go(1); scheduleAuto(); }, 5000);
+        }
+        scheduleAuto();
+
+        // 按鈕：切換後重設計時器
+        prevBtn && prevBtn.addEventListener('click', () => { go(-1); scheduleAuto(); });
+        nextBtn && nextBtn.addEventListener('click', () => { go(1);  scheduleAuto(); });
+
+        // 點擊拍立得跳轉作品
+        const polaroidEl = document.getElementById('introPolaroidInner');
+        if (polaroidEl) {
+            polaroidEl.addEventListener('click', () => {
+                const p = pool[idx];
+                window.location.href = p.link || ('project-page.html?title=' + encodeURIComponent(p.title));
             });
         }
-        
-        // 自动轮播（每 5 秒切换一次，不受 hover 影响）
-        let autoPlayInterval = setInterval(() => {
-            const nextIndex = (currentIndex + 1) % selectedProjects.length;
-            switchToProject(nextIndex);
-        }, 5000);
-        
-        // 点击图片可以跳转到项目页面
-        introImage.style.cursor = 'pointer';
-        introImage.addEventListener('click', () => {
-            const p = selectedProjects[currentIndex];
-            window.location.href = p.link || ('project-page.html?title=' + encodeURIComponent(p.title));
-        });
-        
-    } catch (error) {
-        console.error('加载 intro 项目失败:', error);
+
+
+    } catch (err) {
+        console.error('拍立得 intro 初始化失敗:', err);
     }
 }
 
+// === MAIN INIT (DOMContentLoaded) ===
 document.addEventListener("DOMContentLoaded", async () => {
     // 立即初始化下拉式清单（不等待所有资源加载）
     initDropdown();
@@ -353,8 +415,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 載入近期動態時間軸 + 初始化展開 Modal
     loadAndRenderPosts();
     initPostsModal();
-    // 初始化 intro-images 随机项目显示
-    initIntroProjects();
+    // 初始化拍立得 Hero
+    initIntroPolaroid();
+    // --- Lenis Smooth Scroll ---
     // 初始化Lenis平滑滚动 - 优化性能
     const lenis = new Lenis({
         duration: 0.8,  // 减少延迟，从1.2改为0.8
@@ -398,6 +461,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    // --- Skills Text Switch ---
     // Skill 文字框切换功能
     function initSkillTextSwitch() {
         const arrowBtn = document.getElementById('skillArrowBtn');
@@ -500,6 +564,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 初始化文字切换功能
     initSkillTextSwitch();
 
+    // --- Art Modal ---
     // 初始化模态窗口功能（在作品加载后调用）
     function initModal() {
         // 获取模态窗口
@@ -540,6 +605,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // --- GSAP Animations ---
         // 确保DOM完全加载后再初始化GSAP动画
     setTimeout(() => {
         // 添加skill-H2的动画 - 优化ScrollTrigger性能
@@ -801,6 +867,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         initModal();
     }, 100); // 给DOM一些时间完全加载
 
+    // --- Steps / Cards Carousel ---
     const gallerySection = document.querySelector(".steps");
     const cards = document.querySelectorAll(".card");
     const countContainer = document.querySelector(".count-container");
@@ -863,6 +930,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // --- Animation Gallery Items ---
     // 为动画类别的卡片添加点击事件
     const animationItems = document.querySelectorAll('#animation .gallery-item');
     animationItems.forEach(item => {
@@ -885,6 +953,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // --- Mobile Dropdown ---
     // 移动端下拉菜单初始化
     function initDropdown() {
         console.log('开始初始化下拉菜单');
@@ -1066,6 +1135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // window.onload 已不再需要，因为下拉式清单已在 DOMContentLoaded 中初始化
     // 这样可以避免等待所有资源（图片、字体等）加载完成，提升响应速度
 
+    // --- Desktop Nav Hover ---
     // 桌面版 nav-item hover 動畫
     const galleryNavItems = document.querySelectorAll('.gallery-nav .nav-item');
     galleryNavItems.forEach(item => {
@@ -1102,6 +1172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    // --- Mobile Dropdown Hover ---
     // 手機版 dropdown-item hover 動畫
     document.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('mouseenter', () => {
@@ -1125,6 +1196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    // --- Social Icons Mask ---
     // 社群 logo 遮罩：intro 展示區內顯示深藍色
     const maskedIcons = document.querySelector('.social-icons-masked');
     const introSection = document.querySelector('.intro');

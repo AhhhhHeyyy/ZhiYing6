@@ -957,9 +957,12 @@
   } catch (e) {}
 })();
 
-/* ══ 同步標題 ══ */
+/* ══ 同步標題（雙向） ══ */
 document.getElementById('work-name').addEventListener('input', function() {
   document.getElementById('display-title').textContent = this.value;
+});
+document.getElementById('display-title').addEventListener('input', function() {
+  document.getElementById('work-name').value = this.textContent;
 });
 
 /* ══ 序列化 blocks ══ */
@@ -985,7 +988,7 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
   if (!raw) { goBack(); return; }
   try {
     const ctx = JSON.parse(raw);
-    const title = document.getElementById('work-name').value.trim();
+    const title = (document.getElementById('display-title').textContent || document.getElementById('work-name').value).trim();
     const link  = document.getElementById('work-link').value.trim();
     const selectedCat = document.getElementById('work-cat').value;
     const yearEl = document.querySelector('.project-year');

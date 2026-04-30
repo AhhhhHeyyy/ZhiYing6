@@ -160,7 +160,7 @@
       }
     });
 
-    // Grid 格子影片：自動靜音循環，點擊後在原位有聲播放
+    // Grid 格子影片：自動靜音循環，點擊後用 modal 容器播放
     document.querySelectorAll('.eb-grid-cell video').forEach(function(video) {
       video.removeAttribute('controls');
       video.muted = true;
@@ -171,19 +171,14 @@
 
       video.addEventListener('click', function(e) {
         e.stopPropagation();
-        if (this.muted) {
-          this.muted = false;
-          this.loop  = false;
-          this.setAttribute('controls', '');
-          this.play();
-        }
+        openModal(this.src, true);
       });
     });
 
-    // 圖片點擊開 modal
+    // 圖片、其他 click → modal
     document.getElementById('project-description').addEventListener('click', function(e) {
       if (e.target.closest('.custom-play-btn')) return;
-      if (e.target.closest('.eb-grid-cell video')) return; // 影片自己處理
+      if (e.target.closest('.eb-grid-cell video')) return; // 由上方 handler 處理
 
       const img = e.target.closest('img');
       if (img && img.src) {
@@ -202,6 +197,7 @@
   function openModal(src, isVideo) {
     const modalVideo = document.getElementById('img-modal-video');
     const modalImg   = document.getElementById('img-modal-img');
+    if (isVideo === undefined) isVideo = /\.(mp4|webm|ogg|mov)(\?|$)/i.test(src);
     if (isVideo) {
       modalVideo.src = src;
       modalVideo.style.display = 'block';

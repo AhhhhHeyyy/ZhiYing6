@@ -207,7 +207,22 @@
             }
         });
 
-        // 6b. 頁面建構器 grid 圖片（eb-grid-cell）
+        // 6b. 頁面建構器 grid 影片（eb-grid-cell video）
+        const gridCellVideos = document.querySelectorAll('.eb-grid-cell video');
+        gridCellVideos.forEach(video => {
+            if (video.src) {
+                const alreadyAdded = imageList.some(item => {
+                    const itemPath = item.src.split('/').pop().split('?')[0];
+                    const vidPath  = video.src.split('/').pop().split('?')[0];
+                    return itemPath === vidPath;
+                });
+                if (!alreadyAdded) {
+                    imageList.push({ type: 'video', src: video.src, element: video });
+                }
+            }
+        });
+
+        // 6b-img. 頁面建構器 grid 圖片（eb-grid-cell img）
         const gridCellImages = document.querySelectorAll('.eb-grid-cell img');
         gridCellImages.forEach(img => {
             if (img.src) {

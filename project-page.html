@@ -160,18 +160,30 @@
       }
     });
 
-    // 圖片、Grid 影片 點擊開 modal
-    document.getElementById('project-description').addEventListener('click', function(e) {
-      const playBtn = e.target.closest('.custom-play-btn');
-      if (playBtn) return; // 已由上方 handler 處理
+    // Grid 格子影片：自動靜音循環，點擊後在原位有聲播放
+    document.querySelectorAll('.eb-grid-cell video').forEach(function(video) {
+      video.removeAttribute('controls');
+      video.muted = true;
+      video.loop  = true;
+      video.setAttribute('playsinline', '');
+      video.style.cursor = 'pointer';
+      video.play().catch(function() {});
 
-      // Grid 格子裡的影片 → 開 modal
-      const gridVideo = e.target.closest('.eb-grid-cell video');
-      if (gridVideo && gridVideo.src) {
+      video.addEventListener('click', function(e) {
         e.stopPropagation();
-        openModal(gridVideo.src, true);
-        return;
-      }
+        if (this.muted) {
+          this.muted = false;
+          this.loop  = false;
+          this.setAttribute('controls', '');
+          this.play();
+        }
+      });
+    });
+
+    // 圖片點擊開 modal
+    document.getElementById('project-description').addEventListener('click', function(e) {
+      if (e.target.closest('.custom-play-btn')) return;
+      if (e.target.closest('.eb-grid-cell video')) return; // 影片自己處理
 
       const img = e.target.closest('img');
       if (img && img.src) {

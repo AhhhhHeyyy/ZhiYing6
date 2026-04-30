@@ -146,11 +146,36 @@
     setTimeout(() => { document.querySelector('.project-nav-fixed').classList.add('visible'); }, 300);
     setTimeout(() => { document.querySelector('.home-button-fixed').classList.add('visible'); }, 500);
 
-    // 讓描述區塊內的所有圖片都能點擊開 modal（包含 peek-gallery、eb-grid 等動態內容）
+    // 影片播放按鈕 (custom-play-btn)
+    document.querySelectorAll('.custom-video-wrapper').forEach(wrapper => {
+      const video = wrapper.querySelector('video');
+      const playBtn = wrapper.querySelector('.custom-play-btn');
+      if (video && playBtn) {
+        playBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          video.play();
+        });
+        video.addEventListener('play', () => playBtn.classList.add('hide'));
+        video.addEventListener('pause', () => playBtn.classList.remove('hide'));
+      }
+    });
+
+    // 圖片、Grid 影片 點擊開 modal
     document.getElementById('project-description').addEventListener('click', function(e) {
+      const playBtn = e.target.closest('.custom-play-btn');
+      if (playBtn) return; // 已由上方 handler 處理
+
+      // Grid 格子裡的影片 → 開 modal
+      const gridVideo = e.target.closest('.eb-grid-cell video');
+      if (gridVideo && gridVideo.src) {
+        e.stopPropagation();
+        openModal(gridVideo.src, true);
+        return;
+      }
+
       const img = e.target.closest('img');
       if (img && img.src) {
-        openModal(img.src);
+        openModal(img.src, false);
       }
     });
   }
@@ -162,15 +187,26 @@
     setTimeout(() => { document.querySelector('.home-button-fixed').classList.add('visible'); }, 500);
   }
 
-  function openModal(src) {
-    document.getElementById('img-modal-img').src = src;
-    document.getElementById('img-modal-video').style.display = 'none';
-    document.getElementById('img-modal-img').style.display = 'block';
+  function openModal(src, isVideo) {
+    const modalVideo = document.getElementById('img-modal-video');
+    const modalImg   = document.getElementById('img-modal-img');
+    if (isVideo) {
+      modalVideo.src = src;
+      modalVideo.style.display = 'block';
+      modalImg.style.display = 'none';
+    } else {
+      modalImg.src = src;
+      modalVideo.style.display = 'none';
+      modalImg.style.display = 'block';
+    }
     document.getElementById('img-modal').classList.add('show');
   }
 
   document.getElementById('img-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.classList.contains('img-modal-close')) {
+      const modalVideo = document.getElementById('img-modal-video');
+      modalVideo.pause();
+      modalVideo.src = '';
       this.classList.remove('show');
     }
   });

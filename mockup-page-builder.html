@@ -1309,7 +1309,7 @@ document.addEventListener('click', function(e) {
     wrapper.innerHTML = '<span style="color:#888;padding:8px">上傳中...</span>';
     try {
       const path = await uploadAsset(f);
-      wrapper.innerHTML = `<video src="${path}" controls style="width:100%"></video><div class="custom-play-btn"></div>`;
+      wrapper.innerHTML = `<video class="custom-video" src="${path}" controls style="width:100%"></video><div class="custom-play-btn"></div>`;
     } catch (err) {
       wrapper.innerHTML = `<div class="eb-video-ph">上傳失敗：${err.message}（點擊重試）</div>`;
     }
@@ -1317,16 +1317,16 @@ document.addEventListener('click', function(e) {
   inp.click();
 });
 
-/* ══ Grid cell 點擊上傳（含替換已上傳的圖片） ══ */
+/* ══ Grid cell 點擊上傳（圖片或影片） ══ */
 document.addEventListener('click', function(e) {
   const cell = e.target.closest('.eb-grid-cell');
   if (!cell) return;
   if (e.target.closest('.eb-cell-del-btn, .eb-cell-move-handle, .eb-cell-resize-handle, .eb-cell-resize-col')) return;
   const inp = document.createElement('input');
-  inp.type = 'file'; inp.accept = 'image/*';
+  inp.type = 'file'; inp.accept = 'image/*,video/*';
   inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return;
-    cell.querySelectorAll('span, img').forEach(el => el.remove());
+    cell.querySelectorAll('span, img, video').forEach(el => el.remove());
     const loading = document.createElement('span');
     loading.textContent = '上傳中...';
     loading.style.cssText = 'color:#888;font-size:12px;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1';
@@ -1334,10 +1334,20 @@ document.addEventListener('click', function(e) {
     try {
       const path = await uploadAsset(f);
       loading.remove();
-      const img = document.createElement('img');
-      img.src = path;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0';
-      cell.appendChild(img);
+      if (f.type.startsWith('video/')) {
+        const vid = document.createElement('video');
+        vid.src = path;
+        vid.muted = true;
+        vid.loop = true;
+        vid.playsInline = true;
+        vid.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0';
+        cell.appendChild(vid);
+      } else {
+        const img = document.createElement('img');
+        img.src = path;
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0';
+        cell.appendChild(img);
+      }
     } catch (err) {
       loading.textContent = '上傳失敗';
       loading.style.color = 'red';

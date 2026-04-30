@@ -349,7 +349,6 @@ async function initIntroPolaroid() {
                         if (photoTitle) photoTitle.textContent = p.title;
                         if (photoYear)  photoYear.textContent  = p.year;
                         replayAnim(shutterEl, 'introShutterStar', '0.6s', '0s');
-                        replayAnim(flashEl,   'introFlash',       '0.2s', '0s');
                     })
                     // 快門開啟：fromTo 確保起點正確
                     .fromTo(shutterTop, { yPercent: 0 }, { yPercent: -100, duration: 0.28, ease: 'power2.inOut' })

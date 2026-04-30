@@ -19,6 +19,11 @@
       "title": "HOLOGACHA",
       "link": "projects/HOLOGACHA/HOLOGACHA.html",
       "order": 4
+    },
+    {
+      "title": "",
+      "link": "project-page.html?title=",
+      "order": 5
     }
   ],
   "animation": [

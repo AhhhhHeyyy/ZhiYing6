@@ -989,6 +989,11 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
   try {
     const ctx = JSON.parse(raw);
     const title = (document.getElementById('display-title').textContent || document.getElementById('work-name').value).trim();
+    if (!title) {
+      alert('請填寫作品名稱');
+      document.getElementById('work-name').focus();
+      return;
+    }
     const link  = document.getElementById('work-link').value.trim();
     const selectedCat = document.getElementById('work-cat').value;
     const yearEl = document.querySelector('.project-year');
@@ -997,9 +1002,10 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     const tagsRaw = document.getElementById('work-tags').value.trim();
     const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
     if (!ctx.project) ctx.project = {};
+    const isAutoLink = !link || /^project-page\.html\?title=/.test(link);
     ctx.project.title    = title;
     ctx.project.date     = date;
-    ctx.project.link     = link || ctx.project.link || ('project-page.html?title=' + encodeURIComponent(title));
+    ctx.project.link     = isAutoLink ? ('project-page.html?title=' + encodeURIComponent(title)) : link;
     ctx.project.category = category ? category.textContent.trim() : '';
     ctx.project.tags     = tags;
     ctx.project.image    = serializeCover();

@@ -1344,7 +1344,6 @@ body::before {
     .skill-H2 {
         display: block !important;
         visibility: visible !important;
-        opacity: 1 !important;
         margin-top: 0 !important;
         margin-bottom: 30px !important;
         position: relative !important;
@@ -2421,10 +2420,22 @@ h3 {
     filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
 }
 
+/* main fixed icons：CSS hover transform 改由 GSAP 接管，避免與遮罩層不同步 */
+body > .social-icons a:hover {
+    transform: none;
+}
+body > .social-icons a {
+    transition: none;
+}
+
 /* 遮罩層：intro 展示區內顯示深藍色 */
 .social-icons-masked {
     pointer-events: none;
-    clip-path: inset(0 0 100% 0);
+}
+
+/* 初始全隱藏，由 JS 逐 icon 判斷 center 是否在 intro 內再顯示 */
+.social-icons-masked a {
+    visibility: hidden;
 }
 
 .social-icons-masked img {
@@ -2433,6 +2444,10 @@ h3 {
 
 .social-icons-masked a:hover img {
     filter: brightness(0) saturate(100%) invert(14%) sepia(80%) saturate(700%) hue-rotate(200deg) brightness(85%) !important;
+}
+
+.social-icons-masked a.masked-hover img {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(30%) saturate(500%) hue-rotate(150deg) brightness(95%) contrast(85%) !important;
 }
 
 
@@ -4901,9 +4916,9 @@ span {
     filter: brightness(0) saturate(100%) invert(15%) sepia(50%) saturate(2000%) hue-rotate(180deg) brightness(30%) contrast(120%);
 }
 
-/* 手機：顯示角標 */
+/* 手機：隱藏角標（footer 已有社群連結，拍立得顯示後空間不足） */
 @media screen and (max-width: 767px) {
-    .social-badge { display: flex; }
+    .social-badge { display: none !important; }
 }
 
 /* 平板（768–1024px）：隱藏角標 */
@@ -4955,8 +4970,8 @@ span {
     }
 }
 
-/* iPad Pro landscape (1025–1366px)：intro-text 推到 hero 下半段 */
-@media screen and (min-width: 1025px) and (max-width: 1366px) {
+/* iPad Pro（1024–1366px）：intro-text 推到 hero 下半段 */
+@media screen and (min-width: 1024px) and (max-width: 1366px) {
     .intro {
         justify-content: flex-end !important;
         height: 80vh;
@@ -4968,8 +4983,8 @@ span {
 
 /* ── Intro Hero 響應式 ─────────────────────────────────── */
 
-/* iPad Pro landscape（1025–1366px）：拍立得放大靠左 */
-@media screen and (min-width: 1025px) and (max-width: 1366px) {
+/* iPad Pro（1024–1366px）：拍立得放大靠左 */
+@media screen and (min-width: 1024px) and (max-width: 1366px) {
     .intro-text-block {
         left: 6%;
         width: 44%;
@@ -4989,8 +5004,8 @@ span {
     .intro-counter { right: 4%; }
 }
 
-/* 中等平板（768–1024px）：拍立得放大靠左 */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+/* 中等平板（768–1023px）：拍立得放大靠左 */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
     .intro {
         height: 80vh;
         min-height: 560px;
@@ -5018,12 +5033,15 @@ span {
     .intro-counter { right: 4%; }
 }
 
-/* 手機 / 小平板（≤ 767px）：單欄，隱藏拍立得 */
+/* 手機 / 小平板（≤ 767px）：單欄，全部用 vh 自動縮放垂直間距 */
 @media screen and (max-width: 767px) {
     .intro {
-        height: auto;
-        min-height: 0;
-        padding-bottom: 72px;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        /* 短螢幕(667px)→52px，高螢幕(896px)→71px，桌面上限 80px */
+        padding-top: clamp(52px, 8vh, 80px);
+        padding-bottom: clamp(32px, 5vh, 56px);
     }
     .intro-text-block {
         position: relative;
@@ -5031,9 +5049,25 @@ span {
         top: unset;
         transform: none;
         width: 86%;
-        margin: 32px auto 0;
+        /* 短螢幕→13px，高螢幕→18px，上限 32px；底部留間距給拍立得 */
+        margin: clamp(12px, 2vh, 32px) auto clamp(20px, 3vh, 40px);
     }
-    .intro-polaroid-container,
+    .intro-polaroid-container {
+        position: relative;
+        right: unset;
+        top: unset;
+        transform: none;
+        display: flex;
+        justify-content: center;
+        /* 上方間距加大 */
+        margin: clamp(20px, 3vh, 48px) auto 0;
+        /* 把 pixel-shadow 往下延伸的 18px + 額外間距一起收進容器 */
+        padding-bottom: 48px;
+    }
+    /* 拍立得寬度同時受 vw（橫向）和 vh（縱向）約束：短螢幕自動縮小 */
+    .intro-polaroid-content {
+        width: clamp(150px, min(50vw, 32vh), 230px);
+    }
     .intro-new-sticker {
         display: none !important;
     }
@@ -5041,18 +5075,20 @@ span {
         font-size: clamp(2.8rem, 11vw, 5rem);
         text-shadow: 4px 4px 0 #92C7CF;
     }
+    /* 計數器：normal flow + 立即顯示 + vh 間距 */
     .intro-counter {
-        right: 5%;
-        bottom: 24px;
+        position: relative;
+        left: 0;
+        right: unset;
+        bottom: unset;
+        top: unset;
+        width: fit-content;
+        margin: 20px 5% 20px;
+        animation: none;
+        opacity: 1;
     }
     .intro-coord {
-        left: 5%;
-        bottom: 24px;
-        font-size: 10px;
-        gap: 8px;
-        max-width: 54%;
-        flex-wrap: wrap;
-        line-height: 1.6;
+        display: none;
     }
 }
 
@@ -5060,11 +5096,5 @@ span {
 @media screen and (max-width: 360px) {
     .intro-text-block {
         width: 92%;
-        margin-top: 28px;
-    }
-    .intro-coord { display: none; }
-    .intro-counter {
-        right: 4%;
-        bottom: 20px;
     }
 }

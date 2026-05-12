@@ -614,61 +614,32 @@ document.addEventListener("DOMContentLoaded", async () => {
         const skillH2Text = document.querySelector('.skill-H2 h2');
 
         if (skillH2 && skillH2Bg && skillH2Text) {
-            // 检测设备类型
             const width = window.innerWidth;
             let triggerStart;
-            
-            if (width <= 540) {
-                // 手机端：更早触发
-                triggerStart = "top 90%";
-            } else if (width <= 1024) {
-                // 平板端
-                triggerStart = "top 80%";
-            } else {
-                // 桌面端
-                triggerStart = "top 60%";
-            }
-            
-            // 背景动画（和电脑端一样的方法）
-            gsap.fromTo(skillH2Bg, 
-                {
-                    scaleX: 0
-                },
-                {
-                    scrollTrigger: {
-                        trigger: skillH2,
-                        start: triggerStart,
-                        toggleActions: "play none none reverse",
-                        pin: false,
-                        refreshPriority: -1
-                    },
-                    scaleX: 1,
-                    duration: 0.6,
-                    ease: "power2.out"
-                }
-            );
 
-            // 文字动画（和电脑端一样的方法）
-            gsap.fromTo(skillH2Text,
-                {
-                    opacity: 0,
-                    y: 20
-                },
-                {
-                    scrollTrigger: {
-                        trigger: skillH2,
-                        start: triggerStart,
-                        toggleActions: "play none none reverse",
-                        pin: false,
-                        refreshPriority: -1
-                    },
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    delay: 0.1,
-                    ease: "power2.out"
+            if (width <= 540) {
+                triggerStart = "top 80%";
+            } else if (width <= 1024) {
+                triggerStart = "top 30%";
+            } else {
+                triggerStart = "top 50%";
+            }
+
+            // 設定初始狀態，確保 y 位移在觸發前就存在
+            gsap.set(skillH2, { y: 50 });
+
+            // 合併成單一 timeline，確保 y 滑動與文字/背景完全同步
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: skillH2,
+                    start: triggerStart,
+                    toggleActions: "play none none reverse",
+                    refreshPriority: -1
                 }
-            );
+            })
+            .to(skillH2,     { y: 0,       duration: 0.8, ease: "power2.out" }, 0)
+            .fromTo(skillH2Bg,   { scaleX: 0 }, { scaleX: 1,  duration: 0.6, ease: "power2.out" }, 0)
+            .fromTo(skillH2Text, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
         }
 
         // 画廊动画 - 优化性能
@@ -803,20 +774,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ease: "power2.out"
             });
 
-            // 标题动画
-            gsap.from('.skill-H2', {
-                scrollTrigger: {
-                    trigger: skillsSection,
-                    start: "top 70%",
-                    toggleActions: "play none none reverse",
-                    pin: false,
-                    refreshPriority: -1  // 优化性能
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power2.out"
-            });
 
             // work-title动画 - 从下往上
             if (!document.querySelector('.work-title')) return;
@@ -1201,18 +1158,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     const maskedIcons = document.querySelector('.social-icons-masked');
     const introSection = document.querySelector('.intro');
     if (maskedIcons && introSection) {
+        const mainIconLinks = document.querySelectorAll('body > .social-icons:not(.social-icons-masked) a');
+        const maskedIconLinks = maskedIcons.querySelectorAll('a');
+
         function updateSocialMask() {
-            const el = maskedIcons.getBoundingClientRect();
             const intro = introSection.getBoundingClientRect();
-            // 從上方裁切：icon 在 intro 頂部以上的部分
-            const clipTop = Math.max(0, intro.top - el.top);
-            // 從下方裁切：icon 在 intro 底部以下的部分
-            const clipBottom = Math.max(0, el.bottom - intro.bottom);
-            maskedIcons.style.clipPath = `inset(${clipTop}px 0 ${clipBottom}px 0)`;
+            maskedIconLinks.forEach((maskedLink) => {
+                const rect = maskedLink.getBoundingClientRect();
+                const center = (rect.top + rect.bottom) / 2;
+                const inIntro = center >= intro.top && center <= intro.bottom;
+                maskedLink.style.visibility = inIntro ? 'visible' : 'hidden';
+            });
         }
         updateSocialMask();
         window.addEventListener('scroll', updateSocialMask, { passive: true });
         window.addEventListener('resize', updateSocialMask, { passive: true });
+        mainIconLinks.forEach((link, i) => {
+            const maskedLink = maskedIconLinks[i];
+            if (!maskedLink) return;
+            link.addEventListener('mouseenter', () => {
+                gsap.to([link, maskedLink], { x: 5, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+                maskedLink.classList.add('masked-hover');
+            });
+            link.addEventListener('mouseleave', () => {
+                gsap.to([link, maskedLink], { x: 0, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+                maskedLink.classList.remove('masked-hover');
+            });
+        });
     }
 });
 

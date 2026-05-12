@@ -248,18 +248,19 @@ async function initIntroPolaroid() {
         const pool = allProjects.sort(() => Math.random() - 0.5).slice(0, 7);
         if (pool.length === 0) return;
 
-        // 預加載圖片（快取 Promise，避免重複請求）
-        const _imgCache = new Map();
+        // 預加載圖片：儲存 img 物件避免 GC 清掉 decoded pixels，並用 decode() 確保
+        // paint-ready，防止 backgroundImage 切換時出現 1-frame 空白閃爍
+        const _imgCache = new Map(); // Map<src, { promise, img }>
         function preloadImage(src) {
             if (!src) return Promise.resolve();
-            if (_imgCache.has(src)) return _imgCache.get(src);
-            const p = new Promise(resolve => {
-                const img = new Image();
-                img.onload = img.onerror = () => resolve();
-                img.src = src;
-            });
-            _imgCache.set(src, p);
-            return p;
+            if (_imgCache.has(src)) return _imgCache.get(src).promise;
+            const img = new Image();
+            img.src = src;
+            const promise = typeof img.decode === 'function'
+                ? img.decode().catch(() => {})
+                : new Promise(resolve => { img.onload = img.onerror = resolve; });
+            _imgCache.set(src, { promise, img }); // 保留 img ref 防止 GC
+            return promise;
         }
         // 背景預加載所有圖片
         pool.forEach(item => preloadImage(item.img));
@@ -340,17 +341,17 @@ async function initIntroPolaroid() {
                         _pendingImg = null;
                     }
                 })
-                    // 快門關閉：fromTo 確保起點正確
+                    // 快門開始合 + 同時觸發星星旋轉（position 0 = 同步）
+                    .call(() => { replayAnim(shutterEl, 'introShutterStar', '0.6s', '0s'); }, null, 0)
                     .fromTo(shutterTop, { yPercent: -100 }, { yPercent: 0,    duration: 0.22, ease: 'power2.inOut' }, 0)
                     .fromTo(shutterBot, { yPercent:  100 }, { yPercent: 0,    duration: 0.22, ease: 'power2.inOut' }, 0)
-                    // 換圖 + 換文字 + 觸發星星旋轉
+                    // 快門完全關閉後換圖 + 換文字
                     .call(() => {
                         if (photoImg)   photoImg.style.backgroundImage = `url("${p.img}")`;
                         if (photoTitle) photoTitle.textContent = p.title;
                         if (photoYear)  photoYear.textContent  = p.year;
-                        replayAnim(shutterEl, 'introShutterStar', '0.6s', '0s');
                     })
-                    // 快門開啟：fromTo 確保起點正確
+                    // 快門開啟
                     .fromTo(shutterTop, { yPercent: 0 }, { yPercent: -100, duration: 0.28, ease: 'power2.inOut' })
                     .fromTo(shutterBot, { yPercent: 0 }, { yPercent:  100, duration: 0.28, ease: 'power2.inOut' }, '<');
             }

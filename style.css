@@ -376,6 +376,10 @@ body::before {
     inset: 0;
     background-size: cover;
     background-position: center;
+    /* Base values prevent 1-frame flash when animation fill is removed */
+    opacity: 1;
+    filter: sepia(0.1) saturate(0.85);
+    will-change: transform;
     animation: introPhotoDevelop 1.6s ease-out 1.7s both;
 }
 
@@ -416,6 +420,7 @@ body::before {
     background: #002C40;
     pointer-events: none;
     z-index: 3;
+    will-change: transform;
 }
 
 .intro-shutter-top {

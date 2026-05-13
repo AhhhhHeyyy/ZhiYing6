@@ -172,8 +172,16 @@ body::before {
 
 
 @keyframes introTapeUnroll {
-    from { transform: rotate(-6deg) scaleX(0); }
-    to   { transform: rotate(-6deg) scaleX(1); }
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+}
+
+@keyframes introSway {
+    0%   { transform: translateY(0) rotate(0deg); }
+    20%  { transform: translateY(0) rotate(3deg); }
+    50%  { transform: translateY(0) rotate(-3deg); }
+    80%  { transform: translateY(0) rotate(2.5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
 }
 
 @keyframes introPhotoDevelop {
@@ -309,6 +317,12 @@ body::before {
     z-index: 4;
 }
 
+/* 晃動動畫層 — 旋轉中心在貼紙位置 (水平置中，頂端) */
+.intro-polaroid-sway {
+    animation: introSway 4s ease-in-out 1.5s infinite;
+    transform-origin: 50% 0;
+}
+
 /* 掉落動畫層 */
 .intro-polaroid-wrap {
     animation: introDrop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
@@ -326,6 +340,10 @@ body::before {
 
 .intro-polaroid-container:hover .intro-polaroid-inner {
     transform: rotate(0deg) scale(1.05);
+}
+
+.intro-polaroid-container:hover .intro-polaroid-sway {
+    animation-play-state: paused;
 }
 
 /* 像素邊框 */
@@ -347,18 +365,19 @@ body::before {
     position: relative;
 }
 
-/* 紙膠帶 */
+/* 圓形貼紙 */
 .intro-tape {
     position: absolute;
-    top: -10px;
-    left: 30%;
-    width: 100px;
-    height: 22px;
-    background: repeating-linear-gradient(90deg, #F7F3E8 0 8px, #FBF8EE 8px 16px);
-    border: 1.5px solid #002C40;
-    box-shadow: 2px 2px 0 #002C40;
-    transform-origin: left center;
-    animation: introTapeUnroll 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.1) 1.0s both;
+    top: -28px;
+    left: calc(50% - 28px);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #002C40 65%, #92C7CF 65%);
+    border: 3px solid #fff;
+    box-shadow: 3px 3px 0 #92C7CF;
+    z-index: 10;
+    animation: introTapeUnroll 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4) 1.0s both;
 }
 
 /* 照片框 */

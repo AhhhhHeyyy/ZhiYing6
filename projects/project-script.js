@@ -1,3 +1,20 @@
+// === DARK MODE TOGGLE ===
+(function () {
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('themeToggle');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            });
+            setTimeout(function () { btn.classList.add('visible'); }, 500);
+        }
+    });
+})();
+
 // 项目页面专用的平滑滚动初始化
 (function() {
     let lenisInstance = null;
@@ -97,4 +114,53 @@
         startInit();
     }
 })();
+
+// === PIXEL SUNGLASSES CURSOR ===
+(function () {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const cur = document.getElementById('pixel-cursor');
+    if (!cur) return;
+    let lastPx = -999, lastPy = -999;
+    document.addEventListener('mousemove', function (e) {
+        const x = e.clientX, y = e.clientY;
+        cur.style.left = x + 'px';
+        cur.style.top  = y + 'px';
+        cur.classList.add('is-visible');
+        const dist = Math.hypot(x - lastPx, y - lastPy);
+        if (dist > 16) {
+            spawnParticles(x, y, Math.random() < 0.5 ? 1 : 2);
+            lastPx = x; lastPy = y;
+        }
+    }, { passive: true });
+    document.addEventListener('mouseleave', () => cur.classList.remove('is-visible'));
+    document.addEventListener('mousedown', () => cur.classList.add('is-clicking'));
+    document.addEventListener('mouseup',   () => cur.classList.remove('is-clicking'));
+    const HOVER_SEL = 'a, button, [data-toggle], input, textarea, select, label, [role="button"]';
+    document.addEventListener('mouseover', function (e) {
+        if (e.target.closest(HOVER_SEL)) cur.classList.add('is-hover');
+    });
+    document.addEventListener('mouseout', function (e) {
+        if (e.target.closest(HOVER_SEL)) cur.classList.remove('is-hover');
+    });
+    const COLORS = ['#92C7CF', '#AAD7D9', '#005C80', '#FBF8EE', '#bed7e8'];
+    const SIZES  = [10, 10, 12, 12, 14];
+    function spawnParticles(x, y, count) {
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement('div');
+            p.className = 'px-particle';
+            const sz  = SIZES[Math.floor(Math.random() * SIZES.length)];
+            const tx  = (Math.random() - 0.5) * 52;
+            const ty  = Math.random() * 36 + 8;
+            const dur = (0.38 + Math.random() * 0.38).toFixed(2) + 's';
+            p.style.cssText =
+                'left:' + (x + (Math.random() - 0.5) * 10) + 'px;' +
+                'top:'  + (y + (Math.random() - 0.5) * 10) + 'px;' +
+                'width:' + sz + 'px;height:' + sz + 'px;' +
+                'background:' + COLORS[Math.floor(Math.random() * COLORS.length)] + ';' +
+                '--tx:' + tx + 'px;--ty:' + ty + 'px;--dur:' + dur + ';';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), parseFloat(dur) * 1000 + 80);
+        }
+    }
+}());
 

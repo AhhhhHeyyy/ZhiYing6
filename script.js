@@ -1,3 +1,18 @@
+// === DARK MODE TOGGLE ===
+(function () {
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('themeToggle');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+    });
+})();
+
 // === DATA LOADING ===
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,8 +38,7 @@ async function loadAndRenderProjects() {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 
-                // 如果是 HOLOGACHA 项目，添加 coming-soon 类
-                if (project.title === 'HOLOGACHA') {
+                if (project.comingSoon) {
                     item.classList.add('coming-soon');
                 }
                 
@@ -44,7 +58,7 @@ async function loadAndRenderProjects() {
                             <h3>${project.title}</h3>
                             <p>${project.date}</p>
                         </div>
-                        ${project.title === 'HOLOGACHA' ? '<div class="coming-soon-overlay"><span class="coming-soon-text">Coming Soon...</span></div>' : ''}
+                        ${project.comingSoon ? '<div class="coming-soon-overlay"><span class="coming-soon-text">Coming Soon...</span></div>' : ''}
                         ${tagsHTML}
                     </a>
                 `;
@@ -238,7 +252,7 @@ async function initIntroPolaroid() {
                 if (p.image) allProjects.push({
                     img: p.image,
                     title: '＞ ' + p.title.toUpperCase(),
-                    year: "'" + (p.date ? p.date.toString().slice(0, 4).slice(2) : '25'),
+                    year: p.date ? p.date.toString().slice(0, 4) : '2025',
                     link: p.link,
                 });
             });
@@ -522,7 +536,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             e.preventDefault();
             const targetId = link.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
                 const headerHeight = document.querySelector('.main-header').offsetHeight;
                 lenis.scrollTo(targetElement, {
@@ -533,6 +547,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     });
+
+    // MY WORKS 按鈕 — 與 header nav 相同的 Lenis 跳轉
+    const worksBtn = document.querySelector('.intro-works-btn');
+    if (worksBtn) {
+        worksBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetElement = document.querySelector('#gallery');
+            if (targetElement) {
+                const headerHeight = document.querySelector('.main-header').offsetHeight;
+                lenis.scrollTo(targetElement, {
+                    offset: -headerHeight,
+                    duration: 0.8,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
+            }
+        });
+    }
 
     // --- Skills Text Switch ---
     // Skill 文字框切换功能
@@ -1260,4 +1291,67 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 });
+
+// === PIXEL SUNGLASSES CURSOR ===
+(function () {
+    // 觸控裝置不需要自訂游標
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    const cur = document.getElementById('pixel-cursor');
+    if (!cur) return;
+
+    let lastPx = -999, lastPy = -999;
+
+    document.addEventListener('mousemove', function (e) {
+        const x = e.clientX, y = e.clientY;
+        cur.style.left = x + 'px';
+        cur.style.top  = y + 'px';
+        cur.classList.add('is-visible');
+
+        const dist = Math.hypot(x - lastPx, y - lastPy);
+        if (dist > 16) {
+            spawnParticles(x, y, Math.random() < 0.5 ? 1 : 2);
+            lastPx = x; lastPy = y;
+        }
+    }, { passive: true });
+
+    // 離開視窗時隱藏
+    document.addEventListener('mouseleave', () => cur.classList.remove('is-visible'));
+
+    // 點擊反饋
+    document.addEventListener('mousedown', () => cur.classList.add('is-clicking'));
+    document.addEventListener('mouseup',   () => cur.classList.remove('is-clicking'));
+
+    // Hover 偵測：可點擊元素放大+發光
+    const HOVER_SEL = 'a, button, .gallery-item, [data-toggle], input, textarea, select, label, .nav-link, .theme-toggle, [role="button"]';
+    document.addEventListener('mouseover', function (e) {
+        if (e.target.closest(HOVER_SEL)) cur.classList.add('is-hover');
+    });
+    document.addEventListener('mouseout', function (e) {
+        if (e.target.closest(HOVER_SEL)) cur.classList.remove('is-hover');
+    });
+
+    // 像素粒子
+    const COLORS = ['#92C7CF', '#AAD7D9', '#005C80', '#FBF8EE', '#bed7e8'];
+    const SIZES  = [10, 10, 12, 12, 14];
+
+    function spawnParticles(x, y, count) {
+        for (let i = 0; i < count; i++) {
+            const p   = document.createElement('div');
+            p.className = 'px-particle';
+            const sz  = SIZES[Math.floor(Math.random() * SIZES.length)];
+            const tx  = (Math.random() - 0.5) * 52;
+            const ty  = Math.random() * 36 + 8;
+            const dur = (0.38 + Math.random() * 0.38).toFixed(2) + 's';
+            p.style.cssText =
+                'left:' + (x + (Math.random() - 0.5) * 10) + 'px;' +
+                'top:'  + (y + (Math.random() - 0.5) * 10) + 'px;' +
+                'width:' + sz + 'px;height:' + sz + 'px;' +
+                'background:' + COLORS[Math.floor(Math.random() * COLORS.length)] + ';' +
+                '--tx:' + tx + 'px;--ty:' + ty + 'px;--dur:' + dur + ';';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), parseFloat(dur) * 1000 + 80);
+        }
+    }
+}());
 

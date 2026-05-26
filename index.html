@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
@@ -28,6 +28,9 @@
 
 <body class="index is-loading">
 
+  <!-- 像素太陽眼鏡游標 -->
+  <img id="pixel-cursor" src="assets/cursor.png" alt="" aria-hidden="true">
+
   <!-- 8-bit 加載頁面 -->
   <div id="loading-screen" aria-hidden="true">
     <div class="loading-inner">
@@ -43,7 +46,7 @@
           </div>
         </div>
       </div>
-      <p class="loading-label">PORTFOLIO · 2026 · NO.001</p>
+      <p class="loading-label">Personal Profolio</p>
       <div class="loading-bar-wrap">
         <div class="loading-bar-fill" id="loadingBarFill"></div>
       </div>
@@ -62,8 +65,8 @@
     <a href="https://www.youtube.com/@Zong-g9r" target="_blank">
       <img src="assets/icon _Youtube_.png" alt="Youtube">
     </a>
-    <a href="https://linktr.ee/qi.4145" target="_blank">
-      <img src="assets/icon_inktree_.png" alt="LinkTree">
+    <a href="https://github.com/AhhhhHeyyy" target="_blank">
+      <img src="assets/icon_github.png" alt="GitHub">
     </a>
   </div>
   <!-- 遮罩層：只在 intro 展示區顯示深藍色版本 -->
@@ -71,7 +74,7 @@
     <a tabindex="-1"><img src="assets/icon _instagram_.png" alt=""></a>
     <a tabindex="-1"><img src="assets/icon _medium_.png" alt=""></a>
     <a tabindex="-1"><img src="assets/icon _Youtube_.png" alt=""></a>
-    <a tabindex="-1"><img src="assets/icon_inktree_.png" alt=""></a>
+    <a tabindex="-1"><img src="assets/icon_github.png" alt=""></a>
   </div>
 
   <!-- 手機/平板：右下角角標 -->
@@ -85,31 +88,43 @@
     <a href="https://www.youtube.com/@Zong-g9r" target="_blank">
       <img src="assets/icon _Youtube_.png" alt="Youtube">
     </a>
-    <a href="https://linktr.ee/qi.4145" target="_blank">
-      <img src="assets/icon_inktree_.png" alt="LinkTree">
+    <a href="https://github.com/AhhhhHeyyy" target="_blank">
+      <img src="assets/icon_github.png" alt="GitHub">
     </a>
   </nav>
 
   <header class="main-header">
     <nav class="nav-menu">
-      <div class="logo">
-        <h3>梁芷穎&nbsp;&nbsp;Ahey</h3>
-      </div>
       <ul class="nav-links">
         <li><a href="#intro">HOME</a></li>
         <li><a href="#skills">ABOUT ME</a></li>
         <li><a href="#gallery">WORKS</a></li>
       </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="切換夜間模式">
+        <svg class="toggle-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="toggle-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
     </nav>
   </header>
 
   <!-- 自我介紹區域 — Polaroid Hero -->
   <section class="intro" id="intro">
+    <div class="intro-logo-wrap">
+      <img src="assets/logonew/logo-b.png" alt="Logo" class="intro-logo logo-day">
+      <img src="assets/logonew/logo-w.png" alt="Logo" class="intro-logo logo-night">
+    </div>
 
     <!-- 左：文字塊 -->
     <div class="intro-text-block">
       <div class="intro-kicker intro-fade-up" style="--fadeDelay:1.6s">
-        ＞ PROFOLIO · 2026 · NO.001
+        Personal Profolio
       </div>
       <h1 class="intro-name-display">
         <span id="introTypedName"></span><span class="intro-caret" id="introCaret"></span>
@@ -122,6 +137,7 @@
       <p class="intro-bio intro-fade-up" style="--fadeDelay:3.3s">
         Hello！我是啊嘿，做互動裝置 / VR / 動畫，也喜歡手繪和拼貼。
       </p>
+      <a href="#gallery" class="intro-works-btn intro-fade-up" style="--fadeDelay:3.6s"><span class="iwc" style="--ci:0">M</span><span class="iwc" style="--ci:1">Y</span><span class="iwc sp"> </span><span class="iwc" style="--ci:2">W</span><span class="iwc" style="--ci:3">O</span><span class="iwc" style="--ci:4">R</span><span class="iwc" style="--ci:5">K</span><span class="iwc" style="--ci:6">S</span><span class="iwc sp"> </span><span class="iwc arr" style="--ci:7">▼</span><span class="iwc sp"> </span><span class="iwc arr" style="--ci:8">▼</span><span class="iwc sp"> </span><span class="iwc arr" style="--ci:9">▼</span></a>
     </div>
 
     <!-- 右：拍立得容器（定位層） -->
@@ -148,7 +164,7 @@
               <!-- 底部標題 + 年份 -->
               <div class="intro-photo-footer">
                 <span id="introPhotoTitle">＞ 作品</span>
-                <span class="intro-photo-year" id="introPhotoYear">'25</span>
+                <span class="intro-photo-year" id="introPhotoYear">2025</span>
               </div>
             </div>
           </div>
@@ -157,12 +173,7 @@
       </div><!-- /intro-polaroid-sway -->
     </div>
 
-    <!-- NEW! 星形貼紙 -->
-    <div class="intro-new-sticker intro-fade-up" style="--fadeDelay:3.5s">
-      <span>NEW!</span>
-    </div>
-
-    <!-- 右下：作品切換計數器 -->
+<!-- 右下：作品切換計數器 -->
     <div class="intro-counter intro-fade-up" style="--fadeDelay:3.4s">
       <button class="intro-counter-btn" id="introPrevBtn" aria-label="上一張">
         <svg width="18" height="18" viewBox="0 0 9 9" shape-rendering="crispEdges" style="transform:scaleX(-1)">
@@ -234,108 +245,81 @@
           </div>
         </div>
 
-        <!-- 右頁 —— 技能分類 -->
+        <!-- 右頁 —— 技能氣泡圖 -->
         <div class="sk-page sk-page--right">
-          <div class="sk-tabs" role="tablist">
-            <button class="sk-tab is-active" data-cat="frontend"   style="--tint: var(--sk-cyan);">
-              <span class="sk-tab-num">01</span>
-              <span class="sk-tab-label">前端網頁</span>
-            </button>
-            <button class="sk-tab"           data-cat="motion"     style="--tint: var(--sk-accent);">
-              <span class="sk-tab-num">02</span>
-              <span class="sk-tab-label">動畫製作</span>
-            </button>
-            <button class="sk-tab"           data-cat="interactive" style="--tint: var(--sk-pink);">
-              <span class="sk-tab-num">03</span>
-              <span class="sk-tab-label">互動裝置</span>
-            </button>
-            <button class="sk-tab"           data-cat="design"     style="--tint: var(--sk-mint);">
-              <span class="sk-tab-num">04</span>
-              <span class="sk-tab-label">平面與手繪</span>
-            </button>
-          </div>
-
           <div class="sk-page-num sk-page-num--right">02</div>
+          <div class="sk-stage" id="skStage">
+            <!-- 主線 + 子線 SVG -->
+            <svg class="sk-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <g class="sk-main-lines">
+                <line x1="21" y1="25" x2="32" y2="67" class="sk-ml"/>
+                <line x1="32" y1="67" x2="66" y2="20" class="sk-ml"/>
+                <line x1="66" y1="20" x2="71" y2="69" class="sk-ml"/>
+              </g>
+              <g class="sk-child-lines" id="sk-cl-frontend">
+                <line x1="66" y1="20" x2="80" y2="4"/>
+                <line x1="66" y1="20" x2="89" y2="9"/>
+                <line x1="66" y1="20" x2="94" y2="20"/>
+                <line x1="66" y1="20" x2="91" y2="33"/>
+                <line x1="66" y1="20" x2="82" y2="44"/>
+              </g>
+              <g class="sk-child-lines" id="sk-cl-motion">
+                <line x1="32" y1="67" x2="12" y2="51"/>
+                <line x1="32" y1="67" x2="5" y2="63"/>
+                <line x1="32" y1="67" x2="8" y2="77"/>
+                <line x1="32" y1="67" x2="18" y2="91"/>
+              </g>
+              <g class="sk-child-lines" id="sk-cl-interactive">
+                <line x1="21" y1="25" x2="5" y2="7"/>
+                <line x1="21" y1="25" x2="2" y2="17"/>
+                <line x1="21" y1="25" x2="2" y2="28"/>
+                <line x1="21" y1="25" x2="5" y2="39"/>
+                <line x1="21" y1="25" x2="13" y2="49"/>
+              </g>
+              <g class="sk-child-lines" id="sk-cl-design">
+                <line x1="71" y1="69" x2="84" y2="55"/>
+                <line x1="71" y1="69" x2="92" y2="65"/>
+                <line x1="71" y1="69" x2="96" y2="77"/>
+                <line x1="71" y1="69" x2="87" y2="91"/>
+              </g>
+            </svg>
 
-          <!-- 4 個章節區；JS 只切換 is-active -->
-          <div class="sk-chapters">
-            <article class="sk-chapter is-active" data-cat="frontend" style="--tint: var(--sk-cyan);">
-              <div class="sk-chapter-kicker">CHAPTER 1</div>
-              <h3 class="sk-chapter-title">前端網頁</h3>
-              <div class="sk-chapter-en">FRONTEND</div>
-              <div class="sk-tools-label">＞ TOOLS &amp; SOFTWARE</div>
-              <ul class="sk-tools">
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">HTML</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">CSS</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">JavaScript</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">React</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Vue</span><span class="sk-tool-dash"></span></li>
-              </ul>
-              <div class="sk-doodle" aria-hidden="true">
-                <svg viewBox="0 0 120 80" fill="none">
-                  <path d="M5 40 Q30 5, 60 40 T115 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
-                  <circle cx="60" cy="40" r="4" fill="currentColor"/>
-                </svg>
-              </div>
-            </article>
+            <!-- 主節點 -->
+            <div class="sk-bnode" data-cat="frontend" style="--nx:66%;--ny:20%;--ns:140px;--fa:sk-float-a;--fd:3.8s">
+              <div class="sk-bnode-circle">前端網頁</div>
+            </div>
+            <div class="sk-bnode" data-cat="motion" style="--nx:32%;--ny:67%;--ns:130px;--fa:sk-float-b;--fd:4.4s">
+              <div class="sk-bnode-circle">動畫製作</div>
+            </div>
+            <div class="sk-bnode" data-cat="interactive" style="--nx:21%;--ny:25%;--ns:108px;--fa:sk-float-c;--fd:5.1s">
+              <div class="sk-bnode-circle">互動裝置</div>
+            </div>
+            <div class="sk-bnode" data-cat="design" style="--nx:71%;--ny:69%;--ns:90px;--fa:sk-float-d;--fd:4.6s">
+              <div class="sk-bnode-circle">平面與手繪</div>
+            </div>
 
-            <article class="sk-chapter" data-cat="motion" style="--tint: var(--sk-accent);">
-              <div class="sk-chapter-kicker">CHAPTER 2</div>
-              <h3 class="sk-chapter-title">動畫製作</h3>
-              <div class="sk-chapter-en">MOTION</div>
-              <div class="sk-tools-label">＞ TOOLS &amp; SOFTWARE</div>
-              <ul class="sk-tools">
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">After Effects</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Premiere</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Cinema 4D</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Procreate Dreams</span><span class="sk-tool-dash"></span></li>
-              </ul>
-              <div class="sk-doodle" aria-hidden="true">
-                <svg viewBox="0 0 120 80" fill="none">
-                  <path d="M5 40 Q30 5, 60 40 T115 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
-                  <circle cx="60" cy="40" r="4" fill="currentColor"/>
-                </svg>
-              </div>
-            </article>
-
-            <article class="sk-chapter" data-cat="interactive" style="--tint: var(--sk-pink);">
-              <div class="sk-chapter-kicker">CHAPTER 3</div>
-              <h3 class="sk-chapter-title">互動裝置</h3>
-              <div class="sk-chapter-en">INTERACTIVE</div>
-              <div class="sk-tools-label">＞ TOOLS &amp; SOFTWARE</div>
-              <ul class="sk-tools">
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">TouchDesigner</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Unity</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Arduino</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Mediapipe</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">p5.js</span><span class="sk-tool-dash"></span></li>
-              </ul>
-              <div class="sk-doodle" aria-hidden="true">
-                <svg viewBox="0 0 120 80" fill="none">
-                  <path d="M5 40 Q30 5, 60 40 T115 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
-                  <circle cx="60" cy="40" r="4" fill="currentColor"/>
-                </svg>
-              </div>
-            </article>
-
-            <article class="sk-chapter" data-cat="design" style="--tint: var(--sk-mint);">
-              <div class="sk-chapter-kicker">CHAPTER 4</div>
-              <h3 class="sk-chapter-title">平面與手繪</h3>
-              <div class="sk-chapter-en">DESIGN · HAND</div>
-              <div class="sk-tools-label">＞ TOOLS &amp; SOFTWARE</div>
-              <ul class="sk-tools">
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Illustrator</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Photoshop</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Procreate</span><span class="sk-tool-dash"></span></li>
-                <li><span class="sk-bullet"></span><span class="sk-tool-name">Figma</span><span class="sk-tool-dash"></span></li>
-              </ul>
-              <div class="sk-doodle" aria-hidden="true">
-                <svg viewBox="0 0 120 80" fill="none">
-                  <path d="M5 40 Q30 5, 60 40 T115 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
-                  <circle cx="60" cy="40" r="4" fill="currentColor"/>
-                </svg>
-              </div>
-            </article>
+            <!-- 子節點: 前端網頁（右上角扇形） -->
+            <div class="sk-kid" data-parent="frontend" style="--kx:80%;--ky:4%;--kd:0s">HTML</div>
+            <div class="sk-kid" data-parent="frontend" style="--kx:89%;--ky:9%;--kd:.05s">CSS</div>
+            <div class="sk-kid" data-parent="frontend" style="--kx:94%;--ky:20%;--kd:.1s">JavaScript</div>
+            <div class="sk-kid" data-parent="frontend" style="--kx:91%;--ky:33%;--kd:.15s">React</div>
+            <div class="sk-kid" data-parent="frontend" style="--kx:82%;--ky:44%;--kd:.2s">Vue</div>
+            <!-- 子節點: 動畫製作（左下角弧形） -->
+            <div class="sk-kid" data-parent="motion" style="--kx:12%;--ky:51%;--kd:0s">After Effects</div>
+            <div class="sk-kid" data-parent="motion" style="--kx:5%;--ky:63%;--kd:.05s">Premiere</div>
+            <div class="sk-kid" data-parent="motion" style="--kx:8%;--ky:77%;--kd:.1s">Cinema 4D</div>
+            <div class="sk-kid" data-parent="motion" style="--kx:18%;--ky:91%;--kd:.15s">Procreate Dreams</div>
+            <!-- 子節點: 互動裝置（左上角弧形） -->
+            <div class="sk-kid" data-parent="interactive" style="--kx:5%;--ky:7%;--kd:0s">TouchDesigner</div>
+            <div class="sk-kid" data-parent="interactive" style="--kx:2%;--ky:17%;--kd:.05s">Unity</div>
+            <div class="sk-kid" data-parent="interactive" style="--kx:2%;--ky:28%;--kd:.1s">Arduino</div>
+            <div class="sk-kid" data-parent="interactive" style="--kx:5%;--ky:39%;--kd:.15s">Mediapipe</div>
+            <div class="sk-kid" data-parent="interactive" style="--kx:13%;--ky:49%;--kd:.2s">p5.js</div>
+            <!-- 子節點: 平面與手繪（右下角弧形） -->
+            <div class="sk-kid" data-parent="design" style="--kx:84%;--ky:55%;--kd:0s">Illustrator</div>
+            <div class="sk-kid" data-parent="design" style="--kx:92%;--ky:65%;--kd:.05s">Photoshop</div>
+            <div class="sk-kid" data-parent="design" style="--kx:96%;--ky:77%;--kd:.1s">Procreate</div>
+            <div class="sk-kid" data-parent="design" style="--kx:87%;--ky:91%;--kd:.15s">Figma</div>
           </div>
         </div>
       </div>
@@ -565,134 +549,151 @@
       }
       .sk-sign.is-in { opacity: 1; }
 
-      /* 右頁 — tabs */
-      .sk-tabs {
-        display: flex; gap: 4px;
-        margin: -44px -48px 32px;
-        padding: 0 48px;
-        border-bottom: 1.5px solid var(--sk-ink);
-        background: var(--sk-paper);
-      }
-      .sk-tab {
-        flex: 1;
-        background: transparent;
-        border: none;
-        border-left: 1px dashed rgba(0,44,64,.25);
-        padding: 22px 10px 14px;
-        cursor: pointer;
-        font-family: inherit;
-        color: rgba(0,44,64,.55);
-        display: flex; flex-direction: column; align-items: center; gap: 4px;
-        transition: background .25s ease, color .25s ease;
+      /* ===== 技能氣泡圖 ===== */
+      .sk-stage {
         position: relative;
+        width: 100%;
+        min-height: 520px;
       }
-      .sk-tab:first-child { border-left: none; }
-      .sk-tab-num {
-        font-family: 'BoutiqueBitmap', sans-serif;
-        font-size: .68rem; letter-spacing: .22em;
+      .sk-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 1;
       }
-      .sk-tab-label { font-size: .95rem; letter-spacing: .05em; }
-      .sk-tab:hover { background: rgba(146,199,207,.18); color: var(--sk-ink); }
-      .sk-tab.is-active {
-        background: var(--tint);
-        color: var(--sk-ink);
+      .sk-ml {
+        stroke: var(--sk-ink);
+        stroke-width: 0.8;
+        stroke-linecap: round;
+        opacity: .65;
       }
-      .sk-tab.is-active::after {
-        content: ""; position: absolute;
-        left: 0; right: 0; bottom: -1.5px; height: 3px;
-        background: var(--sk-ink);
+      .sk-child-lines {
+        opacity: 0;
+        transition: opacity .3s ease;
+      }
+      .sk-child-lines.is-visible { opacity: 1; }
+      .sk-child-lines line {
+        stroke: var(--sk-ink);
+        stroke-width: 0.5;
+        stroke-linecap: round;
+        stroke-dasharray: 3 2;
+        opacity: .7;
       }
 
-      /* Chapters */
-      .sk-chapters { position: relative; min-height: 340px; }
-      .sk-chapter {
-        display: none;
-        position: relative;
-      }
-      .sk-chapter.is-active {
-        display: block;
-        animation: skFade .45s cubic-bezier(.2,.8,.3,1);
-      }
-      @keyframes skFade {
-        from { opacity: 0; transform: translateX(10px); }
-        to   { opacity: 1; transform: translateX(0); }
-      }
-      .sk-chapter-kicker {
-        font-family: 'BoutiqueBitmap', sans-serif;
-        font-size: .72rem; letter-spacing: .28em;
-        color: var(--sk-teal);
-        margin-bottom: 8px;
-      }
-      .sk-chapter-title {
-        font-size: clamp(2rem, 3.4vw, 2.8rem);
-        color: var(--sk-ink);
-        margin: 0 0 6px;
-        font-weight: 500;
-        letter-spacing: .04em;
-        position: relative;
-        display: inline-block;
-      }
-      .sk-chapter-title::after {
-        content: "";
+      /* 主節點 */
+      .sk-bnode {
         position: absolute;
-        left: -2px; right: -4px; bottom: 4px;
-        height: 10px;
-        background: var(--tint);
-        opacity: .55;
-        z-index: -1;
+        left: var(--nx);
+        top: var(--ny);
+        width: var(--ns);
+        height: var(--ns);
+        z-index: 2;
       }
-      .sk-chapter-en {
-        font-family: 'BoutiqueBitmap', sans-serif;
-        font-size: .72rem; letter-spacing: .3em;
-        color: rgba(0,44,64,.5);
-        margin-bottom: 28px;
+      @keyframes sk-float-a {
+        0%,100% { transform: translate(-50%,-50%) translateY(0); }
+        38%     { transform: translate(-50%,-50%) translateY(-7px); }
+        72%     { transform: translate(-50%,-50%) translateY(4px); }
       }
-      .sk-tools-label {
-        font-family: 'BoutiqueBitmap', sans-serif;
-        font-size: .72rem; letter-spacing: .24em;
-        color: var(--sk-teal);
-        margin-bottom: 12px;
+      @keyframes sk-float-b {
+        0%,100% { transform: translate(-50%,-50%) translateY(0); }
+        42%     { transform: translate(-50%,-50%) translateY(6px); }
+        78%     { transform: translate(-50%,-50%) translateY(-5px); }
       }
-      .sk-tools {
-        list-style: none; padding: 0; margin: 0;
-        display: flex; flex-direction: column; gap: 8px;
+      @keyframes sk-float-c {
+        0%,100% { transform: translate(-50%,-50%) translateY(0); }
+        30%     { transform: translate(-50%,-50%) translateY(-5px); }
+        62%     { transform: translate(-50%,-50%) translateY(3px); }
       }
-      .sk-tools li {
-        display: flex; align-items: center; gap: 12px;
-        padding: 4px 0;
+      @keyframes sk-float-d {
+        0%,100% { transform: translate(-50%,-50%) translateY(0); }
+        48%     { transform: translate(-50%,-50%) translateY(5px); }
+        82%     { transform: translate(-50%,-50%) translateY(-6px); }
       }
-      .sk-chapter.is-active .sk-tools li {
-        animation: skItem .5s cubic-bezier(.2,.8,.3,1) both;
+      @media (prefers-reduced-motion: no-preference) {
+        .sk-bnode { animation: var(--fa) var(--fd) ease-in-out infinite; }
       }
-      .sk-chapter.is-active .sk-tools li:nth-child(1) { animation-delay: .15s; }
-      .sk-chapter.is-active .sk-tools li:nth-child(2) { animation-delay: .22s; }
-      .sk-chapter.is-active .sk-tools li:nth-child(3) { animation-delay: .29s; }
-      .sk-chapter.is-active .sk-tools li:nth-child(4) { animation-delay: .36s; }
-      .sk-chapter.is-active .sk-tools li:nth-child(5) { animation-delay: .43s; }
-      @keyframes skItem {
-        from { opacity: 0; transform: translateX(10px); }
-        to   { opacity: 1; transform: translateX(0); }
+      /* 無動畫時仍需 translate 居中 */
+      .sk-bnode { transform: translate(-50%, -50%); }
+
+      .sk-bnode-circle {
+        width: 100%; height: 100%;
+        border-radius: 50%;
+        background: var(--sk-ink);
+        color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'BoutiqueBitmap', monospace;
+        font-size: clamp(.68rem, 1.3vw, .88rem);
+        letter-spacing: .04em;
+        text-align: center;
+        padding: 8px;
+        box-sizing: border-box;
+        box-shadow: 0 4px 18px rgba(0,44,64,.22);
+        transition: transform .28s ease, box-shadow .28s ease, background .28s ease;
+        cursor: pointer;
       }
-      .sk-bullet {
-        width: 9px; height: 9px; border-radius: 50%;
-        background: var(--tint);
-        flex-shrink: 0;
-        box-shadow: 0 0 0 2px var(--sk-paper-soft), 0 0 0 3px var(--sk-ink);
+      .sk-bnode.is-hovered .sk-bnode-circle {
+        transform: scale(1.07);
+        background: var(--sk-teal);
+        box-shadow: 0 8px 28px rgba(0,44,64,.36);
       }
-      .sk-tool-name {
-        font-family: 'BoutiqueBitmap', sans-serif;
-        font-size: .95rem;
-        letter-spacing: .03em;
+
+      /* hover: 選中往內縮讓出分支空間，其他往外淡退 */
+      .sk-bnode { transition: left .5s cubic-bezier(.4,0,.2,1), top .5s cubic-bezier(.4,0,.2,1), opacity .4s ease; }
+      #skStage.is-hovering .sk-bnode:not(.is-hovered) { opacity: .25; }
+      /* 選中往內移 */
+      #skStage.is-hovering .sk-bnode[data-cat="interactive"].is-hovered { left: 27%; top: 31%; }
+      #skStage.is-hovering .sk-bnode[data-cat="frontend"].is-hovered    { left: 61%; top: 25%; }
+      #skStage.is-hovering .sk-bnode[data-cat="motion"].is-hovered      { left: 37%; top: 62%; }
+      #skStage.is-hovering .sk-bnode[data-cat="design"].is-hovered      { left: 66%; top: 64%; }
+      /* 未選中往外推 */
+      #skStage.is-hovering .sk-bnode[data-cat="interactive"]:not(.is-hovered) { left: 15%; top: 19%; }
+      #skStage.is-hovering .sk-bnode[data-cat="frontend"]:not(.is-hovered)    { left: 71%; top: 14%; }
+      #skStage.is-hovering .sk-bnode[data-cat="motion"]:not(.is-hovered)      { left: 27%; top: 73%; }
+      #skStage.is-hovering .sk-bnode[data-cat="design"]:not(.is-hovered)      { left: 76%; top: 75%; }
+
+      /* 子節點 */
+      .sk-kid {
+        position: absolute;
+        left: var(--kx);
+        top: var(--ky);
+        width: auto; height: auto;
+        min-width: 44px;
+        transform: translate(-50%,-50%) scale(0);
+        transform-origin: center;
+        transition:
+          transform .35s cubic-bezier(.34,1.56,.64,1) 0s,
+          opacity   .2s ease 0s;
         color: var(--sk-ink);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 6px;
+        font-family: 'BoutiqueBitmap', monospace;
+        font-size: .82rem;
+        letter-spacing: .02em;
+        text-align: left;
+        line-height: 1.3;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 3;
         white-space: nowrap;
       }
-      .sk-tool-dash { flex: 1; border-bottom: 1px dashed rgba(0,44,64,.28); }
-      .sk-doodle {
-        position: absolute;
-        bottom: -12px; right: 0;
-        width: 120px; height: 80px;
-        color: var(--tint);
-        opacity: .75;
+      .sk-kid::before {
+        content: "●";
+        font-size: .5rem;
+        line-height: 1;
+        opacity: .7;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .sk-kid.is-visible {
+        transform: translate(-50%,-50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+        transition-delay: var(--kd, 0s);
       }
 
       /* RWD */
@@ -700,12 +701,8 @@
         .sk-book { grid-template-columns: 1fr; }
         .sk-spine { display: none; }
         .sk-page--left { border-right: none; border-bottom: 1px dashed rgba(0,44,64,.3); }
-        .sk-tabs { margin: -44px -24px 28px; padding: 0 24px; }
         .sk-page { padding: 36px 24px; }
-      }
-      @media (max-width: 560px) {
-        .sk-tab-label { font-size: .8rem; }
-        .sk-tab { padding: 16px 6px 12px; }
+        .sk-stage { min-height: 460px; }
       }
     </style>
 
@@ -769,16 +766,39 @@
           book.classList.add('no-anim');
         }
 
-        // Chapter tabs
-        const tabs = document.querySelectorAll('#skills .sk-tab');
-        const chapters = document.querySelectorAll('#skills .sk-chapter');
-        tabs.forEach(t => {
-          t.addEventListener('click', () => {
-            const cat = t.dataset.cat;
-            tabs.forEach(x => x.classList.toggle('is-active', x === t));
-            chapters.forEach(c => c.classList.toggle('is-active', c.dataset.cat === cat));
+        // Bubble graph hover
+        const stage = document.getElementById('skStage');
+        if (stage) {
+          stage.querySelectorAll('.sk-bnode').forEach(node => {
+            const cat = node.dataset.cat;
+            const kids = [...stage.querySelectorAll(`.sk-kid[data-parent="${cat}"]`)];
+            const svgG = document.getElementById(`sk-cl-${cat}`);
+            let timer;
+            function on() {
+              clearTimeout(timer);
+              stage.classList.add('is-hovering');
+              node.classList.add('is-hovered');
+              kids.forEach(k => k.classList.add('is-visible'));
+              if (svgG) svgG.classList.add('is-visible');
+            }
+            function off() {
+              timer = setTimeout(() => {
+                node.classList.remove('is-hovered');
+                kids.forEach(k => k.classList.remove('is-visible'));
+                if (svgG) svgG.classList.remove('is-visible');
+                if (!stage.querySelector('.sk-bnode.is-hovered')) {
+                  stage.classList.remove('is-hovering');
+                }
+              }, 80);
+            }
+            node.addEventListener('mouseenter', on);
+            node.addEventListener('mouseleave', off);
+            kids.forEach(k => {
+              k.addEventListener('mouseenter', on);
+              k.addEventListener('mouseleave', off);
+            });
           });
-        });
+        }
 
         // 自介 — 打字效果
         const bio = document.getElementById('skBio');
@@ -948,8 +968,8 @@
       <a href="https://www.youtube.com/@Zong-g9r" target="_blank">
         <img src="assets/icon _Youtube_.png" alt="Youtube">
       </a>
-      <a href="https://linktr.ee/qi.4145" target="_blank">
-        <img src="assets/icon_inktree_.png" alt="LinkTree">
+      <a href="https://github.com/AhhhhHeyyy" target="_blank">
+        <img src="assets/icon_github.png" alt="GitHub">
       </a>
     </div>
   </footer>

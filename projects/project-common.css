@@ -1051,6 +1051,15 @@ body, .project-description, .project-content, .project-container {
     transform: scale(1.05);
 }
 
+.project-description img {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.project-description img:hover {
+    transform: scale(1.05);
+}
+
 .img-modal {
     display: none;
     position: fixed;
@@ -1636,5 +1645,70 @@ body, .project-description, .project-content, .project-container {
         grid-row: span 1 !important;
         grid-column: span 1 !important;
     }
+}
+
+/* === THEME TOGGLE BUTTON (project pages) === */
+.theme-toggle-fixed {
+    position: fixed;
+    top: 72px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: #002C40;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    color: #92C7CF;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 44, 64, 0.3);
+    opacity: 0;
+    transform: translateY(-100%);
+}
+.theme-toggle-fixed.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.theme-toggle-fixed:hover {
+    background: #005C80;
+    transform: scale(1.1);
+}
+body.dark-mode .theme-toggle-fixed {
+    background: #92C7CF;
+    color: #002C40;
+}
+body.dark-mode .theme-toggle-fixed:hover {
+    background: #AAD7D9;
+}
+.theme-toggle-fixed .toggle-sun { display: none; }
+.theme-toggle-fixed .toggle-moon { display: block; }
+body.dark-mode .theme-toggle-fixed .toggle-sun { display: block; }
+body.dark-mode .theme-toggle-fixed .toggle-moon { display: none; }
+
+@media screen and (max-width: 768px) {
+    .theme-toggle-fixed { top: 68px; right: 16px; width: 38px; height: 38px; }
+}
+@media screen and (max-width: 480px) {
+    .theme-toggle-fixed { top: 62px; right: 12px; width: 34px; height: 34px; }
+}
+
+/* === DARK MODE overrides for project pages === */
+body.dark-mode .project-description p,
+body.dark-mode .project-description li,
+body.dark-mode .project-content p,
+body.dark-mode p {
+    color: #CDE4F0;
+}
+body.dark-mode .progress-item {
+    background: #0d2035;
+}
+body.dark-mode .progress-item-featured {
+    background: linear-gradient(135deg, #004d66 0%, #005c7a 100%);
+}
+body.dark-mode .project-footer {
+    background: transparent;
 }
 

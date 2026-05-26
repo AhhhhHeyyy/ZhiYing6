@@ -416,6 +416,12 @@ const _loading = {
         if (this.fillEl) this.fillEl.style.width = this._current + '%';
         if (this.pctEl)  this.pctEl.textContent =
             '▌ ' + String(this._current).padStart(2, '0') + '%';
+        // 同步水位（logo 180px + 波峰 50px = 230px，從底部往上升）
+        const waveBox = document.getElementById('loadingWaveBox');
+        if (waveBox) {
+            const ty = Math.round(230 * (1 - this._current / 100));
+            waveBox.style.transform = `translateY(${ty}px)`;
+        }
     },
 
     async done() {

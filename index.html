@@ -31,8 +31,19 @@
   <!-- 8-bit 加載頁面 -->
   <div id="loading-screen" aria-hidden="true">
     <div class="loading-inner">
+      <!-- 水波填充 Logo -->
+      <div class="loading-logo-wrap">
+        <img class="loading-logo-ghost" src="assets/logonew/logo-w.png" alt="">
+        <div class="loading-logo-mask">
+          <div class="loading-wave-box" id="loadingWaveBox">
+            <svg class="loading-wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 50" preserveAspectRatio="none">
+              <path fill="#92C7CF" d="M0,25 C30,5 60,45 90,25 C120,5 150,45 180,25 C210,5 240,45 270,25 C300,5 330,45 360,25 C390,5 420,45 450,25 C480,5 510,45 540,25 L540,50 L0,50 Z"/>
+            </svg>
+            <div class="loading-wave-fill"></div>
+          </div>
+        </div>
+      </div>
       <p class="loading-label">PORTFOLIO · 2026 · NO.001</p>
-      <h1 class="loading-title">梁芷穎<br>AHEY</h1>
       <div class="loading-bar-wrap">
         <div class="loading-bar-fill" id="loadingBarFill"></div>
       </div>

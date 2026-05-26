@@ -68,13 +68,62 @@
     color: #92C7CF;
     margin-bottom: 18px;
 }
-.loading-title {
-    font-family: 'BoutiqueBitmap', monospace;
-    font-size: 26px;
-    letter-spacing: 0.08em;
-    color: #FBF8EE;
-    margin-bottom: 36px;
-    line-height: 1.5;
+/* Wave-fill logo */
+.loading-logo-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 28px;
+}
+.loading-logo-ghost {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: invert(1);
+    opacity: 0.12;
+}
+.loading-logo-mask {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    -webkit-mask-image: url('assets/logonew/logo-b.png');
+    mask-image: url('assets/logonew/logo-b.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+.loading-wave-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(100% + 50px); /* logo height + wave peak height */
+    transform: translateY(230px); /* start fully below (180+50=230px) */
+    transition: transform 0.45s ease-out;
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.loading-wave-svg {
+    display: block;
+    width: 300%;
+    height: 50px;
+    flex-shrink: 0;
+    animation: loadingWaveScroll 2.4s linear infinite;
+}
+.loading-wave-fill {
+    flex: 1;
+    background: #92C7CF;
+}
+@keyframes loadingWaveScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-33.33%); }
 }
 .loading-bar-wrap {
     width: 260px;

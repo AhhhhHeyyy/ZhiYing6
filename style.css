@@ -42,6 +42,73 @@
 }
 
 
+/* === LOADING SCREEN === */
+#loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #002C40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
+}
+#loading-screen.is-done {
+    transform: translateY(-100%);
+}
+.loading-inner {
+    text-align: center;
+    color: #FBF8EE;
+    user-select: none;
+}
+.loading-label {
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: #92C7CF;
+    margin-bottom: 18px;
+}
+.loading-title {
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 26px;
+    letter-spacing: 0.08em;
+    color: #FBF8EE;
+    margin-bottom: 36px;
+    line-height: 1.5;
+}
+.loading-bar-wrap {
+    width: 260px;
+    height: 14px;
+    border: 2px solid #FBF8EE;
+    box-shadow: 4px 4px 0 #92C7CF;
+    background: #001a27;
+    margin: 0 auto 14px;
+    image-rendering: pixelated;
+    overflow: hidden;
+}
+.loading-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #92C7CF;
+    transition: width 0.28s steps(14, end);
+}
+.loading-pct {
+    font-family: 'BoutiqueBitmap', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #92C7CF;
+}
+
+/* 加載中：凍結 intro CSS 動畫、禁止捲動 */
+body.is-loading {
+    overflow: hidden;
+}
+body.is-loading .intro-polaroid-wrap,
+body.is-loading .intro-tape,
+body.is-loading .intro-fade-up {
+    animation-play-state: paused;
+}
+
 /* === BASE RESET === */
 
 /* 基本重设 */

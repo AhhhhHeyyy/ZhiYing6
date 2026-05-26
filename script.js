@@ -53,10 +53,10 @@ async function loadAndRenderProjects() {
             });
         });
         
-        return true;
+        return projects;
     } catch (error) {
         console.error('加载作品数据失败:', error);
-        return false;
+        return null;
     }
 }
 
@@ -397,25 +397,92 @@ async function initIntroPolaroid() {
     }
 }
 
+// === LOADING SCREEN ===
+const _loading = {
+    _current: 0,
+    fillEl: null,
+    pctEl: null,
+    screenEl: null,
+
+    init() {
+        this.screenEl = document.getElementById('loading-screen');
+        this.fillEl   = document.getElementById('loadingBarFill');
+        this.pctEl    = document.getElementById('loadingPct');
+        this.set(5);
+    },
+
+    set(pct) {
+        this._current = Math.min(100, Math.max(this._current, Math.round(pct)));
+        if (this.fillEl) this.fillEl.style.width = this._current + '%';
+        if (this.pctEl)  this.pctEl.textContent =
+            '▌ ' + String(this._current).padStart(2, '0') + '%';
+    },
+
+    async done() {
+        this.set(100);
+        await new Promise(r => setTimeout(r, 550));
+        if (this.screenEl) this.screenEl.classList.add('is-done');
+        document.body.classList.remove('is-loading');
+        await new Promise(r => setTimeout(r, 700));
+        if (this.screenEl) this.screenEl.style.display = 'none';
+    }
+};
+
 // === MAIN INIT (DOMContentLoaded) ===
 document.addEventListener("DOMContentLoaded", async () => {
-    // 立即初始化下拉式清单（不等待所有资源加载）
+    // 初始化 loading screen
+    _loading.init();
+    const _loadStart = Date.now();
+    const MIN_DISPLAY_MS = 1200;
+
+    // 立即初始化下拉式清单
     initDropdown();
-    
+
     // 初始化显示第一个类别
     const firstCategory = document.querySelector('.gallery-category');
     if (firstCategory) {
         firstCategory.style.display = 'block';
         firstCategory.style.opacity = '1';
     }
-    
-    // 先加载作品
-    await loadAndRenderProjects();
+
+    // 加載並渲染作品，拿回 projects 資料供圖片預載使用
+    _loading.set(10);
+    const projects = await loadAndRenderProjects();
     ScrollTrigger.refresh();
+    _loading.set(30);
+
+    // 預載所有作品圖片（確保 hero slideshow 切換時無閃爍）
+    const allImgSrcs = [];
+    if (projects) {
+        Object.values(projects).forEach(cat =>
+            cat.forEach(p => { if (p.image) allImgSrcs.push(p.image); })
+        );
+    }
+    let _imgDone = 0;
+    const _imgTotal = allImgSrcs.length || 1;
+    await Promise.all(allImgSrcs.map(src => {
+        const img = new Image();
+        img.src = src;
+        const p = typeof img.decode === 'function'
+            ? img.decode().catch(() => {})
+            : new Promise(r => { img.onload = img.onerror = r; });
+        return p.then(() => {
+            _imgDone++;
+            _loading.set(30 + (_imgDone / _imgTotal) * 65);
+        });
+    }));
+
+    // 確保 loading screen 至少顯示 MIN_DISPLAY_MS 毫秒
+    const _elapsed = Date.now() - _loadStart;
+    if (_elapsed < MIN_DISPLAY_MS) await new Promise(r => setTimeout(r, MIN_DISPLAY_MS - _elapsed));
+
+    // 收起 loading screen，同時解凍 intro CSS 動畫
+    await _loading.done();
+
     // 載入近期動態時間軸 + 初始化展開 Modal
     loadAndRenderPosts();
     initPostsModal();
-    // 初始化拍立得 Hero
+    // 初始化拍立得 Hero（typed name、快門動畫從這裡起計時）
     initIntroPolaroid();
     // --- Lenis Smooth Scroll ---
     // 初始化Lenis平滑滚动 - 优化性能

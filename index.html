@@ -26,7 +26,20 @@
   <script src="script.js" defer></script>
 </head>
 
-<body class="index">
+<body class="index is-loading">
+
+  <!-- 8-bit 加載頁面 -->
+  <div id="loading-screen" aria-hidden="true">
+    <div class="loading-inner">
+      <p class="loading-label">PORTFOLIO · 2026 · NO.001</p>
+      <h1 class="loading-title">梁芷穎<br>AHEY</h1>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar-fill" id="loadingBarFill"></div>
+      </div>
+      <p class="loading-pct" id="loadingPct">▌ 00%</p>
+    </div>
+  </div>
+
   <div class="social-icons">
     <a href="https://www.instagram.com/ttong_do_something?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
       target="_blank">

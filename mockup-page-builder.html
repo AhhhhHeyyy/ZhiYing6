@@ -629,6 +629,7 @@
 
     /* ── 影片 placeholder ── */
     .eb-video-ph {
+      position: relative;          /* 讓 overlay 能絕對定位 */
       width: 100%;
       aspect-ratio: 16/9;
       background: rgba(0,0,0,.6);
@@ -657,6 +658,58 @@
       margin-left: 4px;
     }
 
+    /* ── 影片來源選擇 overlay（影片 placeholder 內） ── */
+    .eb-vc-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,18,28,.88);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      border-radius: 2px;
+    }
+    .eb-vc-opt {
+      background: rgba(146,199,207,.12);
+      border: 1.5px solid rgba(146,199,207,.45);
+      border-radius: 8px;
+      color: var(--eb-text);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 11px 22px;
+      cursor: pointer;
+      font-family: 'Public Sans', sans-serif;
+      transition: background .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .eb-vc-opt:hover { background: rgba(146,199,207,.28); border-color: var(--eb-accent); color: #fff; }
+
+    /* ── Grid cell：YouTube 嵌入按鈕 ── */
+    .eb-cell-yt-btn {
+      position: absolute;
+      top: 4px; right: 32px;   /* 緊貼刪除按鈕左側 */
+      height: 22px;
+      min-width: 28px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(170,0,0,.82);
+      border: 1px solid rgba(255,80,80,.5);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+      cursor: pointer;
+      z-index: 6;
+      padding: 0 5px;
+      font-family: inherit;
+      line-height: 1;
+      letter-spacing: .3px;
+    }
+    .eb-cell-yt-btn:hover { background: rgba(200,0,0,.95); }
+    .eb-grid-cell:hover .eb-cell-yt-btn { display: flex; }
+
     /* ── Preview mode ── */
     body.eb-preview .eb-toolbar { display: none; }
     body.eb-preview { padding-top: 0 !important; }
@@ -668,6 +721,8 @@
     body.eb-preview .eb-tools-add-row { display: none !important; }
     body.eb-preview .eb-li-del { display: none !important; }
     body.eb-preview .eb-img-del { display: none !important; }
+    body.eb-preview .eb-cell-yt-btn { display: none !important; }
+    body.eb-preview .eb-vc-overlay { display: none !important; }
     body.eb-preview .eb-cover-replace { display: none !important; }
     body.eb-preview .eb-cover-placeholder { min-height: 0; border: none; background: transparent; }
     body.eb-preview [contenteditable] { border-bottom: none !important; cursor: default; }
@@ -1346,10 +1401,40 @@ document.addEventListener('click', function(e) {
   inp.click();
 });
 
-/* ══ 影片 placeholder 點擊上傳 ══ */
-document.addEventListener('click', function(e) {
-  const ph = e.target.closest('.eb-video-ph');
-  if (!ph) return;
+/* ══ YouTube 工具函式 ══ */
+function parseYoutubeId(url) {
+  const m = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+  );
+  return m ? m[1] : null;
+}
+
+/* 影片 block：顯示「上傳檔案 / YouTube 連結」選擇 overlay */
+function showVideoSourceChoice(ph) {
+  if (ph.querySelector('.eb-vc-overlay')) return; // 已顯示中
+  const overlay = document.createElement('div');
+  overlay.className = 'eb-vc-overlay';
+  overlay.innerHTML = `
+    <button class="eb-vc-opt" data-action="file">📁 上傳影片檔</button>
+    <button class="eb-vc-opt" data-action="youtube">▶ YouTube 連結</button>`;
+  ph.appendChild(overlay);
+
+  overlay.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const btn = e.target.closest('[data-action]');
+    overlay.remove();
+    if (!btn) return; // 點到背景關閉
+    const wrapper = ph.closest('.custom-video-wrapper');
+    if (btn.dataset.action === 'file') {
+      doVideoFileUpload(wrapper);
+    } else {
+      doVideoYoutubeEmbed(wrapper);
+    }
+  });
+}
+
+/* 影片 block：本機檔案上傳 */
+async function doVideoFileUpload(wrapper) {
   const inp = document.createElement('input');
   inp.type = 'file'; inp.accept = 'video/*';
   inp.onchange = async () => {
@@ -1358,23 +1443,64 @@ document.addEventListener('click', function(e) {
       alert('影片檔案過大（超過 25MB）。請先壓縮影片，或改用 YouTube 嵌入連結。');
       return;
     }
-    const wrapper = ph.closest('.custom-video-wrapper');
     wrapper.innerHTML = '<span style="color:#888;padding:8px">上傳中...</span>';
     try {
       const path = await uploadAsset(f);
       wrapper.innerHTML = `<video class="custom-video" src="${path}" controls style="width:100%"></video><div class="custom-play-btn"></div>`;
     } catch (err) {
-      wrapper.innerHTML = `<div class="eb-video-ph">上傳失敗：${err.message}（點擊重試）</div>`;
+      wrapper.innerHTML = `<div class="eb-video-ph"><div class="play-circle"></div><span>上傳失敗：${err.message}（點擊重試）</span></div>`;
     }
   };
   inp.click();
+}
+
+/* 影片 block：YouTube 嵌入（帶完整播放控制） */
+function doVideoYoutubeEmbed(wrapper) {
+  const url = prompt('請貼上 YouTube 影片連結：\n（支援 youtu.be、youtube.com/watch、Shorts 格式）');
+  if (!url) return;
+  const vid = parseYoutubeId(url.trim());
+  if (!vid) {
+    alert('無法辨識 YouTube 連結，請確認格式是否正確。');
+    return;
+  }
+  wrapper.innerHTML = `
+    <iframe class="custom-video"
+      src="https://www.youtube.com/embed/${vid}?rel=0"
+      style="width:100%;aspect-ratio:16/9;border:none;display:block"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe>`;
+}
+
+/* Grid cell：YouTube 嵌入（autoplay + mute + loop，與本機影片行為一致） */
+function doGridCellYoutube(cell) {
+  const url = prompt('請貼上 YouTube 影片連結：\n（支援 youtu.be、youtube.com/watch、Shorts 格式）');
+  if (!url) return;
+  const vid = parseYoutubeId(url.trim());
+  if (!vid) {
+    alert('無法辨識 YouTube 連結，請確認格式是否正確。');
+    return;
+  }
+  cell.querySelectorAll('span, img, video, iframe').forEach(el => el.remove());
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube.com/embed/${vid}?autoplay=1&mute=1&loop=1&playlist=${vid}&playsinline=1&controls=0&rel=0`;
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.style.cssText = 'width:100%;height:100%;border:none;position:absolute;inset:0;z-index:0;pointer-events:auto';
+  cell.appendChild(iframe);
+}
+
+/* ══ 影片 placeholder 點擊 → 顯示來源選擇 ══ */
+document.addEventListener('click', function(e) {
+  const ph = e.target.closest('.eb-video-ph');
+  if (!ph) return;
+  if (e.target.closest('.eb-vc-overlay')) return; // 由 overlay 自行處理
+  showVideoSourceChoice(ph);
 });
 
 /* ══ Grid cell 點擊上傳（圖片或影片） ══ */
 document.addEventListener('click', function(e) {
   const cell = e.target.closest('.eb-grid-cell');
   if (!cell) return;
-  if (e.target.closest('.eb-cell-del-btn, .eb-cell-move-handle, .eb-cell-resize-handle, .eb-cell-resize-col')) return;
+  if (e.target.closest('.eb-cell-del-btn, .eb-cell-move-handle, .eb-cell-resize-handle, .eb-cell-resize-col, .eb-cell-yt-btn')) return;
   const inp = document.createElement('input');
   inp.type = 'file'; inp.accept = 'image/*,video/*';
   inp.onchange = async () => {
@@ -1446,6 +1572,7 @@ function makeCellHTML(n, rowSpan, colSpan) {
          data-span="${rowSpan}" data-col-span="${colSpan}">
       <div class="eb-cell-move-handle" title="拖曳移動格子"></div>
       <button class="eb-cell-del-btn" onclick="this.closest('.eb-grid-cell').remove();event.stopPropagation()">✕</button>
+      <button class="eb-cell-yt-btn" onclick="doGridCellYoutube(this.closest('.eb-grid-cell'));event.stopPropagation()" title="嵌入 YouTube 影片">YT</button>
       <span style="pointer-events:none;user-select:none;font-size:12px;color:rgba(64,79,99,.45)">image${n}.png</span>
       <div class="eb-cell-size-tag">${colSpan}欄 × ${rowSpan}列</div>
       <div class="eb-cell-resize-handle" title="拖曳調整高度"></div>

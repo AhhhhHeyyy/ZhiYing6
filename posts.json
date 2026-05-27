@@ -21,12 +21,7 @@
       "image": "assets/Posts/50094.jpg",
       "date": "2026-05-27",
       "tag": "#互動裝置",
-      "links": [
-        {
-          "label": "連結",
-          "url": "https://codepen.io/search/pens?q=mouse+track"
-        }
-      ]
+      "links": []
     }
   ]
 }

@@ -222,7 +222,7 @@ function initPostsModal() {
 // 初始化拍立得 Hero — 作品輪播 + 打字動畫
 async function initIntroPolaroid() {
     // ── 打字動畫 ──────────────────────────────────────────────
-    const TYPED_NAME = '梁芷穎';
+    const TYPED_NAME = 'TONG';
     const typedEl = document.getElementById('introTypedName');
     const caretEl = document.getElementById('introCaret');
     if (typedEl) {

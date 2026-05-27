@@ -224,8 +224,8 @@ body::before {
     position: absolute;
     top: 100px;
     left: 48px;
-    width: 100px;
-    height: 100px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     border: 2px solid #002C40;
     overflow: hidden;
@@ -5401,8 +5401,8 @@ body.dark-mode .logo-day  { opacity: 0; }
 body.dark-mode .logo-night { opacity: 1; }
 body.dark-mode .intro-logo-wrap { border-color: #ffffff; }
 
-@media screen and (max-width: 1024px) {
-    .intro-logo-wrap { display: none; }
+@media screen and (max-width: 1366px) {
+    .intro-logo-wrap { display: none !important; }
 }
 
 /* ── Intro section ── */

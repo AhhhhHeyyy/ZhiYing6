@@ -1,6 +1,20 @@
 {
   "posts": [
     {
+      "title": "Process - VR Horror game",
+      "caption": "I made a simple horror VR game; it's about the story of  the \"Ghost Bride.\"\n\nThis post included a DEMO video",
+      "image": "assets/Posts/螢幕擷取畫面 2026-05-28 005202.png",
+      "date": "2026-05-28",
+      "tag": "#開發日誌",
+      "links": [
+        {
+          "label": "DEMO video",
+          "url": "https://youtu.be/GxXVBu636A8"
+        }
+      ],
+      "id": "post-1779900740244"
+    },
+    {
       "title": "Process : phone control unity （use web rtc）",
       "caption": "update in 2026-05-21",
       "image": "assets/Posts/83131.jpg",

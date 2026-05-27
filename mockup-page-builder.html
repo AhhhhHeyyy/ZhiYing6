@@ -781,6 +781,13 @@
 
   <div class="eb-sep"></div>
 
+  <label id="coming-soon-toggle" title="開啟後首頁卡片會顯示 🔒 Coming Soon" style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;white-space:nowrap">
+    <input type="checkbox" id="work-coming-soon" style="width:15px;height:15px;accent-color:#92C7CF;cursor:pointer">
+    <span class="eb-toolbar-label" style="margin:0">🔒 Coming Soon</span>
+  </label>
+
+  <div class="eb-sep"></div>
+
   <div class="eb-dropdown-wrap">
     <button class="eb-dropdown-btn" id="add-block-btn" onclick="toggleAddDropdown(event)">＋ 新增區塊 ▾</button>
     <div class="eb-dropdown-menu" id="add-block-menu">
@@ -987,6 +994,7 @@
     document.getElementById('work-name').value = p.title || '';
     document.getElementById('work-link').value = p.link || '';
     document.getElementById('work-tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
+    document.getElementById('work-coming-soon').checked = !!p.comingSoon;
     if (ctx.cat) document.getElementById('work-cat').value = ctx.cat;
     document.getElementById('display-title').textContent = p.title || '';
     const yearEl = document.querySelector('.project-year');
@@ -1051,9 +1059,10 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     ctx.project.date     = date;
     ctx.project.link     = isAutoLink ? ('project-page.html?title=' + encodeURIComponent(title)) : link;
     ctx.project.category = category ? category.textContent.trim() : '';
-    ctx.project.tags     = tags;
-    ctx.project.image    = serializeCover();
-    ctx.project.blocks   = serializeBlocks();
+    ctx.project.tags        = tags;
+    ctx.project.comingSoon  = document.getElementById('work-coming-soon').checked;
+    ctx.project.image       = serializeCover();
+    ctx.project.blocks      = serializeBlocks();
     ctx.targetCat        = selectedCat || ctx.cat;
     ctx.pb_saved = true;
     sessionStorage.setItem('pb_context', JSON.stringify(ctx));

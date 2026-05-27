@@ -397,9 +397,54 @@
       letter-spacing: 0;
       color: var(--text);
     }
+
+  /* === CUSTOM PIXEL CURSOR === */
+  @media (hover: hover) and (pointer: fine) {
+    *, *:hover { cursor: none !important; }
+  }
+  #pixel-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    width: 86px;
+    height: auto;
+    top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    transition: filter 0.15s ease, transform 0.08s ease;
+    will-change: left, top;
+    display: none;
+  }
+  #pixel-cursor.is-visible { display: block; }
+  #pixel-cursor.is-hover {
+    filter:
+      drop-shadow(2px  0   0 #002C40)
+      drop-shadow(-2px 0   0 #002C40)
+      drop-shadow(0    2px 0 #002C40)
+      drop-shadow(0   -2px 0 #002C40);
+  }
+  #pixel-cursor.is-clicking {
+    transform: translate(-50%, -50%) scale(0.82) rotate(-8deg);
+  }
+  .px-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999998;
+    image-rendering: pixelated;
+    border-radius: 0;
+    animation: px-fall var(--dur, 0.55s) ease-out forwards;
+  }
+  @keyframes px-fall {
+    0%   { opacity: 0.9; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0;   transform: translate(var(--tx), var(--ty)) scale(0.2); }
+  }
   </style>
 </head>
 <body>
+
+<!-- 像素太陽眼鏡游標 -->
+<img id="pixel-cursor" src="assets/cursor.png" alt="" aria-hidden="true">
 
 <!-- ═══════════════ LOGIN ═══════════════ -->
 <div id="login-screen">
@@ -937,7 +982,7 @@ function openModal(idx) {
     document.getElementById('f-link').value = p.link || '';
     document.getElementById('f-tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     document.getElementById('f-has-modal').checked = !!p.hasModal;
-    document.getElementById('f-coming-soon').checked = !!p.comingSoon || p.title === 'HOLOGACHA';
+    document.getElementById('f-coming-soon').checked = !!p.comingSoon;
 
     if (p.image) {
       updatePreviewUrl(p.image);
@@ -1355,6 +1400,61 @@ function markPostsUnsaved() {
   document.getElementById('unsaved-badge').style.display = 'inline';
   document.getElementById('save-status').textContent = '有未儲存的動態，記得點「儲存並發佈」';
 }
+
+// === PIXEL SUNGLASSES CURSOR ===
+(function () {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const cur = document.getElementById('pixel-cursor');
+  if (!cur) return;
+
+  let lastPx = -999, lastPy = -999;
+
+  document.addEventListener('mousemove', function (e) {
+    const x = e.clientX, y = e.clientY;
+    cur.style.left = x + 'px';
+    cur.style.top  = y + 'px';
+    cur.classList.add('is-visible');
+    const dist = Math.hypot(x - lastPx, y - lastPy);
+    if (dist > 16) {
+      spawnParticles(x, y, Math.random() < 0.5 ? 1 : 2);
+      lastPx = x; lastPy = y;
+    }
+  }, { passive: true });
+
+  document.addEventListener('mouseleave', () => cur.classList.remove('is-visible'));
+  document.addEventListener('mousedown', () => cur.classList.add('is-clicking'));
+  document.addEventListener('mouseup',   () => cur.classList.remove('is-clicking'));
+
+  const HOVER_SEL = 'a, button, input, textarea, select, label, [role="button"]';
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.closest(HOVER_SEL)) cur.classList.add('is-hover');
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (e.target.closest(HOVER_SEL)) cur.classList.remove('is-hover');
+  });
+
+  const COLORS = ['#92C7CF', '#AAD7D9', '#005C80', '#FBF8EE', '#bed7e8'];
+  const SIZES  = [10, 10, 12, 12, 14];
+
+  function spawnParticles(x, y, count) {
+    for (let i = 0; i < count; i++) {
+      const p  = document.createElement('div');
+      p.className = 'px-particle';
+      const sz  = SIZES[Math.floor(Math.random() * SIZES.length)];
+      const tx  = (Math.random() - 0.5) * 52;
+      const ty  = Math.random() * 36 + 8;
+      const dur = (0.38 + Math.random() * 0.38).toFixed(2) + 's';
+      p.style.cssText =
+        'left:' + (x + (Math.random() - 0.5) * 10) + 'px;' +
+        'top:'  + (y + (Math.random() - 0.5) * 10) + 'px;' +
+        'width:' + sz + 'px;height:' + sz + 'px;' +
+        'background:' + COLORS[Math.floor(Math.random() * COLORS.length)] + ';' +
+        '--tx:' + tx + 'px;--ty:' + ty + 'px;--dur:' + dur + ';';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), parseFloat(dur) * 1000 + 80);
+    }
+  }
+}());
 </script>
 </body>
 </html>

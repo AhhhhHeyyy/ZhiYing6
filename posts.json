@@ -8,7 +8,7 @@
       "tag": "",
       "links": [
         {
-          "label": "DEMO影片",
+          "label": "DEMO VIDEO",
           "url": "https://youtu.be/WVObiTFp1fc"
         }
       ],
@@ -21,7 +21,12 @@
       "image": "assets/Posts/50094.jpg",
       "date": "2026-05-27",
       "tag": "#互動裝置",
-      "links": []
+      "links": [
+        {
+          "label": "連結",
+          "url": "https://codepen.io/search/pens?q=mouse+track"
+        }
+      ]
     }
   ]
 }

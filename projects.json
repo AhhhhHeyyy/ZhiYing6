@@ -115,6 +115,18 @@
         },
         {
           "type": "標題",
+          "html": "<div class=\"eb-block-drag\" title=\"拖曳移動區塊\">⠿</div>\n    <div class=\"eb-ctrl\">\n      <span class=\"eb-ctrl-tag\">標題</span>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-16',-1,event)\">↑</button>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-16',1,event)\">↓</button>\n      <button class=\"eb-ctrl-btn del\" onclick=\"deleteBlock('eb-16',event)\">✕</button>\n    </div><h2 contenteditable=\"true\" spellcheck=\"false\" data-placeholder=\"標題文字\" data-listener-added_3fcbd10e=\"true\">ANIMATIONS</h2>"
+        },
+        {
+          "type": "文字",
+          "html": "<grammarly-extension data-grammarly-shadow-root=\"true\" style=\"position: absolute; top: 0px; left: -2.97619px; pointer-events: none; --rem: 16;\" class=\"dnXmp\"></grammarly-extension><grammarly-extension data-grammarly-shadow-root=\"true\" style=\"position: absolute; top: 0px; left: -2.97619px; pointer-events: none; --rem: 16;\" class=\"dnXmp\"></grammarly-extension><div class=\"eb-block-drag\" title=\"拖曳移動區塊\">⠿</div>\n    <div class=\"eb-ctrl\">\n      <span class=\"eb-ctrl-tag\">文字</span>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-18',-1,event)\">↑</button>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-18',1,event)\">↓</button>\n      <button class=\"eb-ctrl-btn del\" onclick=\"deleteBlock('eb-18',event)\">✕</button>\n    </div><p contenteditable=\"true\" spellcheck=\"false\" data-placeholder=\"輸入段落文字…\" data-listener-added_3fcbd10e=\"true\">閒置時播放IDLE動畫，觀眾靠近則播放踩鹹菜的動畫。</p>"
+        },
+        {
+          "type": "影片",
+          "html": "<div class=\"eb-block-drag\" title=\"拖曳移動區塊\">⠿</div>\n    <div class=\"eb-ctrl\">\n      <span class=\"eb-ctrl-tag\">影片</span>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-17',-1,event)\">↑</button>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-17',1,event)\">↓</button>\n      <button class=\"eb-ctrl-btn del\" onclick=\"deleteBlock('eb-17',event)\">✕</button>\n    </div>\n      <div class=\"project-video\">\n        <div class=\"custom-video-wrapper\">\n    <iframe class=\"custom-video\" src=\"https://www.youtube.com/embed/sSSKAqXRIHs?rel=0\" style=\"width:100%;aspect-ratio:16/9;border:none;display:block\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen=\"\"></iframe></div>\n      </div>"
+        },
+        {
+          "type": "標題",
           "html": "<grammarly-extension data-grammarly-shadow-root=\"true\" style=\"position: absolute; top: 0px; left: -2.97619px; pointer-events: none; --rem: 16;\" class=\"dnXmp\"></grammarly-extension><grammarly-extension data-grammarly-shadow-root=\"true\" style=\"position: absolute; top: 0px; left: -2.97619px; pointer-events: none; --rem: 16;\" class=\"dnXmp\"></grammarly-extension><div class=\"eb-block-drag\" title=\"拖曳移動區塊\">⠿</div>\n    <div class=\"eb-ctrl\">\n      <span class=\"eb-ctrl-tag\">標題</span>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-13',-1,event)\">↑</button>\n      <button class=\"eb-ctrl-btn\" onclick=\"moveBlock('eb-13',1,event)\">↓</button>\n      <button class=\"eb-ctrl-btn del\" onclick=\"deleteBlock('eb-13',event)\">✕</button>\n    </div><h2 contenteditable=\"true\" spellcheck=\"false\" data-placeholder=\"標題文字\" data-listener-added_ef44c9d5=\"true\">CONSTRUCTURE</h2>"
         },
         {

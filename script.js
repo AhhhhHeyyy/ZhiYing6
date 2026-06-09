@@ -1,3 +1,41 @@
+// === LANGUAGE TOGGLE ===
+(function () {
+    var LANG_KEY = 'lang';
+
+    function getLang() {
+        return localStorage.getItem(LANG_KEY) || 'zh';
+    }
+
+    function applyLang(lang) {
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-TW';
+        document.querySelectorAll('[data-zh][data-en]').forEach(function (el) {
+            el.textContent = lang === 'en' ? el.dataset.en : el.dataset.zh;
+        });
+        var btn = document.getElementById('langToggle');
+        if (btn) btn.textContent = lang === 'en' ? '中' : 'EN';
+        try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+        if (typeof window.resetBioTyping === 'function') window.resetBioTyping();
+    }
+
+    function init() {
+        var saved = getLang();
+        if (saved === 'en') applyLang('en');
+        var btn = document.getElementById('langToggle');
+        if (btn) {
+            btn.onclick = function () {
+                applyLang(getLang() === 'en' ? 'zh' : 'en');
+            };
+        }
+    }
+
+    // defer 腳本執行時 DOM 已 ready，readyState !== 'loading'
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
 // === DARK MODE TOGGLE ===
 (function () {
     if (localStorage.getItem('theme') === 'dark') {

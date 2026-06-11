@@ -130,7 +130,7 @@
       <h1 class="intro-name-display">
         <span id="introTypedName"></span><span class="intro-caret" id="introCaret"></span>
       </h1>
-      <h1 class="intro-en-sub intro-fade-up" style="--fadeDelay:2.9s">LIANG ZHI YING</h1>
+      <h1 class="intro-en-sub intro-fade-up" style="--fadeDelay:2.9s">Milk Tea Lover</h1>
       <div class="intro-role intro-fade-up" style="--fadeDelay:3.1s">
         <span class="intro-role-dot"></span>
         INTERACTION DESIGNER · NTUT
@@ -242,7 +242,7 @@
               <p data-text="Hello！我叫Tong，是一名互動藝術創作者。" data-text-en="Hello! I'm Tong, an interactive art creator."></p>
               <p data-text="我擅長利用Unity或數據串流，Touchdesigner等工具做各種好玩的互動裝置(還有網頁)" data-text-en="I use Unity, data streams and TouchDesigner to build fun interactive installations (and websites)."></p>
               <p data-text="也喜歡製作VR或其他領域的專案，希望你喜歡我的作品！" data-text-en="I also love VR and cross-disciplinary projects. Hope you enjoy my work!"></p>
-              <div class="sk-sign">— AHEY 啊嘿</div>
+              <div class="sk-sign">— Tong</div>
             </div>
           </div>
         </div>
@@ -974,14 +974,19 @@
 
           const CHAR_MS = 55;   // 每字延遲
           const LINE_GAP = 280; // 行間停頓
+          let typingGen = 0;    // 每次 reset 遞增，讓舊的 tick 自我取消
 
-          function typeLine(p) {
+          function typeLine(p, gen) {
             return new Promise(resolve => {
               const isEn = document.documentElement.lang === 'en';
               const full = (isEn && p.dataset.textEn) ? p.dataset.textEn : (p.dataset.text || '');
               p.classList.add('is-typing');
               let i = 0;
               (function tick() {
+                if (gen !== typingGen) {
+                  p.classList.remove('is-typing');
+                  return resolve();
+                }
                 if (i >= full.length) {
                   p.classList.remove('is-typing');
                   return resolve();
@@ -993,9 +998,12 @@
           }
 
           async function runTyping() {
+            const gen = ++typingGen;
             for (const p of paras) {
-              await typeLine(p);
+              await typeLine(p, gen);
+              if (gen !== typingGen) return;
               await new Promise(r => setTimeout(r, LINE_GAP));
+              if (gen !== typingGen) return;
             }
             if (sign) sign.classList.add('is-in');
           }

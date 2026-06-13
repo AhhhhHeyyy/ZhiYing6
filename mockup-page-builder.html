@@ -50,12 +50,19 @@
       gap: 10px;
       padding: 0 20px;
       font-family: 'Public Sans', system-ui, sans-serif;
+    }
+    .eb-toolbar-scroll {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1 1 auto;
+      min-width: 0;
       overflow-x: auto;
       overflow-y: visible;
       scrollbar-width: none;
     }
-    .eb-toolbar::-webkit-scrollbar { display: none; }
-    .eb-toolbar > * { flex-shrink: 0; }
+    .eb-toolbar-scroll::-webkit-scrollbar { display: none; }
+    .eb-toolbar-scroll > * { flex-shrink: 0; }
 
     .eb-toolbar-label {
       font-size: 13px;
@@ -134,7 +141,7 @@
     }
     .eb-dropdown-item:hover { background: rgba(0,92,128,.09); color: var(--tb-accent); }
 
-    .eb-toolbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+    .eb-toolbar-right { flex-shrink: 0; display: flex; gap: 10px; align-items: center; }
 
     .eb-btn {
       border-radius: var(--eb-r);
@@ -812,6 +819,7 @@
      EDITOR TOOLBAR
 ══════════════════════════════ -->
 <div class="eb-toolbar">
+<div class="eb-toolbar-scroll">
   <span class="eb-toolbar-label">作品名稱</span>
   <input class="eb-name-input" type="text" id="work-name" value="孔外狂徒">
 
@@ -854,6 +862,7 @@
       <button class="eb-dropdown-item" onclick="addBlock('video');closeAddDropdown()">▶ 影片</button>
     </div>
   </div>
+</div>
 
   <div class="eb-toolbar-right">
     <button class="eb-btn eb-btn-secondary" onclick="goBack()">← 返回清單</button>

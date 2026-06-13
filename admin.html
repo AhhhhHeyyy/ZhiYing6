@@ -1030,10 +1030,11 @@ async function handleModalSave() {
     try {
       finalImagePath = await uploadImage(pendingImageFile);
     } catch (err) {
-      errEl.textContent = '圖片上傳失敗：' + err.message;
-      errEl.style.display = 'block';
       saveBtn.disabled = false;
       saveBtn.textContent = '儲存';
+      if (err.message === 'REAUTH') return;
+      errEl.textContent = '圖片上傳失敗：' + err.message;
+      errEl.style.display = 'block';
       return;
     }
   }
@@ -1061,6 +1062,9 @@ async function handleModalSave() {
   markUnsaved();
   closeModal();
   renderList();
+
+  saveBtn.textContent = '發佈中...';
+  await saveProjectsToGithub();
 
   saveBtn.disabled = false;
   saveBtn.textContent = '儲存';
@@ -1096,32 +1100,27 @@ function handleFileSelect(e) {
   reader.readAsDataURL(file);
 }
 
-async function uploadImage(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async ev => {
-      try {
-        const res = await fetch('/.netlify/functions/upload-image', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            filename: file.name,
-            base64Data: ev.target.result,
-            category: currentCat,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) reject(new Error(data.error || '上傳失敗'));
-        else resolve(data.path);
-      } catch (err) {
-        reject(err);
-      }
-    };
-    reader.readAsDataURL(file);
+// ══ Cloudinary（unsigned upload）══
+const CLOUDINARY_CLOUD_NAME = 'dy1pm9tnu';
+const CLOUDINARY_UPLOAD_PRESET = 'portfolio_unsigned';
+
+async function uploadToCloudinary(file, folder) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  if (folder) formData.append('folder', folder);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+    method: 'POST',
+    body: formData,
   });
+  const data = await res.json();
+  if (!res.ok) throw new Error((data.error && data.error.message) || '上傳失敗');
+  return data.secure_url;
+}
+
+async function uploadImage(file) {
+  return uploadToCloudinary(file, `portfolio/${currentCat}`);
 }
 
 function updatePreviewUrl(url) {
@@ -1338,10 +1337,11 @@ async function handlePostModalSave() {
     try {
       finalImage = await uploadPostImage(pendingPostImageFile);
     } catch (err) {
-      errEl.textContent = '圖片上傳失敗：' + err.message;
-      errEl.style.display = 'block';
       saveBtn.disabled = false;
       saveBtn.textContent = '儲存';
+      if (err.message === 'REAUTH') return;
+      errEl.textContent = '圖片上傳失敗：' + err.message;
+      errEl.style.display = 'block';
       return;
     }
   }
@@ -1365,6 +1365,10 @@ async function handlePostModalSave() {
   markPostsUnsaved();
   closePostModal();
   renderPostsList();
+
+  saveBtn.textContent = '發佈中...';
+  await savePostsToGithub();
+
   saveBtn.disabled = false;
   saveBtn.textContent = '儲存';
 }
@@ -1377,22 +1381,7 @@ function deletePost(idx) {
 }
 
 async function uploadPostImage(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async ev => {
-      try {
-        const res = await fetch('/.netlify/functions/upload-image', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ filename: file.name, base64Data: ev.target.result, category: 'posts' }),
-        });
-        const data = await res.json();
-        if (!res.ok) reject(new Error(data.error || '上傳失敗'));
-        else resolve(data.path);
-      } catch (err) { reject(err); }
-    };
-    reader.readAsDataURL(file);
-  });
+  return uploadToCloudinary(file, 'portfolio/posts');
 }
 
 function markPostsUnsaved() {

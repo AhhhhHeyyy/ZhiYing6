@@ -1302,33 +1302,29 @@ function delLi(btn) {
   btn.closest('li').remove();
 }
 
-/* ══ 上傳媒體至 GitHub ══ */
-async function uploadAsset(file) {
-  const token = localStorage.getItem('admin_token');
-  if (!token) throw new Error('請先登入管理後台');
+/* ══ 上傳媒體至 Cloudinary（unsigned upload）══ */
+const CLOUDINARY_CLOUD_NAME = 'dy1pm9tnu';
+const CLOUDINARY_UPLOAD_PRESET = 'portfolio_unsigned';
 
+async function uploadAsset(file) {
   let cat = 'installation';
   try {
     const ctx = JSON.parse(sessionStorage.getItem('pb_context') || '{}');
     if (ctx.cat) cat = ctx.cat;
   } catch (e) {}
 
-  const dataUrl = await new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = e => resolve(e.target.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  formData.append('folder', `portfolio/${cat}`);
 
-  const filename = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-  const res = await fetch('/.netlify/functions/upload-image', {
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-    body: JSON.stringify({ filename, base64Data: dataUrl, category: cat }),
+    body: formData,
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || '上傳失敗');
-  return data.path;
+  if (!res.ok) throw new Error((data.error && data.error.message) || '上傳失敗');
+  return data.secure_url;
 }
 
 /* ══ 通用：觸發 file input ══ */
@@ -1439,8 +1435,8 @@ async function doVideoFileUpload(wrapper) {
   inp.type = 'file'; inp.accept = 'video/*';
   inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return;
-    if (f.size > 25 * 1024 * 1024) {
-      alert('影片檔案過大（超過 25MB）。請先壓縮影片，或改用 YouTube 嵌入連結。');
+    if (f.size > 100 * 1024 * 1024) {
+      alert('影片檔案過大（超過 100MB）。請先壓縮影片，或改用 YouTube 嵌入連結。');
       return;
     }
     wrapper.innerHTML = '<span style="color:#888;padding:8px">上傳中...</span>';

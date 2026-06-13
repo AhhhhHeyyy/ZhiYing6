@@ -778,23 +778,21 @@
     }
 
     async function uploadImage(file) {
-      const token = localStorage.getItem('admin_token') || '';
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = async ev => {
-          try {
-            const res = await fetch('/.netlify/functions/upload-image', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-              body: JSON.stringify({ filename: file.name, base64Data: ev.target.result, category: 'posts' }),
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || '上傳失敗');
-            resolve(data.path);
-          } catch (e) { reject(e); }
-        };
-        reader.readAsDataURL(file);
+      const CLOUDINARY_CLOUD_NAME = 'dy1pm9tnu';
+      const CLOUDINARY_UPLOAD_PRESET = 'portfolio_unsigned';
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('folder', 'portfolio/posts');
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+        method: 'POST',
+        body: formData,
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error((data.error && data.error.message) || '上傳失敗');
+      return data.secure_url;
     }
   </script>
 </body>

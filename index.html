@@ -287,7 +287,7 @@
             </svg>
 
             <!-- 主節點 -->
-            <div class="sk-bnode" data-cat="interactive" style="--nx:38%;--ny:11%;--ns:108px;--fa:sk-float-c;--fd:5.1s">
+            <div class="sk-bnode" data-cat="interactive" style="--nx:38%;--ny:11%;--ns:125px;--fa:sk-float-c;--fd:5.1s">
               <div class="sk-bnode-circle" data-zh="互動裝置" data-en="Interactive">互動裝置</div>
             </div>
             <div class="sk-bnode" data-cat="frontend" style="--nx:57%;--ny:36%;--ns:140px;--fa:sk-float-a;--fd:3.8s">
@@ -296,7 +296,7 @@
             <div class="sk-bnode" data-cat="motion" style="--nx:38%;--ny:63%;--ns:130px;--fa:sk-float-b;--fd:4.4s">
               <div class="sk-bnode-circle" data-zh="動畫製作" data-en="Animation">動畫製作</div>
             </div>
-            <div class="sk-bnode" data-cat="design" style="--nx:57%;--ny:87%;--ns:90px;--fa:sk-float-d;--fd:4.6s">
+            <div class="sk-bnode" data-cat="design" style="--nx:57%;--ny:87%;--ns:130px;--fa:sk-float-d;--fd:4.6s">
               <div class="sk-bnode-circle" data-zh="平面與手繪" data-en="Illustration">平面與手繪</div>
             </div>
 
@@ -695,6 +695,8 @@
       .sk-kid[data-parent="motion"] {
         transform: translate(calc(-100% + 2.5px), -50%) scale(0);
         transform-origin: right center;
+        padding-right: 15px; /* 與端點圓點保持間距 */
+        justify-content: flex-end;
       }
       .sk-kid[data-parent="interactive"].is-visible,
       .sk-kid[data-parent="motion"].is-visible {
@@ -706,6 +708,7 @@
       .sk-kid[data-parent="design"] {
         transform: translate(-2.5px, -50%) scale(0);
         transform-origin: left center;
+        padding-left: 15px; /* 與端點圓點保持間距 */
       }
       .sk-kid[data-parent="frontend"].is-visible,
       .sk-kid[data-parent="design"].is-visible {
@@ -719,35 +722,40 @@
         .sk-page--left { border-right: none; border-bottom: 1px dashed rgba(0,44,64,.3); }
         .sk-page { padding: 36px 24px; }
         .sk-stage { min-height: 530px; }
+
+        /* 手機/平板：被 hover 的主節點本身不位移，避免節點滑出滑鼠下方
+           造成 mouseleave → 子節點/連接線閃爍消失再出現。
+           其他未選中節點仍維持往外避讓的效果。 */
+        #skStage.is-hovering .sk-bnode[data-cat].is-hovered { left: var(--nx); top: var(--ny); }
       }
 
-      /* ── CSS 端點圓點：取代 SVG <circle>，各尺寸下永遠是正圓 ── */
-      /* 右側群組（frontend / design）：圓點置於文字左方 */
-      .sk-kid[data-parent="frontend"]::before,
-      .sk-kid[data-parent="design"]::before {
-        content: '';
-        display: inline-block;
+      /* ── 端點圓點：獨立元素，直接用 --kx/--ky 定位，與 SVG 線端點同源 ──
+         不依賴 .sk-kid 文字寬度/字型渲染，確保任何尺寸下都精準對齊線端點 */
+      .sk-dot {
+        position: absolute;
+        left: var(--kx);
+        top: var(--ky);
         width: 5px; height: 5px;
+        margin: -2.5px;
         border-radius: 50%;
         background: var(--sk-ink);
-        flex-shrink: 0;
-        margin-right: 5px;
-        align-self: center;
+        opacity: 0;
+        transition: opacity .2s ease;
+        pointer-events: none;
+        z-index: 3;
       }
-      /* 左側群組（interactive / motion）：圓點置於文字右方 */
-      .sk-kid[data-parent="interactive"]::after,
-      .sk-kid[data-parent="motion"]::after {
-        content: '';
-        display: inline-block;
-        width: 5px; height: 5px;
-        border-radius: 50%;
-        background: var(--sk-ink);
-        flex-shrink: 0;
-        margin-left: 5px;
-        align-self: center;
+      .sk-dot.is-visible {
+        opacity: 1;
+        transition-delay: var(--kd, 0s);
       }
 
       /* ── RWD：縮小主節點氣泡，留空間給分支標籤 ── */
+      /* 雙欄但欄寬較窄（901–1300px，如 iPad Pro 直向）：
+         球縮到 70%，避免彼此靠太近/重疊 */
+      @media (min-width: 901px) and (max-width: 1300px) {
+        .sk-stage { --ns-scale: 0.7; margin-top: 48px; }
+        .sk-kid   { font-size: .78rem; }
+      }
       /* 平板（561–900px）：球縮到 75%，輕量 scale 防截字 */
       @media (min-width: 561px) and (max-width: 900px) {
         .sk-stage {
@@ -857,6 +865,11 @@
                 duration: 0.75,
                 stagger: 0.18,
                 ease: 'power2.inOut',
+                // 描繪完成後移除 dasharray：避免之後 trackLines() 調整端點
+                // 讓線變長時，被舊長度的 dasharray 截斷而看起來「斷掉」
+                onComplete() {
+                  mainLines.forEach(l => l.style.strokeDasharray = 'none');
+                },
               });
               // 氣泡 stagger 彈入
               gsap.to(bubbles, {
@@ -882,6 +895,18 @@
               gIO.observe(stage);
             }
           }
+          // ── 產生端點圓點：與 .sk-kid 共用 --kx/--ky，直接定位於 #skStage ──
+          stage.querySelectorAll('.sk-kid').forEach(kid => {
+            const dot = document.createElement('span');
+            dot.className = 'sk-dot';
+            dot.dataset.parent = kid.dataset.parent;
+            dot.style.setProperty('--kx', kid.style.getPropertyValue('--kx'));
+            dot.style.setProperty('--ky', kid.style.getPropertyValue('--ky'));
+            dot.style.setProperty('--kd', kid.style.getPropertyValue('--kd'));
+            stage.appendChild(dot);
+            kid._dot = dot;
+          });
+
           // ── Hover 互動 ────────────────────────────────────
           stage.querySelectorAll('.sk-bnode').forEach(node => {
             const cat  = node.dataset.cat;
@@ -892,13 +917,13 @@
               clearTimeout(timer);
               stage.classList.add('is-hovering');
               node.classList.add('is-hovered');
-              kids.forEach(k => k.classList.add('is-visible'));
+              kids.forEach(k => { k.classList.add('is-visible'); k._dot.classList.add('is-visible'); });
               if (svgG) svgG.classList.add('is-visible');
             }
             function off() {
               timer = setTimeout(() => {
                 node.classList.remove('is-hovered');
-                kids.forEach(k => k.classList.remove('is-visible'));
+                kids.forEach(k => { k.classList.remove('is-visible'); k._dot.classList.remove('is-visible'); });
                 if (svgG) svgG.classList.remove('is-visible');
                 if (!stage.querySelector('.sk-bnode.is-hovered')) {
                   stage.classList.remove('is-hovering');
@@ -913,17 +938,32 @@
             });
           });
 
-          // ── 線端點即時追蹤氣泡中心 ────────────────────────
+          // ── 子線終點：直接套用 --kx/--ky，與 .sk-dot 同源，永遠對齊 ──
+          (function initChildLineEndpoints() {
+            const cats = ['interactive', 'frontend', 'motion', 'design'];
+            cats.forEach(cat => {
+              const g = document.getElementById(`sk-cl-${cat}`);
+              if (!g) return;
+              const lines = [...g.querySelectorAll('line')];
+              const kids  = [...stage.querySelectorAll(`.sk-kid[data-parent="${cat}"]`)];
+              lines.forEach((l, idx) => {
+                const kid = kids[idx];
+                if (!kid) return;
+                l.setAttribute('x2', parseFloat(kid.style.getPropertyValue('--kx')));
+                l.setAttribute('y2', parseFloat(kid.style.getPropertyValue('--ky')));
+              });
+            });
+          })();
+
+          // ── 線起點即時追蹤氣泡中心（氣泡會因 hover 位移）────────
           (function trackLines() {
             const mainLines = [...stage.querySelectorAll('.sk-ml')];
             const cats = ['interactive', 'frontend', 'motion', 'design'];
 
-            function getCenter(cat) {
+            function getCenter(cat, sr) {
               const node = stage.querySelector(`.sk-bnode[data-cat="${cat}"]`);
-              if (!node) return null;
-              const sr = stage.getBoundingClientRect();
+              if (!node || !sr.width || !sr.height) return null;
               const nr = node.getBoundingClientRect();
-              if (!sr.width || !sr.height) return null;
               return {
                 x: (nr.left + nr.width  / 2 - sr.left) / sr.width  * 100,
                 y: (nr.top  + nr.height / 2 - sr.top)  / sr.height * 100,
@@ -931,7 +971,8 @@
             }
 
             function tick() {
-              const centers = cats.map(getCenter);
+              const sr = stage.getBoundingClientRect();
+              const centers = cats.map(cat => getCenter(cat, sr));
               const [ic, fe, mo, de] = centers;
 
               if (mainLines[0] && ic && fe) {
@@ -949,7 +990,7 @@
 
               cats.forEach((cat, i) => {
                 const c = centers[i];
-                if (!c) return;
+                if (!c || !sr.width || !sr.height) return;
                 const g = document.getElementById(`sk-cl-${cat}`);
                 if (!g) return;
                 g.querySelectorAll('line').forEach(l => {

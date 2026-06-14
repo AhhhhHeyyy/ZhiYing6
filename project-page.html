@@ -153,6 +153,10 @@
         // Unwrap the eb-block div, append its children directly
         Array.from(wrapper.childNodes).forEach(child => desc.appendChild(child));
       });
+
+      if (typeof window.__applyLang === 'function') {
+        window.__applyLang(localStorage.getItem('lang') || 'zh');
+      }
     }
 
     setTimeout(() => { document.getElementById('project-container').classList.add('visible'); }, 100);

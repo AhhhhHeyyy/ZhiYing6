@@ -5,7 +5,7 @@
     function applyLang(lang) {
         document.documentElement.lang = lang === 'en' ? 'en' : 'zh-TW';
         document.querySelectorAll('[data-zh][data-en]').forEach(function (el) {
-            el.textContent = lang === 'en' ? el.dataset.en : el.dataset.zh;
+            el.innerHTML = lang === 'en' ? el.dataset.en : el.dataset.zh;
         });
         var btn = document.getElementById('langToggle');
         if (btn) btn.textContent = lang === 'en' ? '中' : 'EN';

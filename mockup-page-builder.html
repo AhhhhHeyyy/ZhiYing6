@@ -1174,6 +1174,68 @@ document.getElementById('blocks-root').addEventListener('click', function(e) {
   block.classList.add('eb-selected');
 });
 
+/* ══ 貼上時清除外來字級/字距/行距等樣式，統一套用站上的排版 ══ */
+const PASTE_ALLOWED_TAGS = new Set(['P', 'DIV', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'UL', 'OL', 'LI', 'A']);
+
+function sanitizePastedNode(node) {
+  Array.from(node.childNodes).forEach(child => {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      sanitizePastedNode(child);
+      if (PASTE_ALLOWED_TAGS.has(child.tagName)) {
+        Array.from(child.attributes).forEach(attr => {
+          if (!(child.tagName === 'A' && attr.name === 'href')) child.removeAttribute(attr.name);
+        });
+      } else {
+        while (child.firstChild) node.insertBefore(child.firstChild, child);
+        node.removeChild(child);
+      }
+    } else if (child.nodeType !== Node.TEXT_NODE) {
+      node.removeChild(child);
+    }
+  });
+}
+
+document.addEventListener('paste', function(e) {
+  const target = e.target.closest && e.target.closest('[contenteditable]');
+  if (!target) return;
+  e.preventDefault();
+
+  const cd = e.clipboardData || window.clipboardData;
+  const html = cd.getData('text/html');
+  const tmp = document.createElement('div');
+
+  if (html) {
+    tmp.innerHTML = html;
+    sanitizePastedNode(tmp);
+  } else {
+    const text = cd.getData('text/plain') || '';
+    text.split('\n').forEach((line, i, arr) => {
+      tmp.appendChild(document.createTextNode(line));
+      if (i < arr.length - 1) tmp.appendChild(document.createElement('br'));
+    });
+  }
+
+  // 直接操作 Range 插入乾淨節點，避免瀏覽器 execCommand 在修正區塊巢狀時
+  // 自動補回 inline style（例如把目前算出的字級寫回 style 屬性）
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+
+  const frag = document.createDocumentFragment();
+  let lastNode = null;
+  while (tmp.firstChild) { lastNode = tmp.firstChild; frag.appendChild(tmp.firstChild); }
+  range.insertNode(frag);
+
+  if (lastNode) {
+    const newRange = document.createRange();
+    newRange.setStartAfter(lastNode);
+    newRange.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+  }
+});
+
 /* ══ 移動 block ══ */
 function moveBlock(id, dir, e) {
   e.stopPropagation();

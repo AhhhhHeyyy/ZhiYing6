@@ -534,6 +534,11 @@
       <label for="f-coming-soon">標記為 Coming Soon</label>
     </div>
 
+    <div class="checkbox-row">
+      <input type="checkbox" id="f-draft">
+      <label for="f-draft" title="勾選後：公開網站完全看不到這件作品，只有 admin 看得到">📝 草稿（不公開，僅 admin 可見）</label>
+    </div>
+
     <div id="modal-error" class="error-msg"></div>
 
     <div style="display:flex;gap:10px;justify-content:flex-end">
@@ -874,7 +879,7 @@ function renderList() {
            style="${p.image ? '' : 'background:var(--border);font-size:20px;display:flex;align-items:center;justify-content:center'}">
       <div class="project-info">
         <strong>${p.title}</strong>
-        <span>${p.date}${p.comingSoon ? '　🔒 Coming Soon' : ''}</span>
+        <span>${p.date}${p.draft ? '　📝 草稿（不公開）' : ''}${p.comingSoon ? '　🔒 Coming Soon' : ''}</span>
       </div>
       <div class="project-actions">
         <button class="btn-secondary btn-sm" onclick="openPageBuilder(${idx})">編輯</button>
@@ -971,6 +976,7 @@ function openModal(idx) {
     document.getElementById('f-tags').value = '';
     document.getElementById('f-has-modal').checked = isInstallation;
     document.getElementById('f-coming-soon').checked = false;
+    document.getElementById('f-draft').checked = false;
     resetPreview();
   } else {
     // Edit existing
@@ -983,6 +989,7 @@ function openModal(idx) {
     document.getElementById('f-tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     document.getElementById('f-has-modal').checked = !!p.hasModal;
     document.getElementById('f-coming-soon').checked = !!p.comingSoon;
+    document.getElementById('f-draft').checked = !!p.draft;
 
     if (p.image) {
       updatePreviewUrl(p.image);
@@ -1006,6 +1013,7 @@ async function handleModalSave() {
   const link = linkRaw || ('project-page.html?title=' + encodeURIComponent(title));
   const hasModal = document.getElementById('f-has-modal').checked;
   const comingSoon = document.getElementById('f-coming-soon').checked;
+  const draft = document.getElementById('f-draft').checked;
   const imageUrl = document.getElementById('f-image-url').value.trim();
   const tagsRaw = document.getElementById('f-tags').value.trim();
   const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
@@ -1040,12 +1048,15 @@ async function handleModalSave() {
   }
 
   const project = {
+    // 保留既有欄位（blocks / category / title_en 等），避免用 modal 編輯時被清掉
+    ...(editingIndex === null ? {} : projects[currentCat][editingIndex]),
     title,
     date,
     image: finalImagePath,
     link,
     tags,
     comingSoon: comingSoon || false,
+    draft: draft || false,
     order: editingIndex === null
       ? (projects[currentCat].length + 1)
       : projects[currentCat][editingIndex].order,

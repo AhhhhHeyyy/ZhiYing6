@@ -90,7 +90,7 @@ exports.handler = async (event) => {
   try {
     const navData = {};
     Object.keys(projects).forEach(cat => {
-      navData[cat] = (projects[cat] || []).map(({ title, link, order }) => ({ title, link, order }));
+      navData[cat] = (projects[cat] || []).filter(p => !p.draft).map(({ title, link, order }) => ({ title, link, order }));
     });
     const navContent = Buffer.from(JSON.stringify(navData, null, 2) + '\n').toString('base64');
     const navApiBase = `https://api.github.com/repos/${owner}/${repo}/contents/projects-nav.json`;

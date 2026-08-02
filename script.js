@@ -66,7 +66,7 @@ async function loadAndRenderProjects() {
             if (!grid) return;
             
             // 按 order 排序（保持原有顺序）
-            const sortedProjects = projects[category].sort((a, b) => a.order - b.order);
+            const sortedProjects = projects[category].filter(p => !p.draft).sort((a, b) => a.order - b.order);
             
             // 清空现有内容
             grid.innerHTML = '';
@@ -287,6 +287,7 @@ async function initIntroPolaroid() {
         const allProjects = [];
         Object.values(projects).forEach(cat => {
             cat.forEach(p => {
+                if (p.draft) return;
                 if (p.image) allProjects.push({
                     img: p.image,
                     title: '＞ ' + p.title.toUpperCase(),

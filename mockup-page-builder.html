@@ -851,6 +851,13 @@
 
   <div class="eb-sep"></div>
 
+  <label id="draft-toggle" title="開啟後：公開網站完全看不到這件作品，只有 admin 看得到" style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;white-space:nowrap">
+    <input type="checkbox" id="work-draft" style="width:15px;height:15px;accent-color:#92C7CF;cursor:pointer">
+    <span class="eb-toolbar-label" style="margin:0">📝 草稿</span>
+  </label>
+
+  <div class="eb-sep"></div>
+
   <div class="eb-dropdown-wrap">
     <button class="eb-dropdown-btn" id="add-block-btn" onclick="toggleAddDropdown(event)">＋ 新增區塊 ▾</button>
     <div class="eb-dropdown-menu" id="add-block-menu">
@@ -1059,6 +1066,7 @@
     document.getElementById('work-link').value = p.link || '';
     document.getElementById('work-tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     document.getElementById('work-coming-soon').checked = !!p.comingSoon;
+    document.getElementById('work-draft').checked = !!p.draft;
     if (ctx.cat) document.getElementById('work-cat').value = ctx.cat;
     document.getElementById('display-title').textContent = p.title || '';
     const yearEl = document.querySelector('.project-year');
@@ -1125,6 +1133,7 @@ document.querySelector('.eb-btn-save').addEventListener('click', function() {
     ctx.project.category = category ? category.textContent.trim() : '';
     ctx.project.tags        = tags;
     ctx.project.comingSoon  = document.getElementById('work-coming-soon').checked;
+    ctx.project.draft       = document.getElementById('work-draft').checked;
     ctx.project.image       = serializeCover();
     ctx.project.blocks      = serializeBlocks();
     ctx.targetCat        = selectedCat || ctx.cat;

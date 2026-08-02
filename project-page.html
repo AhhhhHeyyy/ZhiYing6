@@ -302,7 +302,7 @@
       const data = await res.json();
       const all = [];
       Object.keys(data).forEach(cat => {
-        const sorted = (data[cat] || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
+        const sorted = (data[cat] || []).filter(p => !p.draft).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
         all.push(...sorted);
       });
       const params = new URLSearchParams(window.location.search);
